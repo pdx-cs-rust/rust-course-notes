@@ -7,7 +7,7 @@
 
     * Handle the error
 
-    * Fail altogether via `panic!()`
+    * Fail altogether via `panic!()`, various asserts
 
     * Return some kind of result indicating an error
       to the caller, who can then deal with it
@@ -186,7 +186,8 @@
   using methods provided by `Result` and `Option`. This is
   handy when you want to keep going after an error
 
-        let scaled_min = (0..n).min().and_then(|s| s / m).or_else(0);
+        let scaled_min =
+            (0..n).map(f).min().and_then(|s| s / m).or_else(|| g());
 
 * This usage can be worth it, but can also be a bit
   tricky. It will take some practice
