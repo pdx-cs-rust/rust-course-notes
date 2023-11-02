@@ -45,8 +45,7 @@
   of values of *unspecified size*: the user can't create
   these directly
 
-* Taking the address of an array normally produces a
-  a slice reference (or "slice", ugh)
+* Taking the address of an array normally produces a slice reference (or "slice", ugh)
 
         let a: &[char] = &['a', 'b'];
 

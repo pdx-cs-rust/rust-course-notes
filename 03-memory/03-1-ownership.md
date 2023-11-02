@@ -47,7 +47,7 @@
   the compiler will feel free to make a copy of it whenever
   convenient
 
-v* If a type has the `Clone` trait (e.g. most built-in types)
+* If a type has the `Clone` trait (e.g. most built-in types)
   the compiler will make a (deep) copy whenever the type's
   `clone()` method is called
 
