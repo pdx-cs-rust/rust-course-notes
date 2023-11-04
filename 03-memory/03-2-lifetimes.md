@@ -15,7 +15,7 @@
         int *ry = &y;
         return ry;
 
-* The returned pointer is now pointing into whereever on the
+* The returned pointer is now pointing into wherever on the
   stack the now-lost `y` was
 
 ## The Rust Way: Static "Borrow Checking"
