@@ -34,7 +34,13 @@
 * `Copy` is a marker trait that you implement when
   you want your values to be automatically copied
   by the compiler. It has no methods
-  
+
+        #[derive(Clone)]
+        struct MyStruct(u32, f64);
+
+        impl Copy for MyStruct {}
+
+
 * `Copy` provides `Clone` for free as a subtrait
 
 * Use `Copy` sparingly:
