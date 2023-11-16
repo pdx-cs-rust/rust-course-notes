@@ -53,7 +53,7 @@
 * A type implementing `Copy` cannot also implement `Drop`,
   because the semantics are too confusing
 
-## Sized
+### Sized
 
 * `Sized` is a marker trait that says that the compiler
   knows "the size" of values of the type
