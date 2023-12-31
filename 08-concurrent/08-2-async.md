@@ -13,7 +13,7 @@
 
 * But processes are inefficient
 
-    * Inter-process communication is inefficient
+    * Inter-process communication is inefficient and clumsy
     * Memory usage tends toward inefficiency
 
 * So threads
@@ -29,8 +29,9 @@
 
 * But threads are still inefficient
 
+    * Startup costs
     * Context switch costs
-    * Stack-per-thread
+    * Stacks-per-thread
     * Inter-thread locking
 
 ## Task Pools
@@ -89,17 +90,21 @@
 
 ## async/await
 
-* Can declare a function or block `async`
+* Can declare a function or block `async` to get an "async context"
+
+* The compiler builds a custom implementation of `Future`
+  for this block or function that "does the right thing"
+  in case of `.await` or returning
 
 * If the result type of the function or block is declared as
   `T` it is actually `impl Future<Output=T>`
 
-* The compiler builds a custom implementation of `Future`
-  that "does the right thing" in this situation
-
 * If you evaluate such a function or block with `.await`, it
-  will poll until it gets a ready value and then it will
-  return that value
+  will return a future that polls until it gets a ready
+  value and then it will return that value
+
+* You cannot call async functions outside of an async
+  context
 
 ## Rust's async/await Ecosystem
 
@@ -112,7 +117,7 @@
       spawning and supplying worker threads
 
 * Currently provided by either the `tokio` ecosystem or the
-  `async-std` ecosystem or a host of smaller ones
+  `async-std` ecosystem or `smol` or many other options
 
 * Idea of `std::future::Future` is that you can use the
   primitives with either ecosystem (or build your own
@@ -122,27 +127,28 @@
 
 * Tokio
 
-    * Older: lots more experience in community
+    * Older: lots more experience in community (through
+      versions 0.1, 0.2, 0.3, 1.0)
     * Firefox thing
-    * Still a few backward compatibility adventures
-        * Has three old versions: 0.1, 0.2, 0.3
-        * Almost all code is now on 1.x
+    * Full of subtle traps
 
 * async-std
 
     * Easier to get started with
         * Slightly cleaner interface
         * Better comparability with std
+    * Now mostly abandoned
 
 * smol
     * Underlies async-std
     * Small
+    * Good option for simple things
 
 ## Using std::future and the futures Crate
 
-* Many interfaces are now runtime-agnostic through these
+* Some interfaces are sort of runtime-agnostic through these
 
-* Probably better to use these generic interfaces when you can
+* Better to use these generic interfaces when you can
 
 ## async/await Maturity
 
@@ -154,7 +160,7 @@
   [Colored Function Problem](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/)
   is real
 
-* Missing async traits are a big deal
+* Missing async traits are a big deal; probably coming soon
 
 ## Example
 

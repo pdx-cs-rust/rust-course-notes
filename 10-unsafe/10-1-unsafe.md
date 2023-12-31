@@ -1,3 +1,18 @@
+## How To Be unsafe
+
+* In front of a function
+
+        // must call from an unsafe place
+        unsafe fn foo() {
+            // unsafe stuff here
+        }
+
+* In front of a block
+
+        unsafe {
+            // unsafe stuff here
+        }
+
 ## The unsafe Keyword
 
 * Turns off *some* of the compiler checks when
@@ -42,7 +57,41 @@
 * UB may do nothing, may cause trouble, or may only cause
   trouble when the optimizer gets clever
   
-## Unsafe Function "Contracts"
+## Sidebar: Alignment
+
+* What is pointer alignment? Well on most architectures, a
+  pointer to an object bigger than a byte can't just point
+  at any byte as its starting address
+
+* Alignment rules vary per architecture etc, but on most
+  machines
+
+  * A `u16` pointer must point at an even address
+  * A `u32` pointer must point at an address that is a
+    multiple of 4
+  * A `u64` pointer must point at an address that is a
+    multiple of 8
+  * etc
+
+* In most languages, this means that a struct or enum
+  pointer must point at an address with some minimal
+  alignment, usually the word size of the machine
+
+* On a 64-bit machine, struct and enums will typically be
+  required to have 8-byte alignment
+
+* Why?
+
+  * Some architectures don't even have a hardware
+    instruction to access a misaligned word. So the compiler
+    would have to do two aligned accesses plus some shifting
+    and masking. The aligned accesses may not even be
+    possible at the beginning or end of memory region
+
+  * Architectures that allow unaligned access typically
+    penalize performance *heavily* (e.g. Intel)
+
+## Unsafe "Contracts"
 
 * Code should be written so that *when properly used* UB
   cannot occur

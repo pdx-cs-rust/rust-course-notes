@@ -19,7 +19,7 @@
              let path: &Path = path.as_ref();
              ...
 
-          open("foo.txt".to_string())
+          open("foo.txt")
 
 ## Borrow, BorrowMut
 
