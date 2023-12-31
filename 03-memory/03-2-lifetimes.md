@@ -138,7 +138,7 @@
   
 ## Simple Example
 
-    fn fst<'a, 'b: 'a>(x: &'a u64, y: &'b u64) -> &'b u64 {
+    fn fst<'a, 'b>(x: &'a u64, _y: &'b u64) -> &'a u64 {
         &x
     }
 
