@@ -44,10 +44,7 @@ pub enum FirstError {
 fn first_char_of_file(path: &str) -> Result<char, FirstError> {
     use std::io::Read;
 
-    let mut f = match std::fs::File::open(path) {
-        Ok(f) => f,
-        Err(e) => return Err(FirstError::OpenError(e)),
-    };
+    let mut f = std::fs::File::open(path).map_err(FirstError::OpenError)?;
     let mut c = [0u8];
 
     // f.read(&mut c);
