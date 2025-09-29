@@ -1,5 +1,5 @@
 # Rust Programming Course Notes
-Bart Massey 2023
+Bart Massey 2025
 
 These are the ongoing course notes for my Rust Programming
 course.
