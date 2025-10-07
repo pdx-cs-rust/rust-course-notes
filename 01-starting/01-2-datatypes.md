@@ -72,7 +72,7 @@
 
   with obvious value representation
 
-          let t = (12, 1.2, 'x');
+          let t: (u64, f64, char) = (12, 1.2, 'x');
 
 ## Commas
 
