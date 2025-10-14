@@ -1,3 +1,14 @@
+## The Heap
+
+* In Rust, we put values on the heap with the `Box<T>` type.
+
+* We can also use the `RefCell` (and `Cell`) type.
+
+## RefCell
+
+* Allows you to get the compiler to not do compile-time
+  borrow checking, but instead do it at runtime.
+
 ## Interior Mutability and Reference Counting
 
 * Rust borrow checker is quite conservative in its static

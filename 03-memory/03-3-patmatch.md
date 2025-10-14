@@ -51,6 +51,7 @@
   
         match x {
             3..=5 => true,
+            // warning: match arm not reachable
             4 => false,
             _ => true,
         }

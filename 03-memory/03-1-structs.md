@@ -73,7 +73,6 @@
           // println!("{}", t.s1); // compiler error
           // some_function(&t); // compiler error: t partially moved
           // return t; // compiler error: t partially moved
-          let v1 = t.s1;
           let v2 = t.s2;
           t.s1 = v2;
           t.s2 = v1;

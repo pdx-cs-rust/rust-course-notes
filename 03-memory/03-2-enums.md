@@ -34,7 +34,7 @@
 
 * Can impl an enum just as with a struct
 
-* Enum values come in tuple or structured form: tuple is
+* Enum variants come in tuple or structured form: tuple is
   more "normal", because…
   
 * Pattern matching is the common way to extract carried
@@ -109,12 +109,27 @@
 * The type "!" is around…
 
         fn fail(cond: bool) -> ! {
-            std::process::exit(1);
+           if cond {
+              println!("special");
+           } 
+           // Function would fail to compile.
+           // else {
+           //    std::process::exit(1);
+           // }
         }
 
 ## Why Are Sum Types A Big Deal?
 
-* Avoid redundant storage, as with C union
+* Avoid redundant storage, as with C union: "niche optimization"
+
+        struct v {
+            // variant is 1 for u.v1, 2 for u.v2.
+            int variant;
+            union u {
+              uint32_t *v1;
+              uint64_t *v2;
+            };
+        };
 
 * "Tags" are managed by the language, so no tag mismatch
   issues
