@@ -139,8 +139,8 @@
 * Marking an item `#[cfg(test)]` makes it included only
   when compiling for testing
 
-* Examples in doc comments are treated as "doc tests" by
-  default: must compile and not panic
+* Examples in doc comments in library crates are treated as
+  "doc tests" by default: must compile and run without panic
 
 ## Rustup, Toolchains, etc
 

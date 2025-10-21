@@ -198,8 +198,5 @@
 
     * Manually
 
-    * Via some specialty crate. There are a million of these,
-      and it's hard to keep up-to-date on which are in
-      fashion
-
-    * As of this writing, `anyhow` and `thiserror`
+    * Via some specialty crate. As of this writing, `anyhow`
+      and `thiserror` are quite popular.
