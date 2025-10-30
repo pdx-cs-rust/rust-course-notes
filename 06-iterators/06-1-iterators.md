@@ -1,4 +1,8 @@
-## Iterators
+## Iterator
+
+Rust's glue to for loops.
+
+## Iterator Trait
 
 * `Iterator` is a trait, with an `Item` associated type
 

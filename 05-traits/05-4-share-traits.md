@@ -1,3 +1,24 @@
+## From, Into
+
+* Type conversion traits
+
+* `Into` is just `From` with the types reversed
+
+* Normally just implement `From` to get a default
+  implementation of `Into`
+
+* `from()` and `into()` consume their arguments!
+
+* `from()` and `into()` should never fail!
+
+## TryFrom, TryInto
+
+* Like `From` and `Into` but return a `Result` instead of
+  panicking
+
+* Makes it possible to safely convert types when some of the
+  values may not safely convert
+
 ## Deref, DerefMut
 
 * Used to transfer a `*` dereference of a type to some
@@ -33,27 +54,6 @@
 * This is where the types start to get truly ugly: see the
   book example
 
-## From, Into
-
-* Type conversion traits
-
-* `Into` is just `From` with the types reversed
-
-* Normally just implement `From` to get a default
-  implementation of `Into`
-
-* `from()` and `into()` consume their arguments!
-
-* `from()` and `into()` should never fail!
-
-## TryFrom, TryInto
-
-* Like `From` and `Into` but return a `Result` instead of
-  panicking
-
-* Makes it possible to safely convert types when some of the
-  values may not safely convert
-
 ## ToOwned
 
 * Trait for "cloning" a thing that implements the `Borrow`
@@ -71,8 +71,8 @@
 
 * Glory in the beauty of this: book says
 
-          enum Cow<'a, B: ?Sized + 'a>
-               where B: ToOwned
+          enum Cow<'a, B>
+               where B: ?Sized + 'a + ToOwned
           {
               Borrowed(&'a B),
               Owned(<B as ToOwned>::Owned),
