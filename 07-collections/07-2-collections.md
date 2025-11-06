@@ -40,17 +40,15 @@
   of analysis, esp `chunks_exact`
 
 * Sorting and searching have straightforward methods. Having
-  `binary_search` built-in is a fantastic idea, as this is a
-  common source of bugs in other languages
+  `binary_search` and `partition_point` built-in is a
+  fantastic idea, as this is a common source of bugs in
+  other languages
 
 * Lexicographic comparison of these is supported when `Ord`
 
 ## VecDeque
 
 * `VecDeque` is a circular queue stored in a `Vec`
-
-* Because it uses stop and start pointers, there will always
-  be at least one dead cell
 
 * Normally insert with `push_back()`, remove with
   `pop_front()`, but the queue is double-ended
