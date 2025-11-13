@@ -4,24 +4,28 @@
 
 * Parallel: things are happening at the same time
 
+* Note that parallel ⇒ concurrent but not vice-versa
+
 ## Why Parallel?
 
-* Hot topic. Meh
+* Used to be hot topic. Meh
 
 * CPUs/memory aren't getting faster, just more parallel
 
 * Big Data / Machine Learning etc
 
-* Some things are naturally concurrent: user input,
-  agent-based systems, etc
+## Why Concurrent?
 
-* Note that parallel ⇒ concurrent but not vice-versa
+* Some things are naturally concurrent:
+
+  * User input
+  * Agent-based systems
 
 ## Why Not Parallel?
 
-* Generally harder to get right
-
 * Only gives linear speedups
+
+* Generally harder to get right
 
 ## Rust's Parallel Story
 
@@ -113,13 +117,34 @@
 * Data is actually moved or shared across channels;
   efficient
 
-## Pipeline
+## Synchronization
 
-* Easy-to-get-right thing; used in CPUs a lot
+* `Mutex<T>`: Wraps a value in a mutex lock
 
-* A bit tricky to set up
+  * For example `mutex = Mutex::new(0_usize)`
+  * Only one thread may complete `mutex.lock()` at a time
+  * That thread gets a mutable "guard" for the wrapped data
+  * Other threads are blocked until first releases lock
+  * Returns a `Result` because mutex poisoning
+  * For example `*mutex.lock().unwrap() = 5`
 
-* Only gives parallelism with multiple pipeline operations
+* `RwLock<T>`: A mutex that will give out many shared
+  immutable refs or one mutable ref at a time
+
+* `AtomicUsize` *et al*: Ensures that read-modify-write
+  operations happen as an atomic thing
+  
+  * Provides methods like `.fetch_add(1, Ordering::SeqCst)`
+  
+  * The "memory ordering" should probably just always be set
+    to that
+
+  * Not as great as they sound
+
+* `Condvar`: Block waiting for an event
+
+  * Super-complicated, involving `Mutex` plus validation state
+  * See the docs for details
 
 ## Send + Sync
 
@@ -135,38 +160,16 @@
 
 * `Send` and `Sync` are auto-derived for structs / enums
 
-## A Pipeline Iterator
+## Pipeline Parallelism
+
+* Easy-to-get-right thing; used in CPUs a lot
+
+* A bit tricky to set up
+
+* Only gives parallelism with multiple pipeline operations
 
 * Nice book example of iterator construction for pipelining
 
-## Synchronization
-
-* `Mutex<T>`: Wraps a value in a mutex lock
-
-  * For example `mutex = Mutex::new(0_usize)`
-  * Only one thread may complete `mutex.lock()` at a time
-  * That thread gets a mutable "guard" for the wrapped data
-  * Other threads are blocked until first releases lock
-  * Returns a `Result` because mutex poisoning
-  * For example `*mutex.lock().unwrap() = 5`
-
-* `RwLock<T>`: A mutex that will give out many shared
-  immutable refs or one mutable ref at a time
-
-* `Condvar`: Block waiting for an event
-
-  * Super-complicated, involving `Mutex` plus validation state
-  * See the docs for details
-
-* `AtomicUsize` *et al*: Ensures that read-modify-write
-  operations happen as an atomic thing
-  
-  * Provides methods like `.fetch_add(1, Ordering::SeqCst)`
-  
-  * The "memory ordering" should probably just always be set
-    to that
-
-  * Not as great as they sound
   
 ## Polling Loops
 
@@ -180,6 +183,6 @@
 
 * MPMC (with a funky implementation)
 
-* Mandelbrot
+* Globals and "thread-locals"
 
-* `lazy_static!`
+* Mandelbrot
