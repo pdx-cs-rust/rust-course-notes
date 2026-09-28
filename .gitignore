@@ -1,0 +1,6 @@
+!.gitignore
+.canvas/
+.canvas-baseline/
+.comparison/
+.tools/
+build/
