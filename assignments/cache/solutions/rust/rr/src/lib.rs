@@ -3,7 +3,12 @@ use cache::*;
 use std::collections::HashMap;
 use std::hash::Hash;
 
-use fastrand::Rng;
+fn random_index(state: &mut u64, capacity: usize) -> usize {
+    *state ^= *state << 13;
+    *state ^= *state >> 7;
+    *state ^= *state << 17;
+    (*state % capacity as u64) as usize
+}
 
 /// A cache with random-replacement eviction.
 ///
@@ -16,7 +21,6 @@ use fastrand::Rng;
 /// up the retrieved value in the vector, and then checking that
 /// the cached key matches.
 ///
-
 /// Insertion proceeds in two cases:
 ///
 /// * If the cache is not yet full, the value and its key
@@ -36,17 +40,22 @@ pub struct RrCache<K, I> {
     map: HashMap<K, usize>,
     elems: Vec<(K, I)>,
     capacity: usize,
-    rng: Rng,
+    rng: u64,
 }
 
 impl<K: Hash + Eq + Clone, I> RrCache<K, I> {
     /// Make a new random-replacement cache with the given
     /// capacity.
     pub fn new(capacity: usize) -> Self {
-        let rng = Rng::with_seed(0x12345678);
+        let rng = 0x12345678;
         let map = HashMap::with_capacity(capacity);
         let elems = Vec::with_capacity(capacity);
-        RrCache { map, elems, capacity, rng }
+        RrCache {
+            map,
+            elems,
+            capacity,
+            rng,
+        }
     }
 
     /// Insert an item into the cache, replacing a random
@@ -57,7 +66,7 @@ impl<K: Hash + Eq + Clone, I> RrCache<K, I> {
             self.elems.push((key.clone(), item));
             n
         } else {
-            let i = self.rng.usize(0..self.capacity);
+            let i = random_index(&mut self.rng, self.capacity);
             self.elems[i] = (key.clone(), item);
             i
         };
@@ -68,11 +77,7 @@ impl<K: Hash + Eq + Clone, I> RrCache<K, I> {
     pub fn retrieve(&mut self, key: &K) -> Option<&mut I> {
         let &i = self.map.get(key)?;
         let (ref ekey, ref mut item) = self.elems[i];
-        if ekey == key {
-            Some(item)
-        } else {
-            None
-        }
+        if ekey == key { Some(item) } else { None }
     }
 
     /// Report the capacity of the cache.
@@ -84,14 +89,14 @@ impl<K: Hash + Eq + Clone, I> RrCache<K, I> {
 #[test]
 fn test_rr() {
     let mut rr = RrCache::new(3);
-    let rng = Rng::with_seed(0x12345678);
+    let mut rng = 0x12345678;
     rr.insert("a", 0u8);
     rr.insert("b", 1);
     rr.insert("c", 2);
     assert_eq!(Some(&mut 0), rr.retrieve(&"a"));
     assert_eq!(Some(&mut 1), rr.retrieve(&"b"));
     assert_eq!(Some(&mut 2), rr.retrieve(&"c"));
-    let i_d = rng.usize(0..3);
+    let i_d = random_index(&mut rng, 3);
     let k_i_d = rr.elems[i_d].0;
     rr.insert("d", 3);
     assert_eq!(rr.elems[i_d], ("d", 3));

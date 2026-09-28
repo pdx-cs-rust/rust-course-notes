@@ -3,10 +3,10 @@
 // Please see the file LICENSE in the source
 // distribution of this software for license terms.
 
-use std::process::exit;
+//! Compute a statistic on numbers presented one-per-line on
+//! standard input.
 
-///! Compute a statistic on numbers presented one-per-line on
-///! standard input.
+use std::process::exit;
 
 /// Report proper usage and exit.
 fn usage() -> ! {

@@ -9,14 +9,14 @@ use ca_rule::*;
 /// Program arguments.
 #[derive(Debug, Parser)]
 struct Args {
-    #[arg(short, long, default_value="*.*..*..")]
     /// Starting position string. Maximum 64 characters.
+    #[arg(short, long, default_value = "*.*..*..")]
     start: String,
-    #[arg(short, long, default_value="10")]
     /// Number of rows to print. Must be positive.
+    #[arg(short, long, default_value = "10")]
     nrows: usize,
-    #[arg(short, long)]
     /// Print just last row.
+    #[arg(short, long)]
     last: bool,
 }
 

@@ -1,5 +1,4 @@
 use toy_rsa::*;
-use rand;
 
 #[test]
 fn test_exp() {
@@ -18,11 +17,27 @@ fn test_rsa_example() {
 
 #[test]
 fn test_rsa_random() {
+    let mut state = 0x123456789abcdef0u64;
     for _ in 0..100 {
-        let plain = rand::random();
+        state ^= state << 13;
+        state ^= state >> 7;
+        state ^= state << 17;
+        let plain = (state >> 32) as u32;
         let (p, q) = toy_rsa::genkey();
+        assert_ne!(p, q);
+        assert!(p >= 1 << 31);
+        assert!(q >= 1 << 31);
         let cipher = toy_rsa::encrypt(p as u64 * q as u64, plain);
         let decrypted = toy_rsa::decrypt((p, q), cipher);
         assert_eq!(plain, decrypted);
+    }
+}
+
+#[test]
+fn test_rsa_message_boundaries() {
+    let key = toy_rsa::genkey();
+    for plain in [0, 1, u32::MAX, key.0, key.1] {
+        let cipher = toy_rsa::encrypt(u64::from(key.0) * u64::from(key.1), plain);
+        assert_eq!(toy_rsa::decrypt(key, cipher), plain);
     }
 }

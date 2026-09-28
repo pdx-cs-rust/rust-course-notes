@@ -8,16 +8,16 @@
 //! * Displays the board
 //! * Gets a winning computer move from the AI
 //! * If the AI has no winning move, chooses a
-//!   random computer move
+//!   random computer move using a non-cryptographic generator
 //! * Makes the computer move on the board
 //! * Displays the computer move
+//!
 //! This continues until the game is over,
 //! at which point either "you lose" or "you win"
 //! is printed depending on the outcome.
 
 use chomp_ai::*;
-use prompted::input;
-use rand::prelude::*;
+use std::io::Write;
 
 /// Display the current board. This should produce output in this format:
 ///
@@ -47,7 +47,12 @@ fn show_posn(posn: &Chomp) {
 /// returns `Some` row and column coordinates of the human
 /// move.
 fn user_move(posn: &Chomp) -> Option<(usize, usize)> {
-    let s = input!("Choose a move: ");
+    print!("Choose a move: ");
+    std::io::stdout().flush().unwrap();
+    let mut s = String::new();
+    std::io::stdin().read_line(&mut s).unwrap();
+    let s = s.strip_suffix('\n').unwrap_or(&s);
+    let s = s.strip_suffix('\r').unwrap_or(s);
     let mut s = s.chars();
     let row = s.next()?.to_string().parse().ok()?;
     if s.next()? != ' ' {
@@ -63,16 +68,13 @@ fn user_move(posn: &Chomp) -> Option<(usize, usize)> {
 fn ai_move(posn: &Chomp) -> (usize, usize) {
     match posn.winning_move() {
         Some((row, col)) => (row, col),
-        None => {
-            let mut rng = thread_rng();
-            loop {
-                let row = rng.gen_range(0..posn.nrows);
-                let col = rng.gen_range(0..posn.ncols);
-                if posn.square(row, col) {
-                    break (row, col);
-                }
+        None => loop {
+            let row = fastrand::usize(0..posn.nrows);
+            let col = fastrand::usize(0..posn.ncols);
+            if posn.square(row, col) {
+                break (row, col);
             }
-        }
+        },
     }
 }
 
@@ -100,4 +102,17 @@ fn main() {
             break;
         }
     }
+}
+
+#[test]
+fn test_ai_fallback_is_legal() {
+    let mut posn = Chomp::new(2, 2);
+    posn.make_move(1, 1);
+    assert!(posn.winning_move().is_none());
+    for _ in 0..32 {
+        let (row, col) = ai_move(&posn);
+        assert!(row < posn.nrows && col < posn.ncols);
+        assert!(posn.square(row, col));
+    }
+    assert_eq!(ai_move(&Chomp::new(1, 1)), (0, 0));
 }

@@ -1,2 +1,3 @@
 [workspace]
 members = ["null", "non-evicting", "rr", "lru"]
+resolver = "3"

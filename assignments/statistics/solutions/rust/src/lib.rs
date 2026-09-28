@@ -3,8 +3,8 @@
 // Please see the file LICENSE in the source
 // distribution of this software for license terms.
 
-///! Functions to compute various statistics on a slice of
-///! floating-point numbers.
+//! Functions to compute various statistics on a slice of
+//! floating-point numbers.
 
 /// Type of statistics function. If the statistic
 /// is ill-defined, `None` will be returned.
@@ -28,7 +28,7 @@ pub fn mean(nums: &[f64]) -> Option<f64> {
     if n == 0 {
         Some(0.0)
     } else {
-        let t: f64 = nums.into_iter().sum();
+        let t: f64 = nums.iter().sum();
         Some(t / n as f64)
     }
 }
@@ -52,10 +52,7 @@ pub fn stddev(nums: &[f64]) -> Option<f64> {
         return None;
     }
     let m = mean(nums).unwrap();
-    let td: f64 = nums
-        .into_iter()
-        .map(|n| f64::powf(n - m, 2.0))
-        .sum();
+    let td: f64 = nums.iter().map(|n| f64::powf(n - m, 2.0)).sum();
     Some(td / n as f64)
 }
 
@@ -100,9 +97,6 @@ pub fn median(nums: &[f64]) -> Option<f64> {
 /// assert_eq!(Some(5.0), l2(&[-3.0, 4.0]));
 /// ```
 pub fn l2(nums: &[f64]) -> Option<f64> {
-    let t: f64 = nums
-        .into_iter()
-        .map(|&n| f64::powf(n, 2.0))
-        .sum();
+    let t: f64 = nums.iter().map(|&n| f64::powf(n, 2.0)).sum();
     Some(t.sqrt())
 }

@@ -17,8 +17,10 @@ fn test_shouting_gibberish() {
 
 #[test]
 fn test_asking() {
-    assert_eq!("Sure.",
-               bob::reply("Does this cryogenic chamber make me look fat?"));
+    assert_eq!(
+        "Sure.",
+        bob::reply("Does this cryogenic chamber make me look fat?")
+    );
 }
 
 #[test]
@@ -38,14 +40,18 @@ fn test_exclaiming() {
 
 #[test]
 fn test_using_acronyms_in_regular_speech() {
-    assert_eq!("Whatever.",
-               bob::reply("It's OK if you don't want to go to the DMV."));
+    assert_eq!(
+        "Whatever.",
+        bob::reply("It's OK if you don't want to go to the DMV.")
+    );
 }
 
 #[test]
 fn test_forceful_question() {
-    assert_eq!("Calm down, I know what I'm doing!",
-               bob::reply("WHAT THE HELL WERE YOU THINKING?"));
+    assert_eq!(
+        "Calm down, I know what I'm doing!",
+        bob::reply("WHAT THE HELL WERE YOU THINKING?")
+    );
 }
 
 #[test]
@@ -65,8 +71,10 @@ fn test_question_with_only_numbers() {
 
 #[test]
 fn test_shouting_with_special_characters() {
-    assert_eq!("Whoa, chill out!",
-               bob::reply("ZOMG THE %^*@#$(*^ ZOMBIES ARE COMING!!11!!1!"));
+    assert_eq!(
+        "Whoa, chill out!",
+        bob::reply("ZOMG THE %^*@#$(*^ ZOMBIES ARE COMING!!11!!1!")
+    );
 }
 
 #[test]
@@ -86,7 +94,10 @@ fn test_non_letters_with_question() {
 
 #[test]
 fn test_prattling_on() {
-    assert_eq!("Sure.", bob::reply("Wait! Hang on. Are you going to be OK?"));
+    assert_eq!(
+        "Sure.",
+        bob::reply("Wait! Hang on. Are you going to be OK?")
+    );
 }
 
 #[test]
@@ -106,8 +117,10 @@ fn test_alternate_silence() {
 
 #[test]
 fn test_multiple_line_question() {
-    assert_eq!("Whatever.", bob::reply(
-        "\nDoes this cryogenic chamber make me look fat?\nno"));
+    assert_eq!(
+        "Whatever.",
+        bob::reply("\nDoes this cryogenic chamber make me look fat?\nno")
+    );
 }
 
 #[test]
@@ -117,8 +130,10 @@ fn test_starting_with_whitespace() {
 
 #[test]
 fn test_ending_with_whitespace() {
-    assert_eq!("Sure.",
-               bob::reply("Okay if like my  spacebar  quite a bit?   "));
+    assert_eq!(
+        "Sure.",
+        bob::reply("Okay if like my  spacebar  quite a bit?   ")
+    );
 }
 
 #[test]
@@ -128,6 +143,8 @@ fn test_other_whitespace() {
 
 #[test]
 fn test_non_question_ending_with_whitespace() {
-    assert_eq!("Whatever.",
-               bob::reply("This is a statement ending with whitespace      "));
+    assert_eq!(
+        "Whatever.",
+        bob::reply("This is a statement ending with whitespace      ")
+    );
 }

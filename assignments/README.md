@@ -67,6 +67,19 @@ and Haskell solutions. Modular Exponentiation retains separate
 contain the three historical solutions that were available; Hello
 World is included there as a prerequisite example.
 
+## Rust solution maintenance
+
+All Rust solution packages use Rust edition 2024. Their
+lockfiles are checked in, and shared course code uses local path
+dependencies where appropriate. In particular, the Toy RSA
+solution uses the library target of the `rust-2023` Modular
+Exponentiation solution.
+
+The solutions are maintained with Rustfmt, Clippy with warnings
+denied, and their available target and documentation tests.
+Registry dependencies require network access on the first build
+unless they are already present in the local Cargo cache.
+
 ## Quiz assignments
 
 `rust-quiz.md` contains the assignment description for the

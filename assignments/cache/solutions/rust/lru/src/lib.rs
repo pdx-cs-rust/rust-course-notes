@@ -1,27 +1,26 @@
 use cache::*;
 
+use std::collections::HashMap;
 use std::hash::Hash;
-
-use keyed_priority_queue::KeyedPriorityQueue;
 
 /// A cache with Least-Recently-Used eviction.
 ///
-/// General strategy is to keep cache entries in a priority
-/// queue ordered by "time" of most recent use.  A "query
+/// General strategy is to keep cache entries in a map
+/// storing "time" of most recent use. A "query
 /// clock" increments each time a value is stored or
 /// requested.
 ///
-/// When a value is accessed, its position in the priority
-/// queue is adjusted. When some value needs to be evicted,
-/// the victim is pulled out of the priority queue.
+/// When a value is accessed, its time in the map
+/// is adjusted. When some value needs to be evicted,
+/// the oldest entry is found by scanning the map.
 pub struct LRU<K: Hash + Eq, I> {
     capacity: usize,
     time: u64,
     store: Vec<I>,
-    usage: KeyedPriorityQueue<K, (u64, usize)>,
+    usage: HashMap<K, (u64, usize)>,
 }
 
-impl<K: Hash + Eq, I> LRU<K, I> {
+impl<K: Hash + Eq + Clone, I> LRU<K, I> {
     fn advance_time(&mut self) -> u64 {
         let t = self.time;
         // Detect clock exhaustion before wrapping would reverse
@@ -35,7 +34,7 @@ impl<K: Hash + Eq, I> LRU<K, I> {
         assert!(capacity > 0);
         let time = !0;
         let store = Vec::with_capacity(capacity);
-        let usage = KeyedPriorityQueue::with_capacity(capacity);
+        let usage = HashMap::with_capacity(capacity);
         Self {
             capacity,
             time,
@@ -53,22 +52,26 @@ impl<K: Hash + Eq, I> LRU<K, I> {
             self.store.push(item);
             n
         } else {
-            let (_, (t0, index)) = self.usage.pop().unwrap();
+            let victim = self
+                .usage
+                .iter()
+                .max_by_key(|(_, (time, _))| *time)
+                .map(|(key, _)| key.clone())
+                .unwrap();
+            let (t0, index) = self.usage.remove(&victim).unwrap();
             assert!(t0 > t);
             self.store[index] = item;
             index
         };
-        self.usage.push(key, (t, i));
+        self.usage.insert(key, (t, i));
     }
 
     /// Get a mutable reference to the item associated with
     /// the given key from the cache, if any.
     pub fn retrieve(&mut self, key: &K) -> Option<&mut I> {
-        // XXX Perhaps slightly faster to adjust the
-        // priority than to remove and reinsert the entry.
-        let (key, (_, index)) = self.usage.remove_entry(key)?;
+        let &(_, index) = self.usage.get(key)?;
         let t = self.advance_time();
-        self.usage.push(key, (t, index));
+        self.usage.insert(key.clone(), (t, index));
         Some(&mut self.store[index])
     }
 
@@ -92,7 +95,7 @@ fn test_lru() {
     assert!(lru.retrieve(&"c").is_none());
 }
 
-impl<K: Hash + Eq, I> Cache<K> for LRU<K, I> {
+impl<K: Hash + Eq + Clone, I> Cache<K> for LRU<K, I> {
     type Item = I;
 
     fn insert(&mut self, key: K, item: Self::Item) {

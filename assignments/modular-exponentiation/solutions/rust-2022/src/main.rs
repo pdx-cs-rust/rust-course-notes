@@ -43,7 +43,6 @@ fn modexp(x: u64, y: u64, m: u64) -> u64 {
     u64::try_from(z).expect("internal error: too-large result")
 }
 
-
 fn run(args: Vec<String>) -> u64 {
     if args.len() != 4 {
         error();
@@ -59,12 +58,15 @@ fn run(args: Vec<String>) -> u64 {
 
 #[test]
 fn test_run() {
-    assert_eq!(1, run(vec![
-        "".to_string(),
-        "2".to_string(),
-        "8".to_string(),
-        "255".to_string(),
-    ]));
+    assert_eq!(
+        1,
+        run(vec![
+            "".to_string(),
+            "2".to_string(),
+            "8".to_string(),
+            "255".to_string(),
+        ])
+    );
 }
 
 fn main() {

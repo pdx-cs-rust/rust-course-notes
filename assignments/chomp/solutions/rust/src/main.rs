@@ -12,12 +12,12 @@
 //!     available square in that row
 //! * Makes the computer move on the board
 //! * Displays the computer move
+//!
 //! This continues until the game is over,
 //! at which point either "you lose" or "you win"
 //! is printed depending on the outcome.
 
 use chomp_ai::*;
-use prompted::input;
 
 /// Display the current board. This should produce output in this format:
 ///
@@ -50,7 +50,8 @@ fn show_posn(posn: &Chomp) {
 /// returns `Some` row and column coordinates of the human
 /// move.
 fn user_move(posn: &Chomp) -> Option<(usize, usize)> {
-    let m = input!();
+    let mut m = String::new();
+    std::io::stdin().read_line(&mut m).unwrap();
     let fields: Vec<&str> = m.split_whitespace().collect();
     if fields.len() != 2 {
         return None;

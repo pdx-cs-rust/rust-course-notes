@@ -31,16 +31,23 @@ your iterator should produce
 ```
 */
 
-use thiserror::Error;
-
 /// Error cases for [`sublists_pairs`].
 #[non_exhaustive]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Error)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SublistsPairsError {
     /// Sublist has an odd number of elements.
-    #[error("incomplete sublist (odd number of elements)")]
     OddSublistError,
 }
+
+impl std::fmt::Display for SublistsPairsError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::OddSublistError => f.write_str("incomplete sublist (odd number of elements)"),
+        }
+    }
+}
+
+impl std::error::Error for SublistsPairsError {}
 
 /**
 Collect a vec of sublists, returning an iterator pairing
@@ -67,10 +74,7 @@ pub fn sublists_pairs<T>(
         let mut vals = v.into_iter();
         std::iter::from_fn(move || {
             let v1 = vals.next()?;
-            let t = vals
-                .next()
-                .ok_or(OddSublistError)
-                .map(move |v2| (v1, v2));
+            let t = vals.next().ok_or(OddSublistError).map(move |v2| (v1, v2));
             Some(t)
         })
     })

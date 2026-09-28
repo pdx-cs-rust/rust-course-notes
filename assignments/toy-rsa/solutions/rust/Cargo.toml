@@ -2,11 +2,9 @@
 name = "toy-rsa"
 version = "0.2.0"
 authors = ["Bart Massey <bart.massey@gmail.com>"]
-edition = "2021"
+edition = "2024"
 
 [dependencies.toy_rsa_lib]
-git = "https://github.com/pdx-cs-rust/toy-rsa-lib"
-version = "0.2"
-
-[dev-dependencies]
-rand = "0.8"
+package = "modexp"
+path = "../../../modular-exponentiation/solutions/rust-2023"
+version = "0.1"

@@ -48,3 +48,18 @@ fn test_os_state() {
     paths.sort();
     assert_eq!(&paths, &["/bar/bletch/", "/bogus/"]);
 }
+
+#[test]
+fn test_error_messages() {
+    for (error, expected) in [
+        (
+            DirError::SlashInName("a/b"),
+            "a/b: slash in name is invalid",
+        ),
+        (DirError::DirExists("a"), "a: directory exists"),
+        (DirError::InvalidChild("b"), "b: invalid element in path"),
+    ] {
+        assert_eq!(error.to_string(), expected);
+        assert!(std::error::Error::source(&error).is_none());
+    }
+}

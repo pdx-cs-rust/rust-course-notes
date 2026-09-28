@@ -3,7 +3,6 @@
 // Please see the file LICENSE in the source
 // distribution of this software for license terms.
 
-
 // Calculate some stuff based on command-line input.
 
 use std::env;

@@ -5,7 +5,7 @@ use bbow::*;
 static SHORT_BBOW: LazyLock<Bbow> = LazyLock::new(|| {
     Bbow::new().extend_from_text(
         "Four-score AND seven years' ago our Fourfathers and Seven Sons
-         said \"ago west young sons\"."
+         said \"ago west young sons\".",
     )
 });
 
@@ -61,11 +61,7 @@ fn test_double_extend_words() {
     let mut words: Vec<_> = tiny.words().collect();
     words.sort();
     assert_eq!(words, vec!["hello", "war", "world"]);
-    let match_counts = &[
-        (1, "hello"),
-        (1, "war"),
-        (2, "world"),
-    ];
+    let match_counts = &[(1, "hello"), (1, "war"), (2, "world")];
     for &(count, word) in match_counts {
         assert_eq!(count, tiny.match_count(word));
     }

@@ -11,26 +11,29 @@
 
 // Bart Massey 2021
 
-// Workaround for Clippy false positive in Rust 1.51.0.
-// https://github.com/rust-lang/rust-clippy/issues/6546
-#![allow(clippy::result_unit_err)]
-
-use thiserror::Error;
-
 /// Errors during directory interaction.
-#[derive(Error, Debug)]
+#[derive(Debug)]
 pub enum DirError<'a> {
     /// The character `/` in component names is disallowed,
     /// to make path separators easier.
-    #[error("{0}: slash in name is invalid")]
     SlashInName(&'a str),
     /// Only one subdirectory of a given name can exist in any directory.
-    #[error("{0}: directory exists")]
     DirExists(&'a str),
     /// Traversal failed due to missing subdirectory.
-    #[error("{0}: invalid element in path")]
     InvalidChild(&'a str),
 }
+
+impl std::fmt::Display for DirError<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::SlashInName(name) => write!(f, "{name}: slash in name is invalid"),
+            Self::DirExists(name) => write!(f, "{name}: directory exists"),
+            Self::InvalidChild(name) => write!(f, "{name}: invalid element in path"),
+        }
+    }
+}
+
+impl std::error::Error for DirError<'_> {}
 
 /// Result type for directory errors.
 pub type Result<'a, T> = std::result::Result<T, DirError<'a>>;
@@ -56,7 +59,7 @@ pub struct OsState<'a, 'b> {
     pub cwd: Vec<&'b str>,
 }
 
-fn sanitize(name: &str) -> Result<&str> {
+fn sanitize(name: &str) -> Result<'_, &str> {
     if name.contains('/') {
         return Err(DirError::SlashInName(name));
     }
@@ -64,7 +67,7 @@ fn sanitize(name: &str) -> Result<&str> {
 }
 
 impl<'a> DEnt<'a> {
-    pub fn new(name: &'a str) -> Result<Self> {
+    pub fn new(name: &'a str) -> Result<'a, Self> {
         let dent = DEnt {
             name: sanitize(name)?,
             subdir: DTree::new(),
@@ -94,7 +97,7 @@ impl<'a> DTree<'a> {
     ///
     /// * `DirError::SlashInName` if `name` contains `/`.
     /// * `DirError::DirExists` if `name` already exists.
-    pub fn mkdir(&mut self, name: &'a str) -> Result<()> {
+    pub fn mkdir(&mut self, name: &'a str) -> Result<'_, ()> {
         let name = sanitize(name)?;
         if self.with_subdir(&[name], |_| ()).is_ok() {
             return Err(DirError::DirExists(name));
@@ -159,7 +162,10 @@ impl<'a> DTree<'a> {
     where
         F: FnOnce(&'b mut DTree<'a>) -> R,
     {
-        fn find_child<'a, 'b, 'c>(cur: &'b mut DTree<'a>, p: &'c str) -> Result<'c, &'b mut DTree<'a>> {
+        fn find_child<'a, 'b, 'c>(
+            cur: &'b mut DTree<'a>,
+            p: &'c str,
+        ) -> Result<'c, &'b mut DTree<'a>> {
             for c in &mut cur.children {
                 if c.name == p {
                     return Ok(&mut c.subdir);
@@ -245,7 +251,7 @@ impl<'a, 'b> OsState<'a, 'b> {
     /// # Errors
     ///
     /// * `DirError::InvalidChild` if the new working directory is invalid. On error, the original
-    /// working directory will be retained.
+    ///   working directory will be retained.
     pub fn chdir(&mut self, path: &[&'b str]) -> Result<'b, ()> {
         if path.is_empty() {
             self.cwd.clear();
@@ -267,7 +273,7 @@ impl<'a, 'b> OsState<'a, 'b> {
     /// * `DirError::SlashInName` if `name` contains `/`.
     /// * `DirError::InvalidChild` if the current working directory is invalid.
     /// * `DirError::DirExists` if `name` already exists.
-    pub fn mkdir(&mut self, name: &'a str) -> Result<()> {
+    pub fn mkdir(&mut self, name: &'a str) -> Result<'_, ()> {
         self.dtree.with_subdir_mut(&self.cwd, |dt| dt.mkdir(name))?
     }
 
@@ -277,7 +283,7 @@ impl<'a, 'b> OsState<'a, 'b> {
     /// # Errors
     ///
     /// * `DirError::InvalidChild` if the current working directory is invalid.
-    pub fn paths(&self) -> Result<Vec<String>> {
+    pub fn paths(&self) -> Result<'_, Vec<String>> {
         self.dtree.with_subdir(&self.cwd, |dt| dt.paths())
     }
 }

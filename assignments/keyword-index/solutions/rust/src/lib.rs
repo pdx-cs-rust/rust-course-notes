@@ -87,11 +87,7 @@ impl<'a> KWIndex<'a> {
     /// assert_eq!(Some("THE"), kwindex.nth_uppercase(1));
     /// ```
     pub fn nth_uppercase(&self, n: usize) -> Option<&str> {
-        self.0
-            .iter()
-            .copied()
-            .filter(|&w| is_uppercase(w))
-            .nth(n)
+        self.0.iter().copied().filter(|&w| is_uppercase(w)).nth(n)
     }
 
     /// Count the number of words that are indexed by this

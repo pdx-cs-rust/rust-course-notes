@@ -30,18 +30,20 @@ pub fn decrypt((p, q): (u32, u32), msg: u64) -> u32 {
         .expect("invalid ciphertext")
 }
 
-/// Generate a pair of primes in the range `2**30..2**31`
+/// Generate a pair of primes in the range `2**31..2**32`
 /// suitable for RSA encryption with exponent
 /// `EXP`. Warning: this routine has unbounded runtime; it
 /// works by generate-and-test, generating pairs of primes
 /// `p` `q` and testing that they satisfy `λ(pq) >= EXP` and
 /// that `λ(pq)` has no common factors with `EXP`.
+/// The prime generator is deterministic and predictable;
+/// these keys are suitable only for teaching examples.
 pub fn genkey() -> (u32, u32) {
     loop {
         let p = rsa_prime();
         let q = rsa_prime();
         let l = lambda(p, q);
-        if EXP < l && gcd(EXP, l) == 1 {
+        if p != q && EXP < l && gcd(EXP, l) == 1 {
             return (p, q);
         }
     }

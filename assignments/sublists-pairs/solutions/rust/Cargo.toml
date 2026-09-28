@@ -1,11 +1,8 @@
 [package]
 name = "sublists_pairs"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [lib]
 name = "sublists_pairs"
 path = "sublists_pairs.rs"
-
-[dependencies]
-thiserror = "1.0"

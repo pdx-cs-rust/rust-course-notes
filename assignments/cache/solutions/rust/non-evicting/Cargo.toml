@@ -1,12 +1,12 @@
 [package]
 name = "nonevicting_cache"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies.cache]
 version = "0.1"
-git = "http://github.com/pdx-cs-rust/cache"
+path = "../../../support/cache"
 
 [dev-dependencies.cache-tests]
 version = "0.1"
-git = "http://github.com/pdx-cs-rust/cache"
+path = "../../../support/cache/cache-tests"

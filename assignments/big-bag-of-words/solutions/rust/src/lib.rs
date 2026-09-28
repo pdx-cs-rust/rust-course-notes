@@ -115,7 +115,7 @@ impl<'a> Bbow<'a> {
         // }
     }
 
-    pub fn words(&'a self) -> impl Iterator<Item=&'a str> {
+    pub fn words(&'a self) -> impl Iterator<Item = &'a str> {
         self.0.keys().map(Cow::as_ref)
     }
 
