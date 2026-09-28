@@ -5,11 +5,21 @@
 - Type: graded quiz
 - Total points: 100
 - Question count: 15
-- Attempt policy: unlimited retakes
-
-Only settings made available by the export or stated in the quiz
-instructions are recorded here. Other quiz behavior requires
-checking the original quiz.
+- Shuffle answers: yes
+- Attempts: unlimited
+- Scoring policy: keep highest
+- Time limit: none
+- Show correct answers: immediately
+- Hide correct answers: never
+- Show correct answers only after last attempt: no
+- Hide results: never
+- One-time results: no
+- One question at a time: no
+- Allow backtracking: yes
+- Access code: none
+- IP filter: none
+- Only visible to assignment overrides: no
+- Anonymous submissions: no
 
 ## Instructions
 
