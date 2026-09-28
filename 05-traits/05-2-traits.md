@@ -66,7 +66,7 @@
 
   * <https://github.com/Ixrec/rust-orphan-rules>
 
-  * <http://smallcultfollowing.com/babysteps/blog/2015/01/14/little-orphan-impls/>
+  * <https://smallcultfollowing.com/babysteps/blog/2015/01/14/little-orphan-impls/>
 
 ## Subtraits
 

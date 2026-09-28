@@ -8,7 +8,7 @@
     * "Crates": self-contained package
     * "Modules": namespaces within a package
 
-* <http://crates.io> is the big repository of published
+* <https://crates.io> is the big repository of published
   crates
   
 ## Library and Binary Crates
@@ -43,7 +43,7 @@
 
 * Can specify
     * `crates.io` crate: `foo = "0.4"`
-    * Github crate: `foo = { git = "http://github.com/something/foo.git" }`
+    * Github crate: `foo = { git = "https://github.com/something/foo.git" }`
     * Local crate: `foo = { path = "/local/src/foo" }`
 
 * Then you can use `foo::` in your program, or use a `use`
@@ -54,12 +54,12 @@
 * Instead of
 
         [dependencies]
-        foo = { git = "http://github.com/something/foo.git" }
+        foo = { git = "https://github.com/something/foo.git" }
 
 * Try 
 
         [dependencies.foo]
-        git = "http://github.com/something/foo.git"
+        git = "https://github.com/something/foo.git"
 
 * Easier to read, allows specifying version and stuff
 
@@ -162,7 +162,7 @@
 
 ## An Example: woodpieces
 
-* <http://gitlab.com/BartMassey/woodpieces>
+* <https://gitlab.com/BartMassey/woodpieces>
 
 * Fairly complicated module structure
 

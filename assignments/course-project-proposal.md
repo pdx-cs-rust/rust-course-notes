@@ -155,7 +155,7 @@ in the project writeup.
 
 ## Discussion
 
-Please us the course Zulip chat channel `#project` for general
+Please use the course Zulip chat channel `#project` for general
 project discussion.
 
 ## Project Due Date

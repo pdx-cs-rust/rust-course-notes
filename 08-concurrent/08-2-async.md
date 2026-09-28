@@ -164,4 +164,4 @@
 
 ## Example
 
-<http://github.com/pdx-cs-rust/countserver>
+<https://github.com/pdx-cs-rust/countserver>

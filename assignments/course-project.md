@@ -13,10 +13,13 @@ and we'll make sure I can get to it.
 
 ## Course Project Requirements
 
+The project parameters stated in the Course Project Proposal
+continue to apply. In particular:
+
 - One or more Rust crates. The project can be a binary crate, a
   library crate or some combination.
 
-- Each crate should be something vaguely like 500-1500 lines of
+- The project should be something vaguely like 500-1500 lines of
   code (size doesn’t matter so much as effort and quality)
   performing a coherent function.
 
@@ -26,9 +29,9 @@ and we'll make sure I can get to it.
 
 - Code should be written in a reasonable modular style. Code must
   not have `rustfmt` or `clippy` errors. Code should include
-  internal unit tests where appropriate. Code should be
-  reasonably well-commented. The project commit history must
-  accurately reflect project development.
+  internal unit tests where needed to check correctness. Items in
+  crate public interfaces must have good `rustdoc`. The project
+  commit history must accurately reflect project development.
 
 - The project must build using stable Rust, unless otherwise
   approved. `unsafe` code should be kept to an absolute minimum

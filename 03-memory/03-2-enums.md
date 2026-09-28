@@ -140,6 +140,6 @@
 
 ## Examples
 
-<http://github.com/pdx-cs-rust/playing-cards>
+<https://github.com/pdx-cs-rust/playing-cards>
 
-<http://github.com/PoHuit/plan-b>
+<https://github.com/PoHuit/plan-b>

@@ -8,15 +8,15 @@ Automaton](https://en.wikipedia.org/wiki/Elementary_cellular_automaton)
 (CA). Not as scary as it sounds, and a nice simple Rust thing to
 play with.
 
-A CA starts with a random row of bits. We will represent 1 bits
+A CA starts with an initial row of bits. We will represent 1 bits
 with `*` and 0 bits with `.`. Our starting row will specifically
 be this 8-bit position for now.
 
     *.*..*..
 
 To produce the next row, take bits three at a time, "wrapping
-around" if a boundary is hit (row 7 is next to row 0 and so
-forth). A group of three bits in row *n* will determine the
+around" if a boundary is hit (position 7 is next to position 0
+and so forth). A group of three bits in row *n* will determine the
 center bit position in row *n + 1* according to Rule 110:
 
     111 → 0
@@ -80,7 +80,7 @@ Write a program that prints ten rows starting with the two given.
 
 ## Challenges
 
-*(Challenges are ***not*** required, but give a chance to do
+*(Challenges are **not** required, but give a chance to do
 something extra. Turn them in and write them up in the README.)*
 
 - Make your program take a command-line argument for the starting

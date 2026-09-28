@@ -25,7 +25,7 @@
   because a reference to an array or slice is also a
   legitimate thing
 
-* <http://github.com/pdx-cs-rust/reorder>
+* <https://github.com/pdx-cs-rust/reorder>
 
 ## Vec, Array, Slice: Methods
 
@@ -53,7 +53,7 @@
 * Normally insert with `push_back()`, remove with
   `pop_front()`, but the queue is double-ended
 
-  <http://github.com/PoHuit/plan-b>
+  <https://github.com/PoHuit/plan-b>
 
 ## LinkedList
 
@@ -62,10 +62,10 @@
 * Don't use it unless you have to: its memory performance is
   terrible and it's pretty error-prone
 
-* As of Rust 1.58 its API is still quite sparse, although
-  the `Cursor` in nightly will help
+* Its API is intentionally sparse; the `Cursor` API is still
+  available only on nightly
 
-  <http://cglab.ca/~abeinges/blah/too-many-lists/book/>
+  <https://rust-unofficial.github.io/too-many-lists/>
 
 ## BinaryHeap
 
@@ -121,7 +121,7 @@
 
 ## Third-Party Crates
 
-* Some stuff on <http://crates.io> is actually a pretty
+* Some stuff on <https://crates.io> is actually a pretty
   accepted part of the Rust ecosystem
   
 * This is problematic: hard to tell the "really standard"
@@ -168,7 +168,7 @@
   
 * Huge variety of serialization formats supported
 
-* <http://github.com/PoHuit/plan-b>
+* <https://github.com/PoHuit/plan-b>
 
 ## So Many Crates
 

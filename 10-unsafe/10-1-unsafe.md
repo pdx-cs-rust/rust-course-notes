@@ -145,4 +145,4 @@
   
 * `SIVec`
 
-  <http://github.com/BartMassey/sivec>
+  <https://github.com/BartMassey/sivec>

@@ -83,7 +83,7 @@
           let mut y = 5;
           let ry1 = &y;
           let ry2 = &y;
-          println!("{}", *ry1, *ry2);
+          println!("{} {}", *ry1, *ry2);
 
 * You are still restricted for safety: owner cannot drop or
   move value (nor mutate, duh) while refs are live
@@ -171,4 +171,3 @@
         }
         println!("{}", *s)
     }
-

@@ -57,6 +57,6 @@
 * Inside `derive()`, use `syn` to parse pieces of input
   stream and `quote::quote!` to make templates
 
-* <http://github.com/dtolnay/proc-macro-workshop>
+* <https://github.com/dtolnay/proc-macro-workshop>
 
-* <http://github.com/BartMassey/parsere>
+* <https://github.com/BartMassey/parsere>

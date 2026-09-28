@@ -114,4 +114,4 @@
 
 ## Example
 
-* http://github.com/pdx-cs-rust/rc-ledger
+* <https://github.com/pdx-cs-rust/rc-ledger>

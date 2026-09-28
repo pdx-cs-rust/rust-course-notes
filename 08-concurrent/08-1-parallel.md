@@ -90,7 +90,7 @@
 
 * The "old-school" approach
 
-* <http://github.com/pdx-cs-rust/parallel>
+* <https://github.com/pdx-cs-rust/parallel>
 
 * Rust's error handling is nice here.
 

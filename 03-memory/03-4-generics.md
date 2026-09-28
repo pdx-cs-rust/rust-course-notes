@@ -24,9 +24,9 @@
 
 * Generics are implemented by monomorphization: a new
   implementation of the datatype or function is created for
-  each place the the thing is used at a type
+  each place the thing is used at a type
 
-* This defines an infinity of potential instantations:
+* This defines an infinity of potential instantiations:
 
           fn id<T>(x: T) -> T {
               x

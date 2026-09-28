@@ -1,6 +1,6 @@
 # HW: Exercism
 
-Homework 3 will consist of completing a few
+This homework consists of completing a few
 [Exercism](https://exercism.org/tracks/rust/exercises)
 exercises. Hopefully, these will help you develop familiarity
 with and fluency in basic Rust features.
@@ -88,4 +88,4 @@ lowercase).
   not be too much work. Still, you should get started as early as
   possible.
 - You *should not* use Exercism mentoring. If you need help,
-  please contact Bart or Nicholas, or reach out on Zulip.
+  please contact Bart or reach out on Zulip.
