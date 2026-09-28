@@ -37,9 +37,8 @@ ignored files.
 existing quiz. The questions, answers, and feedback are stored
 in [the quizzes directory](../quizzes/).
 
-`advanced-rust-quiz.md` is a placeholder for an external-tool
-assignment that supplied no description. Its question content
-was not present in the assignment export.
+`advanced-rust-quiz.md` links to the exported quiz content in
+the quizzes directory.
 
 ## Project assignments
 
