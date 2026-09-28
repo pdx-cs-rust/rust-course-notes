@@ -1,0 +1,11 @@
+[package]
+name = "code"
+version = "0.1.0"
+authors = ["Bart Massey <bart@cs.pdx.edu>"]
+edition = "2018"
+
+[[bin]]
+name = "argparse"
+path = "argparse.rs"
+
+[dependencies]

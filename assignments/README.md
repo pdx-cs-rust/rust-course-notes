@@ -31,6 +31,36 @@ ignored files.
 - [Course Project](course-project.md)
 - [Course Project Submission](course-project-submission.md)
 
+## Previous standalone assignments
+
+- [Calculator](calculator/assignment.md)
+- [Processing Arguments](processing-arguments/assignment.md)
+- [Statistics](statistics/assignment.md)
+- [Modular Exponentiation](modular-exponentiation/assignment.md)
+- [Toy RSA](toy-rsa/assignment.md)
+- [Unique Iterator](unique-iterator/assignment.md)
+- [Decision Tree](decision-tree/assignment.md)
+- [Keyword Index](keyword-index/assignment.md)
+
+The archived starter and solution code for Big Bag Of Words is
+stored in [its supporting-material directory](big-bag-of-words/).
+Keyword Index is its simpler predecessor: it keeps an ordered
+list of borrowed words, while Big Bag Of Words adds
+case-insensitive normalization, frequency counts, and `Cow`. Both
+are retained because their ownership and data-structure exercises
+are distinct.
+
+Each imported assignment uses `assignment.md` for its prompt,
+`starter/` for student-facing code, `solutions/<variant>/` for
+hand-authored solutions, and `assets/` for supporting files. A
+directory is omitted when that kind of material was unavailable.
+Variant names identify the language or distinguish historical
+Rust implementations.
+
+The Chomp materials retain historical Java and Haskell solutions.
+Modular Exponentiation retains separate `rust-2022` and
+`rust-2023` solutions.
+
 ## Quiz assignments
 
 `rust-quiz.md` contains the assignment description for the
