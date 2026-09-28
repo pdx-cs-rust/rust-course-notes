@@ -1,0 +1,16 @@
+[package]
+name = "cache"
+version = "0.1.0"
+authors = ["Bart Massey <bart.massey@gmail.com>"]
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/pdx-cs-rust/cache"
+readme = "README.md"
+description = "cache trait"
+
+[dev-dependencies.cache-tests]
+version = "0.1"
+path = "cache-tests"
+
+[workspace]
+members = ["cache-tests"]

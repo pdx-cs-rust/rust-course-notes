@@ -1,0 +1,15 @@
+[package]
+name = "rr_cache"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+fastrand = "1.7"
+
+[dependencies.cache]
+version = "0.1"
+git = "http://github.com/pdx-cs-rust/cache"
+
+[dev-dependencies.cache-tests]
+version = "0.1"
+git = "http://github.com/pdx-cs-rust/cache"

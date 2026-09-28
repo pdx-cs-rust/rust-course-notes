@@ -30,7 +30,7 @@ representation of the board itself:
 
   - Use a fixed-size five-by-four (five columns, four rows) array
     of `bool`s to represent the game state. The element at index
-    `i, j` should be `false` if the square at `i, j` has been
+    `row, column` should be `false` if that square has been
     eaten, and `true` otherwise.
 
   - Your program should support multiple board sizes. Since the
@@ -47,7 +47,7 @@ representation of the board itself:
 Your `Board` type should support the following operations via
 `impl`:
 
-- Create a board with a given width and height.
+- Create a board with a given number of rows and columns.
 
 - Print a graphical representation of a board.
 
@@ -81,32 +81,32 @@ winning-move(posn):
 
 Understand this pseudocode as follows:
 
-1.  Check whether the board state is already lost. If so, then
-    there is no winning move.
+1. Check whether the board state is already lost. If so, then
+   there is no winning move.
 
-2.  Otherwise, for each possible move `m`:
+2. Otherwise, for each possible move `m`:
 
-3.  Create a new board `p`.
+   1. Create a new board `p`.
 
-4.  Perform the move `m` on `p`.
+   2. Perform the move `m` on `p`.
 
-5.  Call `winning_move` recursively at `p`. (Since one player has
-    just made a move, we are now trying to find a winning move
-    for the *other* player.)
+   3. Call `winning_move` recursively at `p`. (Since one player
+      has just made a move, we are now trying to find a winning
+      move for the *other* player.)
 
-6.  If `winning_move` outputs a winning move for `p`, then `m` is
-    *not* a winning move for the current player. (Why?) Continue
-    on to the next move.
+   4. If `winning_move` outputs a winning move for `p`, then `m`
+      is *not* a winning move for the current player. (Why?)
+      Continue on to the next move.
 
-7.  Otherwise, `m` is a winning move. Return it.
+   5. Otherwise, `m` is a winning move. Return it.
 
 For Chomp:
 
 - The board state is lost if the upper-left square is the only
   one left.
 
-- You can represent the move “chomp at position `i, j`” by a
-  tuple `(i, j)`. There is one such possible move for each
+- You can represent the move “chomp at a row and column” by a
+  tuple `(row, column)`. There is one such possible move for each
   uneaten square (other than the top left one).
 
 ## The program
@@ -114,21 +114,25 @@ For Chomp:
 Your program will be a simple terminal interface for playing
 Chomp against your AI. It should perform the following sequence:
 
-1.  Ask the user for a board size.
+1. Get a board size from the user. You may prompt interactively
+   or accept two command-line arguments: rows, then columns.
 
-2.  Repeatedly:
+2. Repeatedly:
 
-3.  Print the board.
+   1. Print the board.
 
-4.  Ask the user to input a move and perform it.
+   2. Ask the user to input a move and perform it.
 
-5.  Try to find a winning move. If there is one, perform it.
-    Otherwise, stall by chomping as little as possible. (You can
-    implement this by chomping the furthest-right piece in the
-    lowermost nonempty row.)
+   3. Try to find a winning move. If there is one, perform it.
+      Otherwise, stall by chomping as little as possible. (You
+      can implement this by chomping the furthest-right piece in
+      the lowermost nonempty row.)
 
 If the user ever gives invalid input, simply ask again until they
 give valid input.
+
+The game ends as soon as the upper-left poison square is eaten.
+The player who eats that square loses.
 
 ## Hints
 

@@ -1,0 +1,16 @@
+[package]
+name = "ca-rule"
+version = "0.2.0"
+edition = "2021"
+
+[dependencies]
+thiserror = "2.0.11"
+
+[dependencies.clap]
+version = "4.5.27"
+features = ["derive"]
+
+[profile.release]
+codegen-units = 1
+lto = "fat"
+opt-level = 3

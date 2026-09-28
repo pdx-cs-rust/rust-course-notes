@@ -1,0 +1,15 @@
+[package]
+name = "lru"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+keyed_priority_queue = "0.4"
+
+[dependencies.cache]
+version = "0.1"
+git = "http://github.com/pdx-cs-rust/cache"
+
+[dev-dependencies.cache-tests]
+version = "0.1"
+git = "http://github.com/pdx-cs-rust/cache"

@@ -6,9 +6,9 @@ descriptive filenames are stable content names.
 
 Descriptions retain the instructor's wording, links, examples,
 lists, emphasis, and headings. Formatting inherited from the
-learning management system has been removed. Existing wording,
-draft notices, and course-specific prose have been preserved;
-this is an export, rather than an editorial revision.
+learning management system has been removed. Clear errors and
+ambiguities may be corrected here because this repository is the
+canonical source.
 
 The public files contain teaching material. Course identifiers,
 publication state, dates, submission settings, and other
@@ -31,6 +31,10 @@ ignored files.
 - [Course Project](course-project.md)
 - [Course Project Submission](course-project-submission.md)
 
+Matching directories contain available starters, solutions, and
+supporting files for these assignments. The Markdown files above
+remain the canonical prompts.
+
 ## Previous standalone assignments
 
 - [Calculator](calculator/assignment.md)
@@ -42,8 +46,8 @@ ignored files.
 - [Decision Tree](decision-tree/assignment.md)
 - [Keyword Index](keyword-index/assignment.md)
 
-The archived starter and solution code for Big Bag Of Words is
-stored in [its supporting-material directory](big-bag-of-words/).
+The starter and solution code for Big Bag Of Words is stored in
+[its supporting-material directory](big-bag-of-words/).
 Keyword Index is its simpler predecessor: it keeps an ordered
 list of borrowed words, while Big Bag Of Words adds
 case-insensitive normalization, frequency counts, and `Cow`. Both
@@ -57,9 +61,11 @@ directory is omitted when that kind of material was unavailable.
 Variant names identify the language or distinguish historical
 Rust implementations.
 
-The Chomp materials retain historical Java and Haskell solutions.
-Modular Exponentiation retains separate `rust-2022` and
-`rust-2023` solutions.
+The Chomp materials retain two Rust solutions and historical Java
+and Haskell solutions. Modular Exponentiation retains separate
+`rust-2022` and `rust-2023` solutions. The Exercism materials
+contain the three historical solutions that were available; Hello
+World is included there as a prerequisite example.
 
 ## Quiz assignments
 

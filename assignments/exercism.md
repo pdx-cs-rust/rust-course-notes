@@ -2,15 +2,16 @@
 
 Homework 3 will consist of completing a few
 [Exercism](https://exercism.org/tracks/rust/exercises)
-exercises. Hopefully, these will help you develop familiarity and
+exercises. Hopefully, these will help you develop familiarity
 with and fluency in basic Rust features.
 
 Before anything else, you should create an Exercism account and
 navigate to the [Rust
 track](https://exercism.org/tracks/rust/exercises). In
 order to unlock the exercises for this assignment, you will also
-need to complete the introductory "Hello, World!" exercise. Then
-you can find the assignment exercises below:
+need to complete the introductory "Hello, World!" exercise. It
+is a prerequisite and does not need to be submitted. You can
+find the assignment exercises below:
 
 - [Reverse
   String](https://exercism.org/tracks/rust/exercises/reverse-string)
@@ -26,9 +27,9 @@ you can find the assignment exercises below:
 - [Robot
   Simulator](https://exercism.org/tracks/rust/exercises/robot-simulator)
 
-You can use Exercism's online editor to complete the assignment;
-but, for submission, you should create a Cargo project and put
-each solution in a separate file.
+You can use Exercism's online editor to complete the assignment.
+For submission, keep each solution in its own Cargo project
+directory, as downloaded from Exercism.
 
 ## Requirements
 
@@ -40,10 +41,10 @@ each solution in a separate file.
   - Comments on any issues you encountered,
   - Anything else a reader might find useful.
 
-- Your crate must be adequately documented with Rustdoc comments
+- Your crates must be adequately documented with Rustdoc comments
   for each top-level datatype, function and method.
 
-- Your crate must build with current `stable` Rust.
+- Your crates must build with current `stable` Rust.
 
 - Your crates should contain adequate tests (implemented using
   `#[test]` unit-testing) and assertions (implemented using
@@ -70,8 +71,8 @@ each solution in a separate file.
 
 Please submit a ZIP archive containing:
 
-- The source files containing your solutions. Just clean up and
-  zip the relevant exercism directories into a single zip file.
+- One Cargo project directory for each of the seven assigned
+  exercises. The prerequisite Hello World project is not needed.
 - Any other source or other text files that are necessary/useful.
 - The `README.md` file in Markdown format described above.
 - Nothing else. Not your git repo. None of the funny Mac garbage

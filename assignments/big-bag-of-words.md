@@ -1,6 +1,6 @@
 # HW: Big Bag Of Words
 
-In this exercise, we will focus on maintaining an "Big Bag Of
+In this exercise, we will focus on maintaining a "Big Bag Of
 Words" (BBOW) from a source text.
 
 ## Background
@@ -71,10 +71,10 @@ Your library crate implementation should contain adequate tests
 (implemented using `#[test]` unit-testing) and assertions
 (implemented using `assert!()` and related macros). Your code
 should be formatted according to the official Rust formatting
-style — use `cargo fmt` to reformat your code in-place. Your code
-should produce no compiler warnings, and `cargo clippy` should
-also produce no warnings. Please do not disable warnings except
-in the most unusual circumstances: fix them instead.
+style — use `cargo fmt` to reformat your code in-place. Your
+code should produce no compiler warnings, and `cargo clippy`
+should also produce no warnings. Please do not disable warnings
+except in the most unusual circumstances: fix them instead.
 
 ## Submission
 

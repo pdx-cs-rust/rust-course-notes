@@ -1,0 +1,16 @@
+[package]
+name = "chomp"
+authors = ["Your Name <you@pdx.edu>", "Bart Massey <bart@cs.pdx.edu>"]
+version = "0.1.0"
+edition = "2021"
+license-file = "LICENSE.txt"
+
+[lib]
+name = "chomp_ai"
+
+[[bin]]
+name = "chomp"
+
+[dependencies]
+prompted = "0.2.7"
+rand = "0.8.5"

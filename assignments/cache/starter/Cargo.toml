@@ -1,0 +1,2 @@
+[workspace]
+members = ["null", "non-evicting", "rr", "lru"]
