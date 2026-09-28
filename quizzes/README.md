@@ -5,10 +5,10 @@ answer keys and feedback. Course-specific identity and deployment
 state live in the ignored `.canvas/` directory.
 
 The filename identifies the local quiz. `rust-quiz.md` and
-`advanced-rust-quiz.md` preserve each existing quiz's wording,
-answer order, scoring, and feedback. Formatting changes turn
-HTML paragraphs, lists, and code into Markdown. Existing wording
-and content errors remain intact.
+`advanced-rust-quiz.md` preserve existing quizzes' wording,
+answer order, scoring, and feedback. `starting-rust.md` is an
+AI-attributed quiz authored directly in this format. Formatting
+changes turn HTML paragraphs, lists, and code into Markdown.
 
 ## Markdown convention
 
@@ -33,12 +33,24 @@ For `multiple choice`, students select one answer. Each such
 question in `rust-quiz.md` has exactly one answer weighted 100
 and all other answers weighted 0. `rust-quiz.md` has 15
 questions and 54 answers; `advanced-rust-quiz.md` has seven
-questions and 32 answers. Both quizzes have 100 points.
+questions and 32 answers; `starting-rust.md` has 16 questions
+and 69 answers. Each quiz has 100 points.
 
 Headings used by this convention are structural. Use other
 heading levels or a fenced code block when a prompt needs to
 quote one. Rust snippets use fenced `rust` blocks; type-only
 answers use inline code so angle brackets survive rendering.
+
+## Rendering
+
+Render a quiz to Canvas-ready JSON with:
+
+```console
+python3 scripts/render-quiz.py quizzes/starting-rust.md
+```
+
+The renderer uses the repository's pinned Pandoc when converting
+the instructions, prompts, answers, and feedback to HTML.
 
 ## Recovery
 
