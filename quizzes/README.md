@@ -40,13 +40,10 @@ answers use inline code so angle brackets survive rendering.
 
 ## Recovery
 
-The Markdown records instructional content without platform
-identifiers, dates, or publication state. The ignored local
-overlay preserves Canvas identity and the deployment settings
-made available by the export. The connector does not expose
-every quiz setting; timing, shuffling, and result visibility
-settings must be checked in the original quiz before
-reconstruction. Keep a backup of `.canvas/` alongside this
+The Markdown records instructional content and portable quiz
+behavior without platform identifiers, dates, or publication
+state. The ignored local overlay preserves Canvas identity and
+deployment state. Keep a backup of `.canvas/` alongside this
 repository until the course-directory integration is arranged.
 
 A reader can reconstruct the quiz content from the title,
