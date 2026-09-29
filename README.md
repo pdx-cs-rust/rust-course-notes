@@ -15,24 +15,27 @@ HTML downloaded from Canvas must not be edited as source.
 # Building Canvas HTML
 
 Run `make install-pandoc` once to install the pinned Pandoc
-release locally, then run `make`. Generated HTML fragments are
-written to `build/html/` and checked by parsing them back through
-Pandoc.
+release locally, then run `make`. Complete standalone documents
+are written to `build/html/`. Canvas Page fragments are written
+separately to `build/canvas-pages/`. Both forms are checked by
+parsing them back through Pandoc and validating their UTF-8.
 
 The file `canvas-notes.tsv` maps each canonical Markdown source
-to its unnumbered Canvas filename. Canvas modules follow the same
-section boundaries and note order as the numbered directories.
+to its unnumbered generated output name. Canvas modules follow
+the same section boundaries and note order as the numbered
+directories. Course-specific Page slugs and IDs belong in the
+ignored `.canvas/` overlay.
 
-Upload every file in `build/html/` to the Canvas course-files
-root with overwrite enabled. Canvas retains the corresponding
-module links. Verify the module-item publication state after an
-upload; note files are unpublished until they are ready for the
-class.
+Canvas course notes should be created as Pages from the fragments
+in `build/canvas-pages/`. Pages render in Canvas without a file
+preview frame. Canvas Pages have no folder hierarchy; the course
+modules provide their organization. The standalone documents in
+`build/html/` remain useful for other publishing targets.
 
-The current notes contain no mathematical notation, so the build
-does not load MathJAX. Pandoc will emit MathML if mathematical
-notation is added later; the build can be extended with MathJAX
-only if Canvas rendering shows that it is needed.
+The current notes contain no mathematical notation. Both output
+forms nevertheless ask Pandoc to emit native MathML when notation
+is added later. Current browsers and Canvas Pages render that
+MathML without requiring MathJAX.
 
 # Assignments And Quizzes
 
