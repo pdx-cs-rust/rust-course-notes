@@ -17,7 +17,9 @@ html:
 	command -v "$(PANDOC)" >/dev/null || { echo "pandoc not found; run 'make install-pandoc'" >&2; exit 1; }; \
 	mkdir -p "$(BUILD_DIR)"; \
 	while IFS=$$'\t' read -r source output; do \
+		title=$$(awk '/^#+ / { sub(/^#+ /, ""); print; exit }' "$$source"); \
 		"$(PANDOC)" --from=markdown --to=html5 \
+			--standalone --metadata=pagetitle:"$$title" \
 			--output="$(BUILD_DIR)/$$output" "$$source"; \
 	done < "$(MANIFEST)"
 
@@ -32,6 +34,8 @@ check: html
 	@set -euo pipefail; \
 	while IFS=$$'\t' read -r source output; do \
 		test -s "$(BUILD_DIR)/$$output"; \
+		rg --quiet '^<!DOCTYPE html>' "$(BUILD_DIR)/$$output"; \
+		rg --quiet '<meta charset="utf-8"' "$(BUILD_DIR)/$$output"; \
 		"$(PANDOC)" --from=html --to=plain \
 			--output=/dev/null "$(BUILD_DIR)/$$output"; \
 	done < "$(MANIFEST)"
