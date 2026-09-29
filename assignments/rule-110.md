@@ -10,14 +10,14 @@ play with.
 
 A CA starts with an initial row of bits. We will represent 1 bits
 with `*` and 0 bits with `.`. Our starting row will specifically
-be this 8-bit position for now.
+be this 8-cell pattern for now.
 
     *.*..*..
 
 To produce the next row, take bits three at a time, "wrapping
 around" if a boundary is hit (position 7 is next to position 0
-and so forth). A group of three bits in row *n* will determine the
-center bit position in row *n + 1* according to Rule 110:
+and so forth). A group of three bits in row *n* determines the
+center bit in row *n + 1* according to Rule 110:
 
     111 → 0
     110 → 1
@@ -37,7 +37,19 @@ So for our start, the first two rows will be
 
 ## The Program
 
-Write a program that prints ten rows starting with the two given.
+Write a program that prints exactly ten rows. Count the starting
+row as the first. The complete output should be
+
+    *.*..*..
+    ***.**.*
+    ..******
+    .**....*
+    ***...**
+    ..*..**.
+    .**.***.
+    *****.*.
+    *...****
+    *..**...
 
 ## Hints
 
@@ -67,7 +79,10 @@ Write a program that prints ten rows starting with the two given.
   }
   ```
 
-  in the bit case. The `match` statement is your friend here.
+  in the bit case. A `match` expression is the natural way to
+  express this table. Unfortunately, current Clippy may complain
+  about that use. If it does, a short series of `if` statements
+  with early returns is a reasonable alternative.
 
   You may want other functions as well.
 
@@ -96,10 +111,13 @@ something extra. Turn them in and write them up in the README.)*
   will assign `arg` either `Some(String)` or `None` depending on
   whether an argument is given.
 
-- Time your program. See how fast you can make it go. Compare
-  performance with a C or C++ implementation. You will probably
-  have to modify the program to print *a lot* more rows: maybe
-  some number given by a command-line argument.
+- Time your program. See how fast you can make it go. Use a
+  release build, and avoid timing terminal output if you want to
+  measure the update computation itself: for example, print only
+  the last row. Compare performance with a C or C++
+  implementation. You will probably have to modify the program
+  to calculate *a lot* more rows: maybe some number given by a
+  command-line argument.
 
 ## Requirements
 
@@ -108,15 +126,16 @@ something extra. Turn them in and write them up in the README.)*
   - Your authorship information.
   - A description of the program: what it does.
   - How to build and run the program.
-  - Comments on any issues you encountered,
+  - Comments on any issues you encountered.
   - Anything else a reader might find useful.
 
 - Your crate must be adequately documented with Rustdoc comments
   for each top-level datatype, function and method.
 
-- Your crate must build with current `stable` Rust.
+- Your crate must use the Rust 2024 edition and build with
+  current `stable` Rust.
 
-- Your crates should contain adequate tests (implemented using
+- Your crate should contain adequate tests (implemented using
   `#[test]` unit-testing) and assertions (implemented using
   `assert!()` and related macros) for you to be comfortable that
   everything is working correctly.

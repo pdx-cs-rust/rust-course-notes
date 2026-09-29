@@ -12,7 +12,7 @@ struct Args {
     /// Starting position string. Maximum 64 characters.
     #[arg(short, long, default_value = "*.*..*..")]
     start: String,
-    /// Number of rows to print. Must be positive.
+    /// Number of rows to print. Zero prints no rows.
     #[arg(short, long, default_value = "10")]
     nrows: usize,
     /// Print just last row.

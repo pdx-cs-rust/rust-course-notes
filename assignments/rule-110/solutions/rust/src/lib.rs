@@ -3,7 +3,7 @@
 //! Generalized library for <https://github.com/pdx-cs-rust/hw-rule110>.
 
 /// Rule Errors
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum RuleError {
     EmptyStartRow,
     OverlongStartRow,
@@ -121,7 +121,41 @@ fn test_full_width_row() {
 }
 
 #[test]
-fn test_error_messages() {
+fn test_all_short_rows_against_direct_rule() {
+    fn direct_next(row: &Row) -> Row {
+        const RULE110: [bool; 8] = [false, true, true, true, false, true, true, false];
+
+        let nbits = row.nbits;
+        let mut bits = 0;
+        for center in 0..nbits {
+            let left = (row.bits >> ((center + 1) % nbits)) & 1;
+            let middle = (row.bits >> center) & 1;
+            let right = (row.bits >> ((center + nbits - 1) % nbits)) & 1;
+            let neighborhood = (left << 2) | (middle << 1) | right;
+            if RULE110[neighborhood as usize] {
+                bits |= 1 << center;
+            }
+        }
+        Row { bits, nbits }
+    }
+
+    for nbits in 1..=10 {
+        for bits in 0..1 << nbits {
+            let row = Row { bits, nbits };
+            assert_eq!(row.next_row(), direct_next(&row));
+        }
+    }
+}
+
+#[test]
+fn test_errors() {
+    assert_eq!(Row::make_start(""), Err(RuleError::EmptyStartRow));
+    assert_eq!(
+        Row::make_start(&".".repeat(65)),
+        Err(RuleError::OverlongStartRow)
+    );
+    assert_eq!(Row::make_start(".*x*."), Err(RuleError::BadStartChar('x')));
+
     for (error, expected) in [
         (RuleError::EmptyStartRow, "start row has no characters"),
         (
