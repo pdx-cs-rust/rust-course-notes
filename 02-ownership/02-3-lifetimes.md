@@ -70,9 +70,9 @@
 * Once you take a mutable ref, you've essentially "borrowed"
   the value referred to
   
-  * Must not go out of scope
-  * Cannot take any more references while it is live
-  * Owner can't do anything with the value while it is live
+  * The borrowed value must not go out of scope
+  * Cannot create competing references while it is live
+  * Owner can't use the value directly while it is live
     (read it, change it, move it, drop it)
 
 ## Immutable Ref
@@ -128,6 +128,9 @@
 * "Named lifetimes" start with a tick, e.g. `'a` ("tick-a")
 
 * In many contexts, explicit lifetime names can be declared
+
+* Merely declaring lifetime names is not enough here; this
+  signature does not compile
   
           fn f<'a, 'b>(x: &u64, y: &u64) -> &u64
 
@@ -152,6 +155,9 @@
     }
 
 ## Book Example
+
+* This example does not compile: `v` does not outlive the
+  final use of `s`
 
     fn smallest(v: &[i32]) -> &i32 {
         let mut s = &v[0];

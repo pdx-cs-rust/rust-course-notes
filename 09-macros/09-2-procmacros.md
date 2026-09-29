@@ -10,11 +10,8 @@
 
 ## What Can Proc Macro?
 
-* Any item that can be decorated with a decorator `#[...]`,
-  really
-
-* Typically used with `#[derive(...)]` on structs / enums
-  but not limited to that
+* Three forms: function-like `foo!(...)`, attribute `#[foo]`
+  and derive `#[derive(Foo)]` macros
 
 ## Proc Macro Crates
 
@@ -41,8 +38,8 @@
 
 ## Interface
 
-* A proc macro crate declares proc macros using
-  `#[proc_macro_derive(...)]`, for maximum irony
+* `#[proc_macro_derive(...)]` on a function declares a
+  derive macro, for maximum irony
 
 * This decorates a parsing function
 
@@ -51,8 +48,8 @@
             ...
         }
 
-* The `derive()` function must not fail, but can insert
-  macro errors into the output stream
+* The `derive()` function can report errors by panicking or
+  emitting `compile_error!`
 
 * Inside `derive()`, use `syn` to parse pieces of input
   stream and `quote::quote!` to make templates

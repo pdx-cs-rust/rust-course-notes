@@ -4,9 +4,10 @@
 
 * Name-based, but with inter-module typechecking
 
-* Two kinds of thing
-    * "Crates": self-contained package
-    * "Modules": namespaces within a package
+* A Cargo package contains one or more crates: at most one
+  library and any number of binaries
+
+* Each crate can be decomposed into modules
 
 * <https://crates.io> is the big repository of published
   crates
@@ -22,7 +23,7 @@
 * By default, directory structure gives Cargo what it needs
     * `src/main.rs` is a "binary" root
     * `src/lib.rs` is a library crate root (ideally)
-    * `src/mod.rs` is a module top-level for a library
+    * `src/foo/mod.rs` can define module `foo`
 
 * You can override all of this in `Cargo.toml`
 
@@ -77,7 +78,7 @@
   
 ## Modules In Separate Files
 
-* In addition to explicit `mod { ... }` declarations, can
+* In addition to explicit `mod foo { ... }` declarations, can
   make a file `foo.rs` a module by saying `mod foo;` at the
   top of its parent module
 
@@ -96,8 +97,9 @@
 * You can put `pub` in front of an item to make it
   externally visible
 
-* For things like structs and enums, the visibility of the
-  thing and its fields is controlled separately
+* For structs, the type and its fields have separate
+  visibility. Enum variants and fields inherit the enum's
+  visibility
 
 * The compiler will whine at you about an unused thing
   unless it is `pub`, in which case it assumes you just know
@@ -105,21 +107,24 @@
 
 ## Semantic Versioning
 
-* Three-part version numbers: *breaking*.*major*.*minor*
+* Three-part version numbers: *major*.*minor*.*patch*
 
-    * Rust convention also says 0.*breaking*.*minor*
+    * Before 1.0, SemVer promises little. Cargo nevertheless
+      treats changes to the leftmost nonzero component as
+      incompatible
 
 * Supposedly improves stability
 
 * `Cargo.toml` has version matching rules: usually want
-  just the *breaking* part
+  to specify the compatible version you require
 
 * `Cargo.lock` preserves Cargo's versioning choices
 
 ## Docs
 
 * Doc comments have an extra slash `///`
-  * Inline doc comments are `//!`
+  * Module or crate doc comments are `//!`
+  * Item doc comments are `///`
   * You can also have C-style doc comments `/**` or `/*!`
 
 * Use `cargo doc --document-private-items` to get docs for

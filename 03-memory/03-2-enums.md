@@ -34,8 +34,8 @@
 
 * Can impl an enum just as with a struct
 
-* Enum variants come in tuple or structured form: tuple is
-  more "normal", because…
+* Enum variants come in unit, tuple or structured form:
+  tuple is more "normal", because…
   
 * Pattern matching is the common way to extract carried
   values from an enum
@@ -79,7 +79,7 @@
 
 ## Non-Value-Carrying Enums Are "Special"
 
-* Alternatives have a corresponding usize value: default 0, 1, 2 …
+* Alternatives have integer discriminants: default 0, 1, 2 …
 
 * Can set values for elements (unspecified elements
   autoincrement, be careful)
@@ -98,7 +98,7 @@
 
 ## The "Void" enum
 
-* What should `enum Void;` mean?
+* What should `enum Void {}` mean?
 
           let x = // ???
 
@@ -120,7 +120,8 @@
 
 ## Why Are Sum Types A Big Deal?
 
-* Avoid redundant storage, as with C union: "niche optimization"
+* Variants share storage, as with a C union. Some enums also
+  use niche optimization to avoid storing a separate tag
 
         struct v {
             // variant is 1 for u.v1, 2 for u.v2.

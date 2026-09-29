@@ -15,9 +15,10 @@
 * Rust is a "systems programming language" intended as a
   replacement for C/C++
 
-* Rust offers a unique type system that allows static
-  automatic memory management: mallocs and frees can be
-  inserted by the program as needed
+* Rust offers "semi-automatic" memory management without
+  garbage collection: allocation is requested through safe
+  abstractions, while ownership makes deallocation implicit
+  and predictable
 
     * The automatic memory management constraints make
       writing Rust programs harder than one might expect

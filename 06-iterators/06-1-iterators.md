@@ -13,7 +13,7 @@ Rust's glue to for loops.
 
 ## Iterator Adapters
 
-* Implementation of `Iterator()` that operates by consuming
+* Implementation of `Iterator` that operates by consuming
   the output of some passed iterator; essentially iterators
   over iterators
 
@@ -34,9 +34,9 @@ Rust's glue to for loops.
 
 * Makes the type work with `for` loops
 
-          trait IntoIterator where Self::IntoIter::Item == Self::Item {
+          trait IntoIterator {
               type Item;
-              type IntoIter: Iterator;
+              type IntoIter: Iterator<Item = Self::Item>;
               fn into_iter(self) -> Self::IntoIter;
           }
 
@@ -49,4 +49,6 @@ Rust's glue to for loops.
 * Let's build a shuffling iterator over a slice: returns
   references to slice elements in random order
 
-* `examples/shuflr.rs`
+* [`examples/shuflr/shuflr.rs`][shuflr]
+
+[shuflr]: https://github.com/pdx-cs-rust/examples/blob/main/shuflr/shuflr.rs

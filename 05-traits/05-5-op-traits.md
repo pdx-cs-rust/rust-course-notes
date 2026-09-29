@@ -33,7 +33,8 @@
 ## What You Can Do
 
 * Pick any operator from the table in the chapter and
-  specify its function on your own datatypes (`examples/matmul.rs`)
+  specify its function on your own datatypes
+  ([`examples/matmul.rs`][matmul])
   
 * The arithmetic operators consume their
   arguments. Sorry. Usually derive `Copy` for arithmetics
@@ -46,3 +47,5 @@
   contexts. `IndexMut` requires producing a reference to
   valid memory, which is borked for types that want to do an
   initial assignment
+
+[matmul]: https://github.com/pdx-cs-rust/examples/blob/main/matmul.rs

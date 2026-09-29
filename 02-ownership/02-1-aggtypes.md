@@ -2,7 +2,7 @@
 
 * Tuples
 
-* Arrays with size e.g. `[int; 12]`
+* Arrays with size e.g. `[i32; 12]`
 
 * `Vec`
 
@@ -12,7 +12,7 @@
 
 ## Arrays
 
-* Array types *include their size:* [char; 7]
+* Array types *include their size:* `[char; 7]`
 
 * Every size is a different type
 
@@ -45,7 +45,8 @@
   of values of *unspecified size*: the user can't create
   these directly
 
-* Taking the address of an array normally produces a slice reference (or "slice", ugh)
+* An array reference can coerce to a slice reference (or
+  "slice", ugh)
 
         let a: &[char] = &['a', 'b'];
 
@@ -57,11 +58,10 @@
 
 ## Vec
 
-* A `Vec` is an owned value that lives on the heap (memory
-  managed by the memory allocator). The size and capacity
-  (these are different) are part of the `Vec`, and the `Vec`
-  can be grown and shrunk, often with the `.push()` and
-  `.pop()` methods
+* A `Vec` owns a heap-allocated element buffer and stores its
+  pointer, length and capacity (these are different). It can
+  be grown and shrunk, often with the `.push()` and `.pop()`
+  methods
 
     * `vec.push(val)` pushes `val` on the end of `vec`,
       increasing its length. Ownership rules apply:
@@ -96,7 +96,7 @@
 
 * A `Vec` reference can be auto-converted to a slice
 
-        let s: &[char] = &vec![1, 2, 3];
+        let s: &[char] = &vec!['a', 'b', 'c'];
 
 ## String
 
@@ -165,7 +165,8 @@
 
         let s: &mut str = "hello world";
 
-* A `String` reference normally autorefs to a string slice
+* A `String` reference will normally be coerced to a string
+  slice when passed as a parameter
 
         let s: &str = &5.to_string();
 

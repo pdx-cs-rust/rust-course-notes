@@ -9,7 +9,7 @@
   
         impl TwoOf<T> {
             fn as_array(&self) -> [&T; 2] {
-                [self.0, self.1]
+                [&self.0, &self.1]
             }
         }
         
@@ -17,7 +17,7 @@
 
         impl<T> TwoOf<T> {
             fn as_array(&self) -> [&T; 2] {
-                [self.0, self.1]
+                [&self.0, &self.1]
             }
         }
 
@@ -71,4 +71,6 @@
                   }
               }
 
-    * `examples/phantom.rs` for the details
+    * [`examples/phantom.rs`][phantom] for the details
+
+[phantom]: https://github.com/pdx-cs-rust/examples/blob/main/phantom.rs

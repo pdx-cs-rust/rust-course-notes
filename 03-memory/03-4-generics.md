@@ -4,7 +4,8 @@
 
 * Most commonly single capital letter (can be camel-case)
 
-* Can parameterize a datatype, function or impl (`examples/top.rs`)
+* Can parameterize a datatype, function or impl
+  ([`examples/top.rs`][top])
 
 * Turbofish supplies explicit type parameters
 
@@ -24,7 +25,7 @@
 
 * Generics are implemented by monomorphization: a new
   implementation of the datatype or function is created for
-  each place the thing is used at a type
+  each concrete combination of type arguments that is used
 
 * This defines an infinity of potential instantiations:
 
@@ -35,7 +36,7 @@
           id(3u16)
           id('c')
 
-* Inlining will happen and avoid some of these functions
+* Inlining may happen and avoid some of these functions
 
 * Still, this can cause an explosion of implementations
 
@@ -48,38 +49,42 @@
 ## Phantom Types
 
 * Sometimes want to have the compiler track the type of a
-  thing just to avoid confusion
+  thing just to avoid confusion, even though no value of that
+  type is stored
 
-          struct Hash<T> {
-              h: u128,
+* `PhantomData` makes the otherwise-unused type parameter part
+  of the type without adding stored data
+
+          use std::marker::PhantomData;
+
+          struct Id<T> {
+              number: u64,
+              kind: PhantomData<T>,
           }
 
-          let h1: Hash<[u8; 3]> = Hash::new([0u8, 1, 2]);
-          let h2: Hash<&str> = Hash::new("hello");
-          if h1 == h2 {
-              ...
-          }
-
-    * This is the hash of some specific type: even if the
-      `h` values match, if the types they were derived from do not
-      that should fail
-
-    * Ask the compiler to track this
-
-              use std::marker::PhantomData;
-
-              struct Hash<T> {
-                  h: u128,
-                  p: PhantomData<T>,
-              }
-
-    * Now you can get typed hashes
-
-              impl<T> Hash<T> {
-                  fn hash(val: T) -> Hash<T> {
-                      let h = unsafe { hasher(&T) };
-                      Hash { h, p: PhantomData }
+          impl<T> Id<T> {
+              fn new(number: u64) -> Id<T> {
+                  Id {
+                      number,
+                      kind: PhantomData,
                   }
               }
+          }
 
-    * `examples/phantom.rs` for the details
+          struct User;
+          struct Project;
+
+          fn find_user(_id: Id<User>) {
+              // ...
+          }
+
+          fn main() {
+              let project = Id::<Project>::new(7);
+              // Does not compile: wrong kind of ID.
+              // find_user(project);
+          }
+
+* `Id<User>` and `Id<Project>` are distinct types even though
+  both store just a `u64`
+
+[top]: https://github.com/pdx-cs-rust/examples/blob/main/top.rs

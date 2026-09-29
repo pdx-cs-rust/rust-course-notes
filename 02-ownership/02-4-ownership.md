@@ -15,24 +15,23 @@
 
 ## Rust Memory Management
 
-* Invisible "Manual": Compiler issues code to allocate memory
-  and free memory where needed
+* The compiler uses ownership rules to determine when values
+  are dropped
 
 * This is restrictive: programmer must ensure that memory is
-  not allocated too late or freed to early, in the presence
+  not allocated too late or freed too early, in the presence
   of pointers
 
-* Rust compiler ensures that memory is allocated before use,
-  statically unavailable at time of free
+* Rust compiler ensures that values cannot be used before
+  initialization or after they have been moved or dropped
   
-* Key is lexical scope: when a variable statically leaves
-  scope, its value is no longer reachable, so freed
+* Key is lexical scope: when an owner leaves scope, its value
+  is dropped unless ownership has been transferred
 
 ## Memory Allocation
 
-* By default, a value must be allocated in memory unless it
-  is small enough to fit in a register and marked copyable
-  and bleah bleah bleah
+* Local values are conceptually stored in their stack frames.
+  The compiler may keep them in registers or optimize them away
   
 * Choices are stack allocation or heap allocation: default
   is stack
@@ -43,23 +42,26 @@
 
 ## Copyable Values
 
-* If a type has the `Copy` trait (e.g. the integer types)
-  the compiler will feel free to make a copy of it whenever
-  convenient
+* If a type has the `Copy` trait (e.g. the integer types),
+  assignment and argument passing copy the value, leaving the
+  original usable
 
 * If a type has the `Clone` trait (e.g. most built-in types)
-  the compiler will make a (deep) copy whenever the type's
-  `clone()` method is called
+  it provides an explicit `clone()` method. A clone should
+  duplicate the value's data up to references, but may share
+  underlying referenced data
 
-* Otherwise there will be no user-visible copying
+* Otherwise assignment and argument passing move ownership,
+  leaving the original binding unusable
 
 ## Moves
 
-* The compiler may choose to insert code to move a thing to
-  a different place in memory
+* A move transfers ownership from one place to another
   
-* If this happens, it will not make a copy: it will leave
-  the old thing uninitialized and unreferenceable.
+* The old place is left uninitialized and cannot be used
+
+* This is a language-level rule. It does not imply that the
+  compiler physically relocates the value
   
 ## Failing Move
 
@@ -75,13 +77,14 @@
 
 ## Ownership
 
-* Net effect of all this: at any given time a value is
-  "owned" by a particular name
+* Net effect of all this: at any given time a value has one
+  owner
 
-* The value is given to the owning name when it is created
+* A value gets an owner when it is created
   (Resource Acquisition Is Initialization = RAII)
 
-* The value is freed when the owning name leaves scope
+* The value is dropped when its owner leaves scope, unless
+  ownership has been transferred
 
 * Ownership can be transferred by a move
 

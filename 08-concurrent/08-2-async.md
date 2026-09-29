@@ -85,7 +85,7 @@
   return either `Poll::Pending` or `Poll::Ready(val)`
 
 * If `poll()` returns `Poll::Pending`, it will also
-  arrange for the future to wake up *via* callback
+  arrange for the task to be woken *via* callback
   when it might be able to proceed with the computation
 
 ## async/await
@@ -99,12 +99,11 @@
 * If the result type of the function or block is declared as
   `T` it is actually `impl Future<Output=T>`
 
-* If you evaluate such a function or block with `.await`, it
-  will return a future that polls until it gets a ready
-  value and then it will return that value
+* Calling an async function or evaluating an async block
+  produces a future. `.await` polls it, suspending when
+  pending, and yields its output when ready
 
-* You cannot call async functions outside of an async
-  context
+* You cannot use `.await` outside of an async context
 
 ## Rust's async/await Ecosystem
 
@@ -119,9 +118,8 @@
 * Currently provided by either the `tokio` ecosystem or the
   `async-std` ecosystem or `smol` or many other options
 
-* Idea of `std::future::Future` is that you can use the
-  primitives with either ecosystem (or build your own
-  machinery, or whatever)
+* `Future` itself is runtime-agnostic; many async primitives
+  are not
 
 ## Pick Your Ecosystem
 
@@ -136,7 +134,7 @@
 
     * Easier to get started with
         * Slightly cleaner interface
-        * Better comparability with std
+        * Better similarity to std
     * Now mostly abandoned
 
 * smol
@@ -160,7 +158,8 @@
   [Colored Function Problem](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/)
   is real
 
-* Missing async traits are a big deal; probably coming soon
+* Async functions in traits are stable, though dyn
+  compatibility and public-trait `Send` bounds need care
 
 ## Example
 

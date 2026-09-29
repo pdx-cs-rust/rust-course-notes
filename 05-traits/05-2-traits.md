@@ -1,7 +1,7 @@
 ## Traits Are Interface Types
 
-* Define methods, fields and types that must be
-  provided by an implementation of a struct or enum
+* Define methods, associated constants and associated types
+  that must be provided by an implementation
 
 * Principal mechanism for code reuse in Rust
 
@@ -12,7 +12,7 @@
 
 * Just an interface specification
 
-* Here's a hairy version (`examples/addy.rs`)
+* Here's a hairy version ([`examples/addy.rs`][addy])
 
 * Note the following:
 
@@ -26,11 +26,11 @@
 
 ## Trait Bounds vs Trait Objects
 
-* Book example (`examples/bno-salad.rs`)
+* Book example ([`examples/bno-salad.rs`][bno-salad])
 
 * A specialized version of `generic_salad.add(*v)` will be
-  constructed, no argument need be passed, the whole thing
-  will be inlined
+  constructed; optimization may eliminate arguments and
+  inline the call
 
 * Note the awkwardness of working with trait objects. This
   code is fairly fragile
@@ -58,7 +58,7 @@
          }
 
 * "Orphan Rules" forbid implementing another crate's trait
-  on another trait's type (or thereabouts) to solve this problem
+  on another crate's type (or thereabouts) to solve this problem
 
 * The details are complicated
 
@@ -89,3 +89,6 @@
           }
 
           impl Copy for MyType {}
+
+[addy]: https://github.com/pdx-cs-rust/examples/blob/main/addy.rs
+[bno-salad]: https://github.com/pdx-cs-rust/examples/blob/main/bno-salad.rs

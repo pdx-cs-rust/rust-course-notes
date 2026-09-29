@@ -1,117 +1,158 @@
 ## The Heap
 
-* In Rust, we put values on the heap with the `Box<T>` type.
+* The "heap" is the region of memory managed at runtime. In
+  C this is where `malloc()` and `free()` happen. The same
+  is true in Rust.
 
-* We can also use the `RefCell` (and `Cell`) type.
+* `Box<T>` is the simplest way to put a value on the heap
+
+  ```rust
+  let answer = Box::new(42);
+  println!("{}", answer);
+  ```
+
+  This implicitly calls something like `malloc()` and initializes
+  the resulting storage; in Rust, these are inseparable by design,
+  unlike in C, where "accidents" can happen
+
+* The `Box` owns both the allocation and its contents. Under
+  normal execution, when the `Box` is dropped, both go away.
+  Ownership prevents double-free and use-after-free. Rust
+  does not prevent memory leaks, but it does make accidental
+  leaks less likely
+
+* Types such as `Vec`, `String`, and `Rc` also manage heap
+  allocations internally
+
+* `Cell` and `RefCell` provide interior mutability; they do
+  not themselves put their contents on the heap
+
+## One Writer Or Many Readers
+
+* The usual borrow rule is one mutable reference or any
+  number of shared references
+
+* This can make shared mutable data awkward. If two parts of
+  a program share a counter, who gets mutable access to it?
+
+* Interior mutability provides controlled ways to mutate a
+  value through a shared reference
+
+## Cell
+
+* `Cell<T>` works well for small values that can be copied or
+  replaced as a whole
+
+  ```rust
+  use std::cell::Cell;
+
+  let score = Cell::new(0);
+  let shared = &score;
+
+  shared.set(shared.get() + 1);
+  println!("{}", score.get());
+  ```
+
+* `Cell` never hands out references to its contents
+
+  * `.get()` copies out the value when `T` is `Copy`
+
+  * `.set()`, `.replace()`, and `.take()` replace the value
 
 ## RefCell
 
-* Allows you to get the compiler to not do compile-time
-  borrow checking, but instead do it at runtime.
+* `RefCell<T>` is useful when code needs temporary references
+  to the value inside
 
-## Interior Mutability and Reference Counting
+  ```rust
+  use std::cell::RefCell;
 
-* Rust borrow checker is quite conservative in its static
-  rules for ownership
+  let names = RefCell::new(vec![String::from("Ada")]);
 
-  * References must not outlive referents
+  {
+      let mut names = names.borrow_mut();
+      names.push(String::from("Grace"));
+  }
 
-  * Reader-writer rules
+  println!("{:?}", names.borrow());
+  ```
 
-## Static Mutability Model
+* The inner block makes it explicit that the mutable guard is
+  dropped before the later shared borrow
 
-* Compile-time reader/writer model
+* `.borrow()` returns a shared guard; `.borrow_mut()` returns
+  an exclusive guard
 
-  * One mut ref or many shared refs
+* The guards enforce the usual borrow rules at runtime. An
+  incompatible borrow while a guard is live causes a panic
 
-  * Owner participates in model: cannot read while mut ref
-    is shared, cannot write while ref is shared
-
-* This makes some data structures hard to build
-
-  * Even a simple counter can't really be shared by two data
-    structures under these rules: if either parent is able
-    to mutate it, the other can't even read it
-
-## Idea 1: Interior Mutability
-
-* Maybe we could make it so we sometimes do writes into an
-  object without having mutable access to it?
-
-* This sounds dangerous: the whole point of the borrow
-  checker is to keep two things from read-modify-writing the
-  same location at the same time
-
-* Compromise: Check *at run time* that the borrow rules are
-  followed. Then code can read-modify-write, drop the
-  reference, and someone else can start in
-
-## Cell/ RefCell
-
-* Can implement this with a wrapper data structure `Cell` /
-  `RefCell` that tracks borrowing
-
-    * Call `.get()` to get a `Ref` "guard", which can
-      dereference as an immutable ref
-
-    * Call `.get_mut()` to get a `RefMut` "guard", which can
-      dereference as an mutable ref
-
-    * If you try to call `.get_mut()` when there's a guard
-      out already that hasn't been dropped, or if you try to
-      call `.get()` when there's a `RefMut` guard out, *your
-      program will panic!*
-
-* Hazard: If the borrow rules are violated at run time, it's a
-  panic. The compiler can't help anymore
+* `Cell` and `RefCell` do not provide thread-safe sharing. We
+  will see thread-safe alternatives later
 
 ## Shedding Dead Cells
 
-* Now we have a way to keep a mutable shared value around
-  indefinitely: stick it in a `RefCell` with global scope
+* A `Cell` or `RefCell` must always contain an initialized
+  value, even when moving the old value out
 
-* In general, some value inside the `RefCell` must live as
-  long as the `RefCell` itself: if you manually drop it,
-  you must replace it to keep the `RefCell` initialized
+* `RefCell<Option<T>>` lets you take the contained value,
+  leaving `None` in its place
 
-* `Option` can kind of fix this, but you still have to
-  manually replace the contained value to drop it
+  ```rust
+  use std::cell::RefCell;
 
-* This sounds like a great way to leak stuff
+  let message =
+      RefCell::new(Some(String::from("hello")));
+  let old_message = message.borrow_mut().take();
 
-## Idea 2: GC
+  println!("{:?}", old_message);
+  println!("{:?}", message.borrow());
+  ```
 
-* Maybe we could track actual lifetime of objects at runtime
-  instead of having the compiler over-approximate it?
+## Shared Ownership With Rc
 
-* This sounds hard: this plan normally requires a garbage
-  collector, and those are expensive and need language
-  support
+* Many languages use garbage collection for shared ownership.
+  Rust also offers reference counting for this job
 
-## Idea 3: Reference Counting
+* `Rc<T>` owns a heap allocation. Cloning the `Rc` makes
+  another owner of that same allocation
 
-* Compromise: Use *reference counting*; keep track of a
-  count of the number of references to an object and drop it
-  when the count goes to 0
+  ```rust
+  use std::rc::Rc;
 
-* Can implement this with a wrapper data structure that does
-  the reference counting
+  let first = Rc::new(String::from("hello"));
+  let second = Rc::clone(&first);
 
-* Hazard: it is possible to create reference cycles, which
-  keep the object alive until the last reference is dropped
+  println!("{} {}", first, second);
+  ```
 
-## Rc
+* Dropping an `Rc` decrements the count. The contents are
+  dropped after the last owner goes away
 
-* Rust provides `rc::Rc` as a reference-count wrapper
+* Reference cycles can leak because their counts never
+  reach zero, even after the last external reference goes away.
 
-* Cloning the `Rc` does *not* clone its contents: it just
-  hands out another pointer to itself and increments
-  the refcount
+## Rc + RefCell
 
-* Dropping an `Rc` will decrement its refcount, and drop
-  itself and its contained value iff the refcount becomes
-  zero
+* These mechanisms can be composed when several owners need
+  to mutate the same value
 
-## Example
+  ```rust
+  use std::cell::RefCell;
+  use std::rc::Rc;
+
+  let log = Rc::new(RefCell::new(Vec::new()));
+  let parser = Rc::clone(&log);
+  let reporter = Rc::clone(&log);
+
+  parser.borrow_mut().push("parsed input");
+  reporter.borrow_mut().push("reported result");
+
+  println!("{:?}", log.borrow());
+  ```
+
+* All three `Rc` values own the same allocation; the `RefCell`
+  checks mutable access to its contents
+
+## Larger Example
 
 * <https://github.com/pdx-cs-rust/rc-ledger>

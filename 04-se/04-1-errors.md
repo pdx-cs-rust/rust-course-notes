@@ -112,7 +112,7 @@
   `Some` or `Ok`
 
         let n = Some(7).unwrap(); // n is now 7
-        let n = None.unwrap(); // program panics
+        let n: i32 = None.unwrap(); // program panics
 
 * Note `.unwrap_or()` and `unwrap_or_else()`. Useful for
   supplying a default value in a few situations
@@ -121,7 +121,7 @@
 
 * Can use a `Vec` as a stack:
 
-        let mut stack = Vec::new();
+        let mut stack: Vec<i32> = Vec::new();
         let v = stack.pop();
 
 * Could return random garbage. This is the C way
@@ -169,9 +169,9 @@
             assert!(is_negative("-x").is_err());
         }
 
-## Main Can Return Result Or Option
+## Main Can Return Result
 
-* It is allowed to declare `main()` to return a `Result` or `Option`.
+* It is allowed to declare `main()` to return a `Result`.
   If `main()` returns an `Err` you will get an error message
   formatted some debuggy way
 
@@ -187,7 +187,7 @@
   handy when you want to keep going after an error
 
         let scaled_min =
-            (0..n).map(f).min().and_then(|s| s / m).or_else(|| g());
+            (0..n).map(f).min().map(|s| s / m).or_else(|| g());
 
 * This usage can be worth it, but can also be a bit
   tricky. It will take some practice

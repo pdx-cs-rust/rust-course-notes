@@ -4,11 +4,11 @@
 
 * tl;dr:
 
-  * There's `char` which is a Unicode "code point"
+  * There's `char` which is a Unicode scalar value
   * There's `str` which is a sequence of bytes representing
-    Unicode code points in the compressed UTF-8 format
+    Unicode scalar values in the compressed UTF-8 format
   * There's `&str` which is a fat pointer to a `str` with
-    with a length field
+    a length field
   * There's `String` which is the "owned" version of `str`
   
 ## Chars
@@ -21,7 +21,7 @@
   constitutes a single "character". Even in English, is
   a ligature like `ﬀ` a character?
 
-* Rust's `char` is a Unicode "code point". It's a 32-bit
+* Rust's `char` is a Unicode scalar value. It's a 32-bit
   quantity, but not all possible values are legal
   
 ## Char Features
@@ -32,35 +32,40 @@
 * There's a bit of ASCII support, but probably shouldn't
   normally use it
 
-* You can always cast a `char` to any integer type. Watch
-  out for overflow!
+* You can always cast a `char` to any integer type. Narrow
+  integer casts can truncate!
 
 ## Char Conversions
 
-* You can't cast an integer to `char` (except `u8`, because
-  ASCII): you need to use `std::char::from_u32()` or
-  something like it. It returns an `Option` depending on
-  whether the particular input is a legal Unicode code point
+* You can't cast an integer to `char` except `u8`. This is
+  convenient for ASCII bytes, but works for every `u8`
+  value. Otherwise, you need to use `std::char::from_u32()`
+  or something like it. It returns an `Option` depending on
+  whether the particular input is a legal Unicode scalar value
 
 * Note that case conversions can't return a single character
-  because uppercase ←→ lowercase is not always 1::1. So
+  because uppercase ←→ lowercase is not always 1:1. So
   return a `char` iterator, which is super-annoying
 
 ## Char Examples
 
-* `examples/charcast.rs`
+* [`examples/charcast.rs`][charcast]
 
-* `examples/lower.rs`
+* [`examples/lower.rs`][lower]
 
 ## str
 
 * It is deemed "not best practice" to store strings as
-  sequences of 32-bit code points. So a compressed encoding
-  called UTF-8 is used for strings. This encoding stores
-  ASCII characters as themselves, and uses an escape
-  convention to get multibyte coding of non-ASCII strings.
-  A UTF-8 string is almost always much smaller than 4x the
-  number of code points
+  sequences of 32-bit scalar values. UTF-8 can be thought of
+  as compressing the obvious fixed-width representation of
+  Unicode scalar values. ASCII characters occupy one byte
+  unchanged; other values may occupy several bytes. The
+  scheme uses the high bits of bytes as flags for its
+  multibyte representation
+
+* [UTF-8 history](https://www.cl.cam.ac.uk/~mgk25/ucs/utf-8-history.txt)
+
+* [RFC 3629: UTF-8](https://datatracker.ietf.org/doc/html/rfc3629)
 
 * A Rust `str` is like an array, except of UTF-8 text. A
   `str` is unsized, so it is really only useful in certain
@@ -72,11 +77,11 @@
   collectively as "strings"
 
 * An `&str` is a reference to a `str`. It is a fat pointer
-  that contains the size of the `&str` in bytes. The normal
-  borrow rules apply
+  containing a pointer to UTF-8 data and its length in
+  bytes. The normal borrow rules apply
 
-* A `String` is an owned reference to a `str`. It is a
-  fat pointer that contains the size of the `str` in bytes.
+* A `String` owns a UTF-8 byte buffer and stores its pointer,
+  length and capacity
 
 * Because `String` is owned, you can modify the contained
   bytes. However, all the methods provided for this are
@@ -92,7 +97,7 @@
   (code point) position in a string. If you plan to do that
   a lot, use `chars().collect()`
 
-* `examples/stringchars.rs`
+* [`examples/stringchars.rs`][stringchars]
 
 ## String Methods
 
@@ -130,3 +135,7 @@
 * The book discusses the details of the format string
   language we've been using with `println!()` and the
   like. Read it
+
+[charcast]: https://github.com/pdx-cs-rust/examples/blob/main/charcast.rs
+[lower]: https://github.com/pdx-cs-rust/examples/blob/main/lower.rs
+[stringchars]: https://github.com/pdx-cs-rust/examples/blob/main/stringchars.rs

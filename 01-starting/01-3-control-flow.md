@@ -3,12 +3,11 @@
 * Blocks have value
 
 * [Operator precedence table](https://doc.rust-lang.org/reference/expressions.html#expression-precedence)
-  is in the reference manual. 18 levels. Left
-  associativity. Left-to-right evaluation?
+  is in the reference manual. More than 18 levels. Most
+  binary operators associate left; assignments associate right
 
-* Conversion is mostly explicit through `as`. Only
-  conversions that are "safe" work (where safe has
-  a somewhat non-intuitive definition)
+* Conversion is mostly explicit through `as`. Such
+  conversions are memory-safe, but sometimes quite surprising
 
 * Reference magic happens
 
@@ -39,7 +38,7 @@
 * This allows stringing together expressions in more
   readable syntax (and also facilitates proper borrowing/sharing).
 
-  <https://play.rust-lang.org/?edition=2021&gist=0842a2a805a02e8a2d031e77f2bb5a6e>
+  <https://play.rust-lang.org/?edition=2024&gist=0842a2a805a02e8a2d031e77f2bb5a6e>
 
 ## Explicit Control Flow
 

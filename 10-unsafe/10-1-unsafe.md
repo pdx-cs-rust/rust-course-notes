@@ -7,26 +7,43 @@
             // unsafe stuff here
         }
 
+* In Rust 2024, unsafe operations inside an `unsafe fn`
+  should still appear in an explicit `unsafe` block
+
 * In front of a block
 
         unsafe {
             // unsafe stuff here
         }
 
-## The unsafe Keyword
+## Unsafe Obligations
 
-* Turns off *some* of the compiler checks when
-  applied to a block or function
+* `unsafe` is a poorly chosen keyword: it does not mean that
+  the code is necessarily dangerous or turn off normal type,
+  borrow, or lifetime checking
+
+* As the joke goes, a better keyword might have been
+  `hold_my_beer`: the programmer asks the compiler to trust
+  that extra safety obligations have been upheld
+
+* An `unsafe` block permits a small, specific set of
+  operations that the compiler cannot verify
   
     * Can call unsafe functions
 
     * Can dereference raw pointers
 
-    * Can mutate global variables
+    * Can read or mutate mutable static variables
 
-    * Can use `extern` Foreign-Function Interface (FFI)
-  
-* That is *all* it gives you
+    * Can read fields of unions
+
+* `unsafe` also marks declarations whose correctness depends
+  on obligations the compiler cannot check
+
+    * Unsafe functions, traits, and trait implementations
+
+    * In Rust 2024, unsafe `extern` blocks used to declare
+      Foreign-Function Interface (FFI) items
 
 ## Consequence Of unsafe Abuse
 
@@ -39,7 +56,7 @@
         1. Invalid (including null) references or Boxes
         2. `bool` values that are not either 0 or 1
         3. `enum` values with bogus discriminants
-        4. `char` values that are not Unicode code points
+        4. `char` values that are not Unicode scalar values
         5. `str` values that are not UTF-8
 
     * Violates the lifetime or sharing rules with references
@@ -49,7 +66,7 @@
 
     * Has a data race
 
-    * Unwinds across FFI calls (obscure)
+    * Unwinds across an ABI boundary that forbids unwinding
 
     * Violates standard library (or other) function
       contracts
@@ -59,26 +76,14 @@
   
 ## Sidebar: Alignment
 
-* What is pointer alignment? Well on most architectures, a
-  pointer to an object bigger than a byte can't just point
-  at any byte as its starting address
+* Some types cannot start at just any byte address. A value's
+  address must be a multiple of its type's alignment
 
-* Alignment rules vary per architecture etc, but on most
-  machines
+* The exact requirement depends on the type and target. Ask
+  Rust with `std::mem::align_of::<T>()`
 
-  * A `u16` pointer must point at an even address
-  * A `u32` pointer must point at an address that is a
-    multiple of 4
-  * A `u64` pointer must point at an address that is a
-    multiple of 8
-  * etc
-
-* In most languages, this means that a struct or enum
-  pointer must point at an address with some minimal
-  alignment, usually the word size of the machine
-
-* On a 64-bit machine, struct and enums will typically be
-  required to have 8-byte alignment
+* The compiler normally handles alignment. It becomes the
+  programmer's responsibility when dereferencing raw pointers
 
 * Why?
 
@@ -88,8 +93,8 @@
     and masking. The aligned accesses may not even be
     possible at the beginning or end of memory region
 
-  * Architectures that allow unaligned access typically
-    penalize performance *heavily* (e.g. Intel)
+  * Architectures that allow unaligned access may impose a
+    performance penalty, sometimes severe
 
 ## Unsafe "Contracts"
 
@@ -123,19 +128,21 @@
 
 * Are essentially just C pointers
 
-* Not `unsafe` to do anything *other than* dereference them
+* Creating, copying and comparing raw pointers is safe;
+  dereferencing and many pointer methods require `unsafe`
 
 * Whole bunch of functions in `std::ptr` and `std::mem` for
   dealing with them
   
-* `examples/nullptr.rs`
+* [`examples/nullptr.rs`][nullptr]
 
 * You can drop memory out from under a raw pointer. Watch
   out for ownership problems
   
-* Can cast back to a ref with `as`, but be careful: default
-  lifetime is `'static`, while the referenced data probably
-  isn't at all
+* Creating a reference from a raw pointer requires `unsafe`;
+  its lifetime is inferred from context. The programmer is
+  responsible for ensuring that this lifetime does not
+  outlive the referenced data
 
 ## Examples
 
@@ -146,3 +153,5 @@
 * `SIVec`
 
   <https://github.com/BartMassey/sivec>
+
+[nullptr]: https://github.com/pdx-cs-rust/examples/blob/main/nullptr.rs

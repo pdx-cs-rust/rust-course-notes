@@ -29,9 +29,8 @@
 
 ## Rust's Parallel Story
 
-* Eliminates shared-memory errors
-
-* Eliminates data races
+* Safe Rust eliminates data races and prevents undefined
+  behavior from invalid shared-memory access
 
 * No significant overhead
 
@@ -112,7 +111,7 @@
 
 * `mpsc`: allows building DAGs of channels
 
-* Need `mpmc` to distribute messages among threads
+* Can use `mpmc` to distribute messages among threads
 
 * Data is actually moved or shared across channels;
   efficient
@@ -158,7 +157,8 @@
 * `Sync`: Safe to share a non-mut reference to value with
   another thread
 
-* `Send` and `Sync` are auto-derived for structs / enums
+* `Send` and `Sync` are auto-derived for structs / enums when
+  their fields permit it
 
 ## Pipeline Parallelism
 

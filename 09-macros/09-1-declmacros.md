@@ -23,7 +23,7 @@
 
 * Let's talk about declarative macros.
 
-* Going to skip over procedural macros: they are *hard*
+* We will introduce procedural macros briefly next
 
 ## Introducing A Macro
 
@@ -37,23 +37,24 @@
 * Both sides are lexed by the compiler: you can't use
   arbitrary text
 
-* The input is parsed by the compiler: you can't use
-  nonsense token streams
+* Input must be valid token trees; captured fragments such
+  as `expr` are parsed as Rust syntax
 
-* `examples/debug-macro.rs`
+* [`examples/debug-macro.rs`][debug-macro]
 
 ## Rules Run In Order
 
 * The macro rules match from top to bottom. The first
   matching rule is chosen
 
-* A rule may suffer from type: the patterns match
+* A rule may suffer from type errors: the patterns match
   syntactically, but the pattern type is wrong. If this
   happens, compilation will fail right there
 
 ## Macro Bugs
 
-* Double-expansion is dangerous, as with CPP. `examples/square-macro.rs`
+* Double-expansion is dangerous, as with CPP.
+  [`examples/square-macro.rs`][square-macro]
 
 * Macros are just tokenized, so weird errors in the macro
   rule bodies won't be caught at macro expansion time --
@@ -62,8 +63,8 @@
 
 ## Macro Debugging
 
-* `log_syntax!()` will print its arguments to the terminal
-  *at compile time*
+* Nightly-only `log_syntax!()` will print its arguments to
+  the terminal *at compile time*
 
 * `rustup run nightly rustc -Z unpretty=expanded` or the
   `cargo-expand` program can be used to show the
@@ -71,7 +72,8 @@
 
 ## Repetition and Condition
 
-* Powerful, but easy to get wrong. `examples/debug-macro-rep.rs`
+* Powerful, but easy to get wrong.
+  [`examples/debug-macro-rep.rs`][debug-macro-rep]
 
 * Varargs is 70% of the reason for Rust macros
 
@@ -79,16 +81,16 @@
 
 * Note that our `debug!` example expands `eprintln!`. It can
   also expand itself, either directly or
-  indirectly. `examples/macro-nargs.rs`
+  indirectly. [`examples/macro-nargs.rs`][macro-nargs]
 
 * Note that this expansion is *at compile time*: the source
   code can get huge and take a long time to generate and
   compile
 
-* There is an expansion depth limit of 64 to prevent runaway
-  macros from overrunning the compiler stack. The depth
-  limit can be increased with `#![recursion_limit = "256"]`
-  or something similar
+* There is an expansion depth limit to prevent runaway macros
+  from overrunning the compiler stack. The depth limit can be
+  increased with `#![recursion_limit = "256"]` or something
+  similar
 
 * `#![feature(trace_macros)]` can be useful here for
   debugging expansions
@@ -103,7 +105,7 @@
 * A `tt` fragment is special: it matches any "token tree"
   the Rust compiler can build. This is either a list of
   stuff inside some kind of outer brackets, or it's a single
-  token of arbitrary kind. `examples/macro-tt.rs`
+  token of arbitrary kind. [`examples/macro-tt.rs`][macro-tt]
   
 ## Scope Stuff
 
@@ -135,4 +137,10 @@
 
 ## A Book
 
-* This has been brought up to date, and is great: [Little Book of Rust Macros](https://danielkeep.github.io/tlborm/book/index.html)
+* This has been brought up to date, and is great: [Little Book of Rust Macros](https://lukaswirth.dev/tlborm/)
+
+[debug-macro]: https://github.com/pdx-cs-rust/examples/blob/main/debug-macro.rs
+[square-macro]: https://github.com/pdx-cs-rust/examples/blob/main/square-macro.rs
+[debug-macro-rep]: https://github.com/pdx-cs-rust/examples/blob/main/debug-macro-rep.rs
+[macro-nargs]: https://github.com/pdx-cs-rust/examples/blob/main/macro-nargs.rs
+[macro-tt]: https://github.com/pdx-cs-rust/examples/blob/main/macro-tt.rs

@@ -12,8 +12,8 @@
 
 ## Writing Programs (cont)
 
-* Blocks must be bracketed. (Brackets and parens are kind of
-  interchangeable)
+* Blocks are expressions: braces group a sequence much as
+  parentheses group a simpler expression
 
 * Semicolon is statement separator; optional null statements
   and expressions (comma)
@@ -51,7 +51,7 @@
 * Floating types: `f32`, `f64`
 
 * Character type: `char`
-    * 32-bit Unicode code point
+    * 32-bit Unicode scalar value
     * Conversion-to implies checking: `from_u32` vs `from_u32_unchecked`
     * Strings are UTF-8, so not `char`s
 

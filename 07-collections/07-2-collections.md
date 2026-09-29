@@ -8,22 +8,19 @@
   It is an object, not a reference: stored on the stack
   sometimes, so watch out
 
-* A Vec is a fat pointer to a chunk of heap; the Vec
-  includes the length of the pointed-to chunk. Vecs
-  can be grown or shrunk
+* A Vec contains a pointer to heap-allocated storage, its
+  length and its capacity. Vecs can be grown or shrunk
 
 ## Slice: Review
 
-* A slice is also a fat pointer with length, but points to
-  an arbitrary chunk of memory (also called "slice"
-  **arrgh**). It can thus not be resized, and has a borrow
-  of the memory it points to
+* A slice reference is a fat pointer with length, but points
+  to an arbitrary chunk of memory (also called "slice"
+  **arrgh**). It cannot be resized, and borrows the memory
+  it points to
 
-* You can make a slice from a Vec or array by `&`, because
-  they implement `Deref`. (Also `&mut`, because `DerefMut`.)
-  Note that a cast may be necessary in some contexts,
-  because a reference to an array or slice is also a
-  legitimate thing
+* References to Vecs and arrays can normally be used as
+  slice references. An explicit cast may be needed in some
+  contexts
 
 * <https://github.com/pdx-cs-rust/reorder>
 
@@ -48,7 +45,7 @@
 
 ## VecDeque
 
-* `VecDeque` is a circular queue stored in a `Vec`
+* `VecDeque` is a growable circular queue stored in a `Vec`
 
 * Normally insert with `push_back()`, remove with
   `pop_front()`, but the queue is double-ended
@@ -82,9 +79,9 @@
 * Sets are just maps with `()` for content. Since `()` is a
   zero-sized type, this works fine
 
-* `Hash` variants are open hash tables. Lots of extra
-  storage (but arguably not enough). Cost of hashing, bad
-  memory locality. Still, "constant-time" access
+* `Hash` variants are open-addressed hash tables. Lots of
+  extra storage (but arguably not enough). Cost of hashing,
+  bad memory locality. Still, "constant-time" access
 
 * `BTree` variants are, well, B-trees. Storage-efficient,
   better memory locality, but require a tree traversal
@@ -104,7 +101,7 @@
   for manipulating entries: this is classic combinator-chain
   stuff
 
-  `examples/histogram.rs`
+  [`examples/histogram.rs`][histogram]
 
 * Sets include the usual set operators with infix
   equivalents. `is_subset()` is not defined as infix `<=`
@@ -132,32 +129,46 @@
 * The Mandelbrot demo from early in the book uses
   `crossbeam` and `complex`.
 
-## rand
+## fastrand
 
-* Crate for random number generation and use
+* A simple, lightweight crate for random number generation
 
-* <https://docs.rs/rand/0.8.3/rand>
+* <https://docs.rs/fastrand/2.5.0/fastrand>
 
-* Produces both pseudo-random and (if possible)
-  hardware-random numbers
-  
-* Key entry point is `rand::thread_rng()`, which gives a
-  per-thread OK-secure PRNG seeded from hardware
-  
-* You want the `gen_range(*lower*..=*upper*)` method
-  normally, for uniform random numbers in a range.
-  This requires the `rand::Rng` trait
-  
-* Here's an example:
+* Uses a fast pseudo-random generator that is *not*
+  cryptographically secure
 
-          use rand::Rng;
+* Good for exercises, games, randomized testing, and
+  simulations; not for keys, tokens, or security work
+
+* Provides simple functions named for the desired result type
 
           fn main() {
-              let mut rng = rand::thread_rng();
               for _ in 0..10 {
-                  println!("{}", rng.gen_range(1..=6));
+                  println!("{}", fastrand::i32(1..=6));
               }
           }
+
+* An explicit generator can be seeded for reproducible results
+
+          let mut rng = fastrand::Rng::with_seed(7);
+          println!("{}", rng.i32(1..=6));
+
+## What About rand?
+
+* The [`rand` crate](https://docs.rs/rand/latest/rand/) is
+  still important in the Rust ecosystem
+
+* It provides a broad framework of generators, distributions,
+  traits, and cryptographically secure options
+
+* It was long the obvious gold-standard default. As its scope
+  and dependency weight have increased and its interface has
+  churned, it has become less attractive for simple jobs
+
+* Use `rand` when its larger ecosystem or more sophisticated
+  facilities are useful; use `fastrand` for simple,
+  non-cryptographic randomness
 
 
 ## serde
@@ -178,3 +189,5 @@
 * <https://github.com/rust-unofficial/awesome-rust> is… ok
 
 * Mostly no great way to find "the greats"
+
+[histogram]: https://github.com/pdx-cs-rust/examples/blob/main/histogram.rs

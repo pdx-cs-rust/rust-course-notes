@@ -13,8 +13,8 @@
 
 ## TryFrom, TryInto
 
-* Like `From` and `Into` but return a `Result` instead of
-  panicking
+* Like `From` and `Into` but return a `Result` to report
+  conversion failure
 
 * Makes it possible to safely convert types when some of the
   values may not safely convert
@@ -46,8 +46,8 @@
 
 * Almost identical to `AsRef`, `AsMut` ?!?
 
-* By convention, implement for a type only when references
-  are semi-interchangeable with values
+* Unlike `AsRef`, `Borrow` requires equivalent `Eq`, `Ord`
+  and `Hash` behavior
 
 * Mostly for collection type convenience
 
@@ -67,7 +67,7 @@
 
 ## Cow
 
-* "Copy On Write": keeps a reference until owned
+* "Clone On Write": keeps a reference until owned
 
 * Glory in the beauty of this: book says
 

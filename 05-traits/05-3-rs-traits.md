@@ -6,13 +6,20 @@
 ## Clone
 
 * The `Clone` trait provides the `clone()` and
-  `clone_into()` functions
+  `clone_from()` functions
   
-* `clone_into()` is a good idea but little-used
+* `clone_from()` is a good idea but little-used
 
-* A `Clone` implementation should do a "deep copy"
+* `Clone` explicitly duplicates a value. The result should
+  behave like a duplicate rather than doing unrelated work
+
+* Cloning recursively duplicates ordinary data, but may stop
+  at reference-like types such as references, `Rc` and `Arc`
 
 * `Clone` is usually derived, but occasionally not
+
+* `#[derive(Clone)]` clones each field and may add generic
+  bounds
 
         impl Clone for MyType {
             fn clone(&self) -> Self {
@@ -41,7 +48,8 @@
         impl Copy for MyStruct {}
 
 
-* `Copy` provides `Clone` for free as a subtrait
+* `Copy` requires `Clone` as a supertrait; implement or
+  derive both
 
 * Use `Copy` sparingly:
 

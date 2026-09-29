@@ -4,7 +4,7 @@
   "first-class" if all the sensible operations of the
   language do indeed apply to it
     
-* `examples/prog.rs`
+* [`examples/prog.rs`][prog]
   
 ## Rust Has First Class Functions
 
@@ -15,8 +15,7 @@
 
 * They can be created in any block scope
 
-* References are available (indeed, a function essentially
-  *is* a static reference)
+* Function names act much like static function pointers
 
 ## Closures
 
@@ -36,9 +35,9 @@
 * Syntax has wacky pipes and stuff; types are optional and
   inferred
   
-## Pure Closures
+## Non-Capturing Closures
 
-* "Pure" closures are just functions
+* Non-capturing closures can be used like ordinary functions
 
           fn call(f: fn(u64)) {
               f(12);
@@ -66,6 +65,9 @@
 
 ## The Problem With Closures (in a non-GC language)
 
+* In the usual PL model, a closure combines a particular
+  code body with an environment containing its captured values
+
 * Need to keep closed-over memory alive as long as the
   closure
 
@@ -74,18 +76,19 @@
 
 * GC solution: who cares? Tracking lifetimes at runtime anyhow
 
-* Rust solution: Make a closure pointer a fat pointer
-
-    * Pointer to the code
-    * Pointer to a struct that closes over the environment
+* Rust solution: represent the environment as a value whose
+  type implicitly identifies the particular code body
 
 * Normal borrow checker rules then apply
 
-## Closures As Environment Structs
+## Closures As Code + Environment
 
-* Think of a closure as a code pointer and some anonymous
-  struct holding the captured vars or refs to them and its
-  implementation
+* Think of a closure as some particular code plus an anonymous
+  struct holding the values or refs captured by that code
+
+* Each closure expression has a unique anonymous struct type;
+  the code is associated with that type rather than stored in
+  each concrete closure value
   
 * Three kinds of implementation of the anonymous struct:
 
@@ -111,10 +114,22 @@
 
 * Trait objects are often used with closures
 
-* `examples/prog2.rs`
+* Erasing the concrete closure type requires making the code
+  association explicit: a closure trait object is represented
+  by a fat pointer
+
+  * Pointer to the environment
+
+  * Pointer to a vtable that identifies the implementation,
+    including how to call the code
+
+* [`examples/prog2.rs`][prog2]
 
 ## Final Notes
 
 * Values implementing `Copy` confuse everybody
 
 * This stuff is hard; get some experience with it right now
+
+[prog]: https://github.com/pdx-cs-rust/examples/blob/main/prog.rs
+[prog2]: https://github.com/pdx-cs-rust/examples/blob/main/prog2.rs

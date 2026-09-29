@@ -64,7 +64,7 @@
 
 * Moving a field out of a struct makes it "partially moved"
 
-          let t = TwoString {
+          let mut t = TwoString {
               s1: "hello".to_string(),
               s2: "world".to_string(),
           };
@@ -99,7 +99,7 @@
 * Mechanism for getting that fancy OO-style syntax
 
 * Implementor defines whether self argument is by
-  move, reference or mut reference (`examples/point.rs`)
+  move, reference or mut reference ([`examples/point.rs`][point])
 
 * Allows chaining of operators, which can be syntactically
   nice
@@ -111,7 +111,7 @@
   
 * Uses attribute syntax
 
-* Common kind of thing to write (`examples/units.rs`)
+* Common kind of thing to write ([`examples/units.rs`][units])
 
           #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
           struct Temperature(i64);
@@ -129,3 +129,6 @@
 * Struct layout concepts are in the book: not too important
 
 * Need to master structs: they are used everywhere
+
+[point]: https://github.com/pdx-cs-rust/examples/blob/main/point.rs
+[units]: https://github.com/pdx-cs-rust/examples/blob/main/units.rs

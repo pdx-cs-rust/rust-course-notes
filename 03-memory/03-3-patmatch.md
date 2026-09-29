@@ -26,7 +26,7 @@
               y: i64,
           }
 
-          let p = Point{x: 3, y: 5};
+          let mut p = Point{x: 3, y: 5};
           let z = match p {
               Point{x: 3, y: 5} => {
                   println!("is good");
@@ -42,7 +42,7 @@
               _ => panic!("bad point"),
           }
   
-* Note the existence of `..`, `..=`, `|` (not shown, only at top level), `@`
+* Note the existence of `..`, `..=`, `|` (not shown), `@`
 
 * First match is chosen
 
@@ -65,6 +65,5 @@
 
        match p {
           Point { ref mut x, .. } => *x = 3,
-          _ => (),
        }
        println!("{}", p.x );
