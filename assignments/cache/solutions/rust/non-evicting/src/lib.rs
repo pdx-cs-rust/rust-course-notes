@@ -10,13 +10,20 @@ pub struct NonEvictingCache<K, I> {
     elems: HashMap<K, I>,
 }
 
-impl<K: Hash + Eq, I> NonEvictingCache<K, I> {
+impl<K, I> NonEvictingCache<K, I> {
     /// Make a new non-evicting cache with the given *initial* capacity.
     pub fn new(capacity: usize) -> Self {
         let elems = HashMap::with_capacity(capacity);
         NonEvictingCache { elems }
     }
 
+    /// Report the lack of a capacity limit for the cache.
+    pub fn capacity(&self) -> Option<usize> {
+        None
+    }
+}
+
+impl<K: Hash + Eq, I> NonEvictingCache<K, I> {
     /// Insert the given item into the cache at the given
     /// key, replacing whatever was at that key.
     pub fn insert(&mut self, key: K, item: I) {
@@ -27,11 +34,6 @@ impl<K: Hash + Eq, I> NonEvictingCache<K, I> {
     /// the given key from the cache, if any.
     pub fn retrieve(&mut self, key: &K) -> Option<&mut I> {
         self.elems.get_mut(key)
-    }
-
-    /// Report the lack of a capacity limit for the cache.
-    pub fn capacity(&self) -> Option<usize> {
-        None
     }
 }
 
@@ -47,6 +49,13 @@ fn test_non_evicting() {
     assert_eq!(Some(&mut 1), nev.retrieve(&"b"));
     assert_eq!(Some(&mut 2), nev.retrieve(&"c"));
     assert_eq!(Some(&mut 3), nev.retrieve(&"d"));
+}
+
+#[test]
+fn test_new_without_key_bounds() {
+    struct Key;
+
+    let _: NonEvictingCache<Key, u8> = NonEvictingCache::new(3);
 }
 
 impl<K: Hash + Eq, I> Cache<K> for NonEvictingCache<K, I> {

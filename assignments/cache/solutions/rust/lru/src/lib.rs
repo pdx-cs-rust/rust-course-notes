@@ -1,26 +1,33 @@
 use cache::*;
 
-use std::collections::HashMap;
 use std::hash::Hash;
+
+use keyed_priority_queue::KeyedPriorityQueue;
 
 /// A cache with Least-Recently-Used eviction.
 ///
-/// General strategy is to keep cache entries in a map
-/// storing "time" of most recent use. A "query
+/// General strategy is to keep cache entries in a priority
+/// queue ordered by "time" of most recent use. A "query
 /// clock" increments each time a value is stored or
 /// requested.
 ///
-/// When a value is accessed, its time in the map
-/// is adjusted. When some value needs to be evicted,
-/// the oldest entry is found by scanning the map.
-pub struct LRU<K: Hash + Eq, I> {
+/// When a value is accessed, its position in the priority
+/// queue is adjusted. When some value needs to be evicted,
+/// the victim is pulled out of the priority queue.
+pub struct LRU<K, I>
+where
+    K: Hash + Eq,
+{
     capacity: usize,
     time: u64,
     store: Vec<I>,
-    usage: HashMap<K, (u64, usize)>,
+    usage: KeyedPriorityQueue<K, (u64, usize)>,
 }
 
-impl<K: Hash + Eq + Clone, I> LRU<K, I> {
+impl<K, I> LRU<K, I>
+where
+    K: Hash + Eq,
+{
     fn advance_time(&mut self) -> u64 {
         let t = self.time;
         // Detect clock exhaustion before wrapping would reverse
@@ -34,7 +41,7 @@ impl<K: Hash + Eq + Clone, I> LRU<K, I> {
         assert!(capacity > 0);
         let time = !0;
         let store = Vec::with_capacity(capacity);
-        let usage = HashMap::with_capacity(capacity);
+        let usage = KeyedPriorityQueue::with_capacity(capacity);
         Self {
             capacity,
             time,
@@ -52,26 +59,20 @@ impl<K: Hash + Eq + Clone, I> LRU<K, I> {
             self.store.push(item);
             n
         } else {
-            let victim = self
-                .usage
-                .iter()
-                .max_by_key(|(_, (time, _))| *time)
-                .map(|(key, _)| key.clone())
-                .unwrap();
-            let (t0, index) = self.usage.remove(&victim).unwrap();
+            let (_, (t0, index)) = self.usage.pop().unwrap();
             assert!(t0 > t);
             self.store[index] = item;
             index
         };
-        self.usage.insert(key, (t, i));
+        self.usage.push(key, (t, i));
     }
 
     /// Get a mutable reference to the item associated with
     /// the given key from the cache, if any.
     pub fn retrieve(&mut self, key: &K) -> Option<&mut I> {
-        let &(_, index) = self.usage.get(key)?;
+        let (key, (_, index)) = self.usage.remove_entry(key)?;
         let t = self.advance_time();
-        self.usage.insert(key.clone(), (t, index));
+        self.usage.push(key, (t, index));
         Some(&mut self.store[index])
     }
 
@@ -95,7 +96,20 @@ fn test_lru() {
     assert!(lru.retrieve(&"c").is_none());
 }
 
-impl<K: Hash + Eq + Clone, I> Cache<K> for LRU<K, I> {
+#[test]
+fn test_non_clone_key() {
+    #[derive(Eq, Hash, PartialEq)]
+    struct Key(u8);
+
+    let mut lru = LRU::new(1);
+    lru.insert(Key(1), "one");
+    assert_eq!(Some(&mut "one"), lru.retrieve(&Key(1)));
+}
+
+impl<K, I> Cache<K> for LRU<K, I>
+where
+    K: Hash + Eq,
+{
     type Item = I;
 
     fn insert(&mut self, key: K, item: Self::Item) {

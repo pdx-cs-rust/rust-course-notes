@@ -51,13 +51,13 @@ pub struct DTree<'a> {
 /// Operating system state: the directory tree and the current working directory.
 /// The current working directory is represented as a path from the root.
 #[derive(Debug, Clone, Default)]
-pub struct OsState<'a> {
+pub struct OsState<'a, 'b> {
     pub dtree: DTree<'a>,
-    pub cwd: Vec<&'a str>,
+    pub cwd: Vec<&'b str>,
 }
 
 impl<'a> DEnt<'a> {
-    pub fn new(name: &'a str) -> Result<Self> {
+    pub fn new(name: &'a str) -> Result<'a, Self> {
         todo!()
     }
 }
@@ -83,7 +83,7 @@ impl<'a> DTree<'a> {
     ///
     /// * `DirError::SlashInName` if `name` contains `/`.
     /// * `DirError::DirExists` if `name` already exists.
-    pub fn mkdir(&mut self, name: &'a str) -> Result<()> {
+    pub fn mkdir(&mut self, name: &'a str) -> Result<'_, ()> {
         todo!()
     }
 
@@ -102,7 +102,7 @@ impl<'a> DTree<'a> {
     /// # Errors
     ///
     /// * `DirError::InvalidChild` if `path` is invalid.
-    pub fn with_subdir<'b, F, R>(&'b self, path: &[&'a str], f: F) -> Result<R>
+    pub fn with_subdir<'b, 'c, F, R>(&'b self, path: &[&'c str], f: F) -> Result<'c, R>
     where
         F: FnOnce(&'b DTree<'a>) -> R,
     {
@@ -125,7 +125,7 @@ impl<'a> DTree<'a> {
     /// # Errors
     ///
     /// * `DirError::InvalidChild` if `path` is invalid.
-    pub fn with_subdir_mut<'b, F, R>(&'b mut self, path: &[&'a str], f: F) -> Result<R>
+    pub fn with_subdir_mut<'b, 'c, F, R>(&'b mut self, path: &[&'c str], f: F) -> Result<'c, R>
     where
         F: FnOnce(&'b mut DTree<'a>) -> R,
     {
@@ -157,7 +157,7 @@ impl<'a> DTree<'a> {
     }
 }
 
-impl<'a> OsState<'a> {
+impl<'a, 'b> OsState<'a, 'b> {
     /// Create a new directory tree in the operating system.  Current working directory is the
     /// root.
     pub fn new() -> Self {
@@ -189,7 +189,7 @@ impl<'a> OsState<'a> {
     ///
     /// * `DirError::InvalidChild` if the new working directory is invalid. On error, the original
     /// working directory will be retained.
-    pub fn chdir(&mut self, path: &[&'a str]) -> Result<()> {
+    pub fn chdir(&mut self, path: &[&'b str]) -> Result<'b, ()> {
         todo!()
     }
 
@@ -200,7 +200,7 @@ impl<'a> OsState<'a> {
     /// * `DirError::SlashInName` if `name` contains `/`.
     /// * `DirError::InvalidChild` if the current working directory is invalid.
     /// * `DirError::DirExists` if `name` already exists.
-    pub fn mkdir(&mut self, name: &'a str) -> Result<()> {
+    pub fn mkdir(&mut self, name: &'a str) -> Result<'_, ()> {
         todo!()
     }
 
@@ -210,7 +210,7 @@ impl<'a> OsState<'a> {
     /// # Errors
     ///
     /// * `DirError::InvalidChild` if the current working directory is invalid.
-    pub fn paths(&self) -> Result<Vec<String>> {
+    pub fn paths(&self) -> Result<'_, Vec<String>> {
         todo!()
     }
 }

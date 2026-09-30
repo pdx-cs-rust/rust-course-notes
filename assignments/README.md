@@ -57,11 +57,12 @@ directory is omitted when that kind of material was unavailable.
 Variant names identify the language or distinguish historical
 Rust implementations.
 
-The Chomp materials retain two Rust solutions and historical Java
-and Haskell solutions. Modular Exponentiation retains separate
-`rust-2022` and `rust-2023` solutions. The Exercism materials
-contain the three historical solutions that were available; Hello
-World is included there as a prerequisite example.
+The Chomp materials retain a reference Rust solution, the historical
+`rust-coltharp` Rust solution, and historical Java and Haskell
+solutions. Modular Exponentiation retains separate `rust-2022` and
+`rust-2023` solutions. The Exercism materials contain the three
+historical solutions that were available; Hello World is included
+there as a prerequisite example.
 
 ## Rust solution maintenance
 
