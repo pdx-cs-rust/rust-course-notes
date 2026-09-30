@@ -1,6 +1,7 @@
 !.gitignore
-.canvas/
-.canvas-baseline/
-.comparison/
-.tools/
-build/
+/.canvas/
+/.canvas-baseline/
+/.comparison/
+/.tools/
+/build/
+/old/

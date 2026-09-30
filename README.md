@@ -5,8 +5,7 @@ These are the ongoing course notes for my Rust Programming
 course.
 
 The numbered subdirectories correspond to weeks of my
-current course. The `old/` subdirectory contains old notes
-in rough order: much of this is duplicate.
+current course.
 
 The Markdown files in the numbered directories are the
 canonical course notes. Canvas HTML is generated from them;
@@ -39,10 +38,11 @@ MathML without requiring MathJAX.
 
 # Assignments And Quizzes
 
-Clean Markdown exports of course assignments and quizzes live in
-`assignments/` and `quizzes/`. These public files preserve course
-content without Canvas object IDs, publication state, or
-scheduling metadata.
+Clean Markdown exports of course assignments, quizzes, and project
+materials live in `assignments/`, `quizzes/`, and
+`course-project/`. These public files preserve course content
+without Canvas object IDs, publication state, or scheduling
+metadata.
 
 Canvas-specific state belongs in the ignored `.canvas/`
 directory. That local overlay records the IDs and placement
