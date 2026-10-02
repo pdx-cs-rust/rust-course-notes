@@ -94,7 +94,7 @@
 
 * Great for multiple return values, points, and the like
 
-* "Copyable" if elements are
+* "Copy" if elements are "Copy"
 
 * Pattern-matching syntax
 
