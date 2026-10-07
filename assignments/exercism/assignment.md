@@ -33,11 +33,15 @@ directory, as downloaded from Exercism.
 
 ## Requirements
 
-- You must create a `README.md`. This file will have
+*(These requirements are for every exercise in this course,
+not just this one.)*
+
+- You must create a `README.md` (for the homework as a
+  whole, not one per exercise). This file will have
 
   - Your authorship information.
-  - A description of the program: what it does.
-  - How to build and run the program.
+  - A description of the work: what it is/does.
+  - How to build and run the work.
   - Comments on any issues you encountered,
   - Anything else a reader might find useful.
 
@@ -49,10 +53,11 @@ directory, as downloaded from Exercism.
 - Your crates should contain adequate tests (implemented using
   `#[test]` unit-testing) and assertions (implemented using
   `assert!()` and related macros) for you to be comfortable that
-  everything is working correctly.
+  everything is working correctly. In this case, there are
+  already many tests provided: make sure they are sufficient.
 
   There is no minimum amount of testing required, but good tests
-  can help you turn in a working program.
+  can help you turn in a working solution.
 
 - Your code must be formatted according to the official Rust
   formatting style --- use `cargo fmt` to reformat your code
