@@ -7,8 +7,10 @@ state live in the ignored `.canvas/` directory.
 The filename identifies the local quiz. `rust-quiz.md` and
 `advanced-rust-quiz.md` preserve existing quizzes' wording,
 answer order, scoring, and feedback. `starting-rust.md` is an
-AI-attributed quiz authored directly in this format. Formatting
-changes turn HTML paragraphs, lists, and code into Markdown.
+AI-attributed quiz authored directly in this format.
+`ownership-and-lifetimes.md` and `strings-and-memory.md` are
+AI-attributed quizzes for Weeks 2 and 3. Formatting changes turn
+HTML paragraphs, lists, and code into Markdown.
 
 ## Markdown convention
 
@@ -34,7 +36,9 @@ question in `rust-quiz.md` has exactly one answer weighted 100
 and all other answers weighted 0. `rust-quiz.md` has 15
 questions and 54 answers; `advanced-rust-quiz.md` has seven
 questions and 32 answers; `starting-rust.md` has 16 questions
-and 69 answers. Each quiz has 100 points.
+and 69 answers. `ownership-and-lifetimes.md` and
+`strings-and-memory.md` each have 20 questions and 80 answers.
+Each quiz has 100 points.
 
 Headings used by this convention are structural. Use other
 heading levels or a fenced code block when a prompt needs to
