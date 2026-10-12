@@ -39,8 +39,9 @@
 * Usually implicit, but can be made explicit when needed /
   wanted
   
-        struct MyStruct<'a> {
-            my_field: &'a u64,
+        fn f<'a>(x: &'a mut r) -> &'a r {
+            *x += 1;
+            x
         }
 
 ## Mutable Refs
@@ -51,9 +52,10 @@
 * At any given point a storage location is in one of three
   states
 
-  * No outstanding refs: owner can access and change
+  * No outstanding refs: owner can access (and change if mut)
   
-  * Outstanding shared refs: all borrowers can access
+  * Outstanding shared refs: owner and all borrowers can
+    access (no changes)
 
   * One outstanding exclusive ref: *the* borrower can 
     access and change

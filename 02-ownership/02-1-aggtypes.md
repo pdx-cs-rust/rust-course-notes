@@ -100,9 +100,10 @@
 
 ## String
 
-* A `String` is an owned UTF-8 text on the heap. To say that
-  it is a sequence of `char`s is wrong: the text is
-  compressed according to the UTF-8 standard
+* A `String` is a struct referencing an owned UTF-8 text on
+  the heap. To say that it is a sequence of `char`s is
+  wrong: the text is compressed according to the UTF-8
+  standard
 
 * An empty `String` can be created with
 

@@ -121,14 +121,7 @@
 * The `::from_utf8()` methods come in checked, lossy and
   unsafe flavors. Choose wisely
 
-* There's a regex library crate. It's good.
-
-## Cow
-
-* Previously discussed. Allows avoiding conversion until
-  needed
-
-* Usually not worth the trouble
+* There's a `regex` library crate. It's good.
 
 ## Formatting
 

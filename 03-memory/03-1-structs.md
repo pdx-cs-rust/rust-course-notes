@@ -1,12 +1,12 @@
 ## Rust struct
 
-* Seen a bunch of these already
+* Should have seen a bunch of these already, but haven't
 
 * Basic idea is the same as structures in any language
 
-* Rust structs are fancy, and an essential building block
+* Rust structs are an essential building block
 
-* Most of the standard API is built out of struct, enum, trait
+* Most of the standard API is built out of `struct`, `enum`, `trait`
 
 ## Basics
 
