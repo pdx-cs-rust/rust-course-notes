@@ -121,12 +121,7 @@ An `&str` can only refer to a string literal.
 
 ### Prompt
 
-What does this print?
-
-```rust
-let s = "é!";
-println!("{} {}", s.len(), s.chars().count());
-```
+For a Rust string `s`, which statement is always true?
 
 ### Answer 1
 
@@ -134,7 +129,7 @@ println!("{} {}", s.len(), s.chars().count());
 
 #### Text
 
-`3 2`
+`s.chars().count()` is never greater than `s.len()`.
 
 ### Answer 2
 
@@ -142,7 +137,7 @@ println!("{} {}", s.len(), s.chars().count());
 
 #### Text
 
-`2 2`
+`s.chars().count()` is always equal to `s.len()`.
 
 ### Answer 3
 
@@ -150,7 +145,7 @@ println!("{} {}", s.len(), s.chars().count());
 
 #### Text
 
-`3 3`
+`s.chars().count()` is always less than `s.len()`.
 
 ### Answer 4
 
@@ -158,7 +153,8 @@ println!("{} {}", s.len(), s.chars().count());
 
 #### Text
 
-`2 3`
+`s.chars().count()` can be greater than `s.len()` when the
+string contains non-ASCII characters.
 
 ## Question 4: String Iteration
 
