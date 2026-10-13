@@ -645,14 +645,14 @@ The programmer must free the allocation manually.
 
 Only the box is dropped; the string buffer always leaks.
 
-## Question 14: Heap Allocation
+## Question 14: String Mutation
 
 - Type: multiple answer
 - Points: 5
 
 ### Prompt
 
-Which types put their contents in a heap allocation?
+Things that are true of `String` include
 (choose all that apply)
 
 ### Answer 1
@@ -661,7 +661,7 @@ Which types put their contents in a heap allocation?
 
 #### Text
 
-`Box<T>`
+Its contents can be modified through a mutable reference.
 
 ### Answer 2
 
@@ -669,7 +669,7 @@ Which types put their contents in a heap allocation?
 
 #### Text
 
-`Rc<T>`
+Its safe methods preserve valid UTF-8.
 
 ### Answer 3
 
@@ -677,7 +677,7 @@ Which types put their contents in a heap allocation?
 
 #### Text
 
-`Cell<T>` by itself.
+Its length is fixed when it is created.
 
 ### Answer 4
 
@@ -685,9 +685,96 @@ Which types put their contents in a heap allocation?
 
 #### Text
 
-`RefCell<T>` by itself.
+Its safe methods can leave it containing invalid UTF-8.
 
-## Question 15: Cell
+## Question 15: Converting to String
+
+- Type: multiple choice
+- Points: 5
+
+### Prompt
+
+What is the type of `s`?
+
+```rust
+let s = 42u32.to_string();
+```
+
+### Answer 1
+
+- Weight: 100
+
+#### Text
+
+`String`
+
+### Answer 2
+
+- Weight: 0
+
+#### Text
+
+`&str`
+
+### Answer 3
+
+- Weight: 0
+
+#### Text
+
+`u32`
+
+### Answer 4
+
+- Weight: 0
+
+#### Text
+
+`Result<String, std::num::ParseIntError>`
+
+## Question 16: Borrowing String Bytes
+
+- Type: multiple choice
+- Points: 5
+
+### Prompt
+
+Which expression borrows the bytes of a `String` named `s`,
+leaving `s` usable?
+
+### Answer 1
+
+- Weight: 100
+
+#### Text
+
+`s.as_bytes()`
+
+### Answer 2
+
+- Weight: 0
+
+#### Text
+
+`s.into_bytes()`
+
+### Answer 3
+
+- Weight: 0
+
+#### Text
+
+`s.chars()`
+
+### Answer 4
+
+- Weight: 0
+
+#### Text
+
+`s.len()`
+
+## Question 17: Struct Patterns
 
 - Type: multiple choice
 - Points: 5
@@ -697,12 +784,14 @@ Which types put their contents in a heap allocation?
 What does this print?
 
 ```rust
-use std::cell::Cell;
+struct Point {
+    x: i32,
+    y: i32,
+}
 
-let score = Cell::new(0);
-let shared = &score;
-shared.set(shared.get() + 1);
-println!("{}", score.get());
+let point = Point { x: 3, y: 5 };
+let Point { x, .. } = point;
+println!("{}", x);
 ```
 
 ### Answer 1
@@ -711,7 +800,7 @@ println!("{}", score.get());
 
 #### Text
 
-`1`
+`3`
 
 ### Answer 2
 
@@ -719,7 +808,7 @@ println!("{}", score.get());
 
 #### Text
 
-`0`
+`5`
 
 ### Answer 3
 
@@ -727,7 +816,7 @@ println!("{}", score.get());
 
 #### Text
 
-The code does not compile because `score` is not declared `mut`.
+`3 5`
 
 ### Answer 4
 
@@ -735,16 +824,16 @@ The code does not compile because `score` is not declared `mut`.
 
 #### Text
 
-The code panics because `shared` is a shared reference.
+The code does not compile because the pattern omits `y`.
 
-## Question 16: RefCell Guards
+## Question 18: Pattern Alternatives
 
 - Type: multiple choice
 - Points: 5
 
 ### Prompt
 
-Which statement is true of `RefCell<T>`?
+In a `match` pattern, what does `1 | 2` mean?
 
 ### Answer 1
 
@@ -752,7 +841,7 @@ Which statement is true of `RefCell<T>`?
 
 #### Text
 
-`borrow_mut()` gives exclusive access checked at runtime.
+Match either `1` or `2`.
 
 ### Answer 2
 
@@ -760,7 +849,7 @@ Which statement is true of `RefCell<T>`?
 
 #### Text
 
-`borrow_mut()` makes a clone of the contents.
+Match the result of the expression `1 | 2`, which is `3`.
 
 ### Answer 3
 
@@ -768,7 +857,7 @@ Which statement is true of `RefCell<T>`?
 
 #### Text
 
-`borrow()` moves the contents out of the cell.
+Match the tuple `(1, 2)`.
 
 ### Answer 4
 
@@ -776,24 +865,22 @@ Which statement is true of `RefCell<T>`?
 
 #### Text
 
-All borrow conflicts are rejected at compile time.
+Match any value except `1` and `2`.
 
-## Question 17: RefCell Borrow Conflicts
+## Question 19: Generic Structs
 
 - Type: multiple choice
 - Points: 5
 
 ### Prompt
 
-What happens when this code runs?
+Given this definition, which expression creates a `Pair<u32>`?
 
 ```rust
-use std::cell::RefCell;
-
-let value = RefCell::new(7);
-let reader = value.borrow();
-let writer = value.borrow_mut();
-println!("{} {}", *reader, *writer);
+struct Pair<T> {
+    first: T,
+    second: T,
+}
 ```
 
 ### Answer 1
@@ -802,7 +889,7 @@ println!("{} {}", *reader, *writer);
 
 #### Text
 
-`borrow_mut()` panics because the shared guard is still live.
+`Pair { first: 1u32, second: 2u32 }`
 
 ### Answer 2
 
@@ -810,7 +897,7 @@ println!("{} {}", *reader, *writer);
 
 #### Text
 
-It prints `7 7`.
+`Pair { first: 1u32, second: 2u64 }`
 
 ### Answer 3
 
@@ -818,7 +905,7 @@ It prints `7 7`.
 
 #### Text
 
-The code does not compile because both guards are in one scope.
+`Pair { first: 1u32, second: "two" }`
 
 ### Answer 4
 
@@ -826,23 +913,16 @@ The code does not compile because both guards are in one scope.
 
 #### Text
 
-`borrow_mut()` waits until the shared guard is dropped.
+`Pair { first: 'a', second: 'b' }`
 
-## Question 18: Cloning Rc
+## Question 20: Memory Leaks
 
 - Type: multiple choice
 - Points: 5
 
 ### Prompt
 
-What does the clone do?
-
-```rust
-use std::rc::Rc;
-
-let first = Rc::new(String::from("hello"));
-let second = Rc::clone(&first);
-```
+Which statement about memory leaks in Rust is true?
 
 ### Answer 1
 
@@ -850,7 +930,7 @@ let second = Rc::clone(&first);
 
 #### Text
 
-It adds another owner of the same allocation.
+Memory leaks are possible in safe Rust.
 
 ### Answer 2
 
@@ -858,7 +938,7 @@ It adds another owner of the same allocation.
 
 #### Text
 
-It copies the text into a new allocation.
+Rust's garbage collector prevents memory leaks.
 
 ### Answer 3
 
@@ -866,7 +946,7 @@ It copies the text into a new allocation.
 
 #### Text
 
-It moves ownership away from `first`.
+Only unsafe code can leak memory.
 
 ### Answer 4
 
@@ -874,88 +954,4 @@ It moves ownership away from `first`.
 
 #### Text
 
-It creates a borrowed `&str` without adding an owner.
-
-## Question 19: Dropping Rc
-
-- Type: multiple choice
-- Points: 5
-
-### Prompt
-
-For an `Rc` allocation with no reference cycle, when are
-its contents dropped?
-
-### Answer 1
-
-- Weight: 100
-
-#### Text
-
-When the last owning `Rc` is dropped.
-
-### Answer 2
-
-- Weight: 0
-
-#### Text
-
-When the first owning `Rc` is dropped.
-
-### Answer 3
-
-- Weight: 0
-
-#### Text
-
-At the next garbage collection.
-
-### Answer 4
-
-- Weight: 0
-
-#### Text
-
-Only when the programmer manually frees them.
-
-## Question 20: Shared Mutable Data
-
-- Type: multiple choice
-- Points: 5
-
-### Prompt
-
-Why combine `Rc` and `RefCell` as `Rc<RefCell<T>>`?
-
-### Answer 1
-
-- Weight: 100
-
-#### Text
-
-For shared ownership with mutation checked by runtime borrow
-rules.
-
-### Answer 2
-
-- Weight: 0
-
-#### Text
-
-To allow any number of simultaneous mutable borrows.
-
-### Answer 3
-
-- Weight: 0
-
-#### Text
-
-To share mutable data safely across threads.
-
-### Answer 4
-
-- Weight: 0
-
-#### Text
-
-To guarantee that reference cycles cannot leak.
+A `Box` always leaks unless its allocation is freed manually.
