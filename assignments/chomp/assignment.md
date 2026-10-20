@@ -1,217 +1,144 @@
 # HW: Chomp
 
-## Background
-
-Chomp is a very simple game played with a chocolate bar. This
-[Wikipedia article](https://en.wikipedia.org/wiki/Chomp)
-describes the rules of the game.
-
-Chomp is a good game to build a computer player for. Chomp is a
-two-player perfect-information terminating game, so a
-straightforward implementation of the Negamax algorithm can play
-perfectly on small boards.
-
-The basic idea is that in a given position a best move can be
-found by exploring all possible moves, all possible responses,
-etc. The resulting move selected is one that gives the opponent
-the worst possible end-of-game result.
-
-In this assignment, you will write a library crate that
-implements a Chomp AI (`src/lib.rs`), and a binary crate that
-allows the game to be played on the command line (`src/main.rs`).
-
-You must start from the [provided skeleton][skeleton] and
-complete its library and command-line program. Keep the public
-type names and method signatures so your work can be tested
-automatically. Add fields to `Chomp` to represent the game state.
-You may add helper functions and methods.
-The skeleton's Rustdoc comments are part of the specification.
+Complete the [Chomp skeleton][skeleton] to build a library with
+an AI player and a command-line program for playing against it.
+You must use the skeleton for this assignment.
 
 [skeleton]: https://github.com/pdx-cs-rust/hw-chomp-skeleton
 
+## Background
+
+Chomp is a two-player game played with a chocolate bar. Players
+take turns choosing an uneaten square and eating it along with
+all squares below and to its right. The upper-left square is
+poison: the player who eats it loses. This
+[Wikipedia article](https://en.wikipedia.org/wiki/Chomp)
+describes the game in more detail.
+
+Chomp is a good game for a computer player. On small boards,
+recursive search can explore the possible moves and responses
+to find a winning move, if one exists.
+
+## Getting started
+
+Clone the skeleton repository or download it as a ZIP archive.
+Work in its Cargo project, which contains:
+
+- `src/lib.rs`: the `chomp_ai` library, including `Chomp`,
+  `ChompError`, and the required public methods.
+- `src/main.rs`: the `chomp` program and its interface helpers.
+- `Cargo.toml`, `Cargo.lock`, `README.md`, and `LICENSE.txt`.
+
+Read the Rustdoc comments in both source files before starting.
+They are part of the assignment specification and define the
+required library and program behavior. You can also render them
+with:
+
+```sh
+cargo doc --document-private-items --open
+```
+
+Complete the `todo!()` placeholders. Keep the supplied public
+types, error variants, and method signatures so your work can be
+tested automatically. You may add fields to `Chomp` and add
+helper functions and methods.
+
+The skeleton builds, but its game tests will not pass until you
+implement the missing functionality. Add tests as you work;
+the supplied tests do not cover everything.
+
 ## The library
 
-The game state should be represented by a `struct Chomp` you
-define. The skeleton supplies a unit struct as a placeholder:
-replace it with a struct containing the fields you need. The
-most important component of the state is the representation of
-the board itself:
+Replace the placeholder unit struct `Chomp` with a struct that
+stores the board state and its logical dimensions. Your library
+must support boards with one to four rows and one to five
+columns. Coordinates are zero-based, with `(0, 0)` at the upper
+left, and always appear in row-then-column order.
 
-- One way: use an array
+Choose your own board representation. For example:
 
-  - Use a fixed-size five-by-four (five columns, four rows) array
-    of `bool`s to represent the game state. The element at index
-    `[row][column]` should be `false` if that square has been
-    eaten, and `true` otherwise.
+- Use a fixed-size `[[bool; 5]; 4]` array, with `true` for
+  uneaten squares and `false` for eaten squares. Store the
+  logical row and column counts separately, and ignore array
+  entries outside those dimensions.
+- Use a `HashSet<(usize, usize)>` containing the coordinates of
+  uneaten squares, together with the logical dimensions.
 
-  - Your program should support multiple board sizes. Since the
-    size of a Rust array is fixed at compile time, your board
-    type needs to have fields representing its logical width and
-    height. Ignore squares outside these logical dimensions.
+Either representation must implement the same public interface:
 
-- Another way: use a set
+- Complete `Chomp::new` to initialize an uneaten board. The
+  skeleton already checks the size and returns `ChompError`
+  for invalid dimensions.
+- Implement `dimensions` and `is_present` so callers can inspect
+  the board without knowing its representation.
+- Implement `make_move` to validate and perform a move, returning
+  the specified `Result`. Invalid moves must leave the board
+  unchanged. Eating poison is a valid move that ends the game.
+- Implement `winning_move` as described below.
+- Keep `Chomp` cloneable. A clone must have independent state:
+  moves on either board must not change the other.
 
-  - You can make a `HashSet` of tuples, where tuple `(i, j)`
-    being in the set means that position is not yet eaten. You
-    can remove elements from the set as they are eaten.
-
-Your `Chomp` type should support the following operations via
-`impl`:
-
-- Create a board with a given number of rows and columns,
-  returning `Result<Chomp, ChompError>`. Return
-  `ChompError::InvalidSize` for dimensions outside `1..=4` rows
-  or `1..=5` columns.
-
-- Report its logical dimensions as `(nrows, ncols)` through
-  `dimensions`, and whether a square is uneaten through
-  `is_present`. The latter returns `false` for eaten squares
-  and coordinates outside the board. Neither method changes
-  the board. Logical dimensions stay the same after moves.
-
-- Chomp a given square, removing all squares below it and to the
-  right of it. Return `Result<(), ChompError>`: `Ok(())` for a
-  valid move, or `ChompError::InvalidMove` for coordinates
-  outside the board or an eaten square. Invalid moves must leave
-  the board unchanged. Eating the poison square is valid, but
-  ends the game; all later moves are invalid.
-
-- Return a winning move for the board, if any (see the next
-  section). Return `None` for losing positions, including a
-  board containing only poison, or one where poison has already
-  been eaten. Do not change the board while searching. Any
-  winning move is acceptable when several exist.
-
-- Clone a board (the `Clone` trait). The clone has the same
-  dimensions and state, and subsequent moves on either board
-  must not affect the other.
+Follow the comments for error conditions and return values.
+Handle invalid sizes and moves with `ChompError`, without
+panicking. Board dimensions do not change as squares are eaten.
 
 ### The AI
 
-The negamax algorithm solves any zero-sum perfect-information
-two-player game (like Chomp). It takes as input a board state and
-outputs a winning move, if one exists.
+The skeleton includes pseudocode for a recursive winning-move
+search. Understand the algorithm before implementing
+`winning_move`:
 
-```text
-winning-move(posn):
-    for each remaining row r
-        for each remaining column c in r
-            if r = 0 and c = 0
-                continue
-            p ← copy of posn
-            chomp r, c from p
-            m ← winning-move(p)
-            if no winning move is returned
-                return the move r, c
-    return no winning move
-```
+1. Consider each uneaten square except the poison square.
+2. Clone the board and make that move on the clone.
+3. Recursively ask whether the opponent has a winning move
+   from the resulting position.
+4. If the opponent has no winning move, the move you just tried
+   is winning. Return it. Otherwise, try another square.
+5. If no move wins, return `None`.
 
-Understand this pseudocode as follows:
+Each recursive call considers a board with fewer uneaten
+squares. A board containing only poison has no winning move,
+and neither does a board where poison has already been eaten.
 
-1. Check whether the board state is already lost. If so, then
-   there is no winning move.
-
-2. Otherwise, for each possible move `m`:
-
-   1. Create a new board `p`.
-
-   2. Perform the move `m` on `p`.
-
-   3. Call `winning_move` recursively at `p`. (Since one player
-      has just made a move, we are now trying to find a winning
-      move for the *other* player.)
-
-   4. If `winning_move` outputs a winning move for `p`, then `m`
-      is *not* a winning move for the current player. (Why?)
-      Continue on to the next move.
-
-   5. Otherwise, `m` is a winning move. Return it.
-
-For Chomp:
-
-- The board state is lost if the upper-left square is the only
-  one left.
-
-- You can represent the move “chomp at a row and column” by a
-  tuple `(row, column)`. There is one such possible move for each
-  uneaten square (other than the top left one).
+Your search must leave the original board unchanged. Any winning
+move is acceptable when several exist; no particular search
+order is required.
 
 ## The program
 
-Your program will be a simple terminal interface for playing
-Chomp against your AI. It should perform the following sequence:
+Complete `show_posn`, `user_move`, and `main` in `src/main.rs`.
+Its comments specify the game loop, argument validation, input
+handling, and output behavior. For example, run a three-row,
+four-column game with:
 
-1. Accept two command-line arguments for the board size: rows,
-   then columns, as specified in the skeleton. Require exactly
-   two decimal integers in `1..=4` rows and `1..=5` columns.
-   Invalid arguments must produce a diagnostic on standard error
-   and a nonzero exit status. Do not start a game or panic.
+```sh
+cargo run -- 3 4
+```
 
-2. Repeatedly:
+The human moves first. Display the board, get a valid human move,
+and then let the computer respond. Use a winning computer move
+when one exists; otherwise, eat the rightmost square in the
+lowest nonempty row. End the game immediately after either
+player eats poison and announce the outcome from the human's
+perspective.
 
-   1. Print the board.
+Use `#` and `.` to display uneaten and eaten squares, and report
+computer moves as labelled row-then-column coordinates. Prompt
+wording, capitalization, punctuation, and spacing are flexible.
+Extra board displays are allowed. Flush output before waiting
+for input so the board and prompt are visible.
 
-   2. Ask the user to input a move and perform it. The human
-      moves first.
+Invalid human input must produce an explanation and another
+prompt without changing the board or giving the computer a
+turn. End-of-input cancels the game without announcing a winner.
+Completed games and cancellation exit with status zero; argument
+and input/output errors require a diagnostic and a nonzero exit
+status. Follow the source comments for the complete contract.
 
-   3. If the user ate the poison square, announce that the user
-      lost and end the game.
-
-   4. Try to find a winning move. If there is one, perform it;
-      any winning move is acceptable. Otherwise, stall by eating
-      the rightmost square in the lowest nonempty row. If only
-      poison remains, this move eats the poison.
-
-   5. Show the computer's move, labelled as such, with its row
-      followed by its column. If the computer ate the poison
-      square, announce that the user won and end the game.
-
-Draw the board with one line per logical row, using `#` for each
-uneaten square and `.` for each eaten square. Whitespace is
-flexible; put labels outside the grid. Show the current board
-before each human turn. Extra board displays are allowed.
-
-Read a move as one line containing exactly two nonnegative
-decimal integers: row, then column, both starting from zero.
-Accept leading and trailing whitespace, spaces, and tabs.
-Blank lines, missing or extra fields, invalid numbers,
-out-of-range coordinates, and eaten squares are invalid input.
-Explain the error and ask again, without changing the board or
-giving the computer a turn. Choosing the poison square is valid
-while it remains, but loses the game.
-
-On end-of-input, exit with status zero without announcing a
-winner or prompting again. On an actual input/output error,
-print a diagnostic on standard error and exit with a nonzero
-status without panicking. The skeleton's `user_move` helper
-distinguishes legal moves, end-of-input, and input/output errors.
-
-The game ends as soon as the upper-left poison square is eaten.
-The player who eats that square loses. Announce the outcome from
-the human's perspective and exit with status zero, whether the
-human won or lost. Do not attempt another move or request more
-input after the game ends.
-
-Prompt, diagnostic, move-label, and result wording is flexible,
-as are capitalization, punctuation, and spacing. Make it clear
-when you want a human move, which move the computer made, and
-who won. Keep computer replies on separate lines with row before
-column. Flush output before waiting for input, and use ordinary
-text without requiring screen clearing or cursor movement.
-Write boards, prompts, computer moves, and results to standard
-output.
-
-## Hints
-
-- The `prompted` crate from `crates.io` may be useful to get a
-  line of user input.
-
-- `Chomp::new` and `make_move` must return a `Result` with the
-  appropriate `ChompError` on invalid input. Handle these errors
-  without panicking. The skeleton provides the error type.
-
-- Your `winning_move` function should return some kind of
-  `Option`, since there may not be a winning move.
+Both the library and the interactive program will be tested
+automatically. The public library methods and the documented
+program behavior must work regardless of your representation or
+choice among winning moves.
 
 ## Requirements
 
