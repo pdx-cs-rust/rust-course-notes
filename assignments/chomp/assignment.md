@@ -132,6 +132,13 @@ and eaten squares, or another display you prefer. You may assume
 the human follows your input instructions; keep error handling
 simple.
 
+Your CLI should produce a trace roughly like
+`sample-gameplay.txt` in the skeleton: show the initial board,
+prompt for human moves, identify computer moves, show the board
+after each move, and announce the final result. Exact wording
+and display layout may differ, but the trace should make it
+easy to follow how the game progresses.
+
 ### Gameplay transcript
 
 The library will be graded automatically. The CLI will be
@@ -145,7 +152,7 @@ moves, and the final result. Copying and pasting from your
 terminal is fine. You do not need to win.
 
 See `sample-gameplay.txt` in the skeleton for an example on a
-three-row, two-column board. Your CLI may look different.
+three-row, two-column board.
 
 The transcript should make it easy to see that your CLI lets
 someone play a game. Note any known issues in your README.
