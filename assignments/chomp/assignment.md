@@ -130,12 +130,12 @@ fallback. End the game when either player eats poison, and
 announce who won.
 
 Choose readable prompts, a clear board display, and an input
-format that is easy to use. Use `#` and `.` for uneaten and
-eaten squares. A simple move format is a zero-based row followed
-by a column, separated by whitespace, such as `2 3`. Helpers
-for displaying the board and reading a move may be useful;
-their interfaces are up to you. You may assume the human follows
-your input instructions; keep error handling simple.
+format that is easy to use. Use `#` for uneaten squares and `.`
+for eaten squares. A simple move format is a zero-based row
+followed by a column, separated by whitespace, such as `2 3`.
+Helpers for displaying the board and reading a move may be
+useful; their interfaces are up to you. You may assume the human
+follows your input instructions; keep error handling simple.
 
 Your CLI should produce a trace roughly like
 `sample-gameplay.txt` in the skeleton: show the initial board,
