@@ -22,7 +22,7 @@ allows the game to be played on the command line (`src/main.rs`).
 
 You must start from the [provided skeleton][skeleton] and
 complete its library and command-line program. Keep the public
-type name and method signatures so your work can be tested
+type names and method signatures so your work can be tested
 automatically. Add fields to `Chomp` to represent the game state.
 You may add helper functions and methods.
 
@@ -57,15 +57,24 @@ the board itself:
 Your `Chomp` type should support the following operations via
 `impl`:
 
-- Create a board with a given number of rows and columns.
+- Create a board with a given number of rows and columns,
+  returning `Result<Chomp, ChompError>`. Return
+  `ChompError::InvalidSize` for dimensions outside `1..=4` rows
+  or `1..=5` columns.
 
 - Print a graphical representation of a board.
 
 - Chomp a given square, removing all squares below it and to the
-  right of it.
+  right of it. Return `Result<(), ChompError>`: `Ok(())` for a
+  valid move, or `ChompError::InvalidMove` for coordinates
+  outside the board or an eaten square. Invalid moves must leave
+  the board unchanged. Eating the poison square is valid, but
+  ends the game; all later moves are invalid.
 
 - Return a winning move for the board, if any (see the next
-  section).
+  section). Return `None` for losing positions, including a
+  board containing only poison, or one where poison has already
+  been eaten.
 
 - Clone a board (the `Clone` trait).
 
@@ -155,11 +164,9 @@ The player who eats that square loses.
 - The `prompted` crate from `crates.io` may be useful to get a
   line of user input.
 
-- Several of your library functions should fail under certain
-  conditions. (For example, creating a board with a width or
-  height larger than the maximum should fail.) Use `assert!` to
-  deal with such situations, or return a `Result` that can be
-  checked.
+- `Chomp::new` and `make_move` must return a `Result` with the
+  appropriate `ChompError` on invalid input. Handle these errors
+  without panicking. The skeleton provides the error type.
 
 - Your `winning_move` function should return some kind of
   `Option`, since there may not be a winning move.
