@@ -1,7 +1,5 @@
 # Course Project Proposal
 
-*\[Draft: watch this space and the Zulip for edits.\]*
-
 Please write a *PDF* proposal of not more than three pages
 describing what you want to do for your project this quarter.
 Include:
@@ -23,7 +21,7 @@ Include:
 
   - The repo should contain a brief README describing the
     project.
-  - The repo must be cloneable by BartMassey on Github. I would
+  - The repo must be cloneable by `BartMassey` on Github. I would
     strongly prefer that you just make it public. If you do this,
     please add an appropriate open source license: I recommend
     MIT + Apache 2.0 for Rust projects. If you really want to
@@ -83,49 +81,59 @@ will be extra documentation requirements for team projects.
 
 ## Project Theme
 
-This course, the “project theme” is *Instrumented Simulation.*
-(This is a repeat of last offering, but it worked out well so I'm
-keeping it for one more round.) I’d like you to build some
-simulation that evolves over time, together with some kind of
-display or logging of what’s happening, and optionally some kind
-of simulation controls.
+This course, the “project theme” is *Emergent Behavior.* I'd
+like you to build some software that involves interesting
+large-scale behavior arising from interactions among simple
+rules.
 
-### Examples
+Emergent behavior happens when simple things interacting
+with each other produce interesting or unexpected
+results. No single part of the system needs to know what the
+whole system is doing.  The interesting behavior comes from
+the interactions among the parts.
 
-- Building a [clicker game / idle
-  game](https://en.wikipedia.org/wiki/Incremental_game) is a fun
-  project. Games such as [*Universal
-  Paperclips*](https://www.decisionproblem.com/paperclips/) or
-  *[Cookie
-  Clicker](https://cookieclicker.com)* are simulations of
-  an imaginary process over time, with minimal user input and
-  display. It is not necessary to have a fancy web interface:
-  local games with a graphical or ASCII user interface are pretty
-  buildable.
+You shouldn't try to discover some new scientific phenomenon
+or build anything complicated. The idea is to write a Rust
+program with some simple rules and see what interesting
+behavior they can produce.
 
-  \[This is what inspired the theme.\]
+## Examples
 
 - Biologically-inspired simulations such as
-  [*Boids*](https://en.wikipedia.org/wiki/Boids) or [*Ant Colony
-  Optimization*](https://en.wikipedia.org/wiki/Ant_colony_optimization_algorithms)
-  are interesting. Again, realism and top-notch graphics are not
-  necessary: anything works.
+  [*Boids*](https://ccl.northwestern.edu/netlogo/models/Flocking)
+  are a classic example. Each bird follows a few simple
+  rules about how to move relative to nearby birds, but
+  together they form complex, moving flocks. No bird is in
+  charge. Realistic physics and fancy graphics are not
+  necessary or even particularly desirable.
 
-- Physically-inspired simulations such as two-dimensional
-  [*N-Body
-  Simulation*](https://en.wikipedia.org/wiki/N-body_simulation)
-  are fun to explore.
+- Generative art is another possibility. For example,
+  [*Diffusion-Limited Aggregation*](https://thecodingtrain.com/challenges/34-diffusion-limited-aggregation)
+  produces elaborate branching patterns by letting randomly
+  moving particles stick to a growing shape. A few simple
+  rules can produce surprisingly beautiful results.
 
-- Socially-inspired simulations are fair game. A very simple
-  [*Traffic
-  Simulation*](https://en.wikipedia.org/wiki/Traffic_simulation)
-  would be a challenging but great problem. A toy [*Energy
-  Model*](https://en.wikipedia.org/wiki/Energy_modeling) would be
-  pretty cool.
+- Simple games can have emergent behavior too.
+  [*Chain Reaction*](https://chain.kaiross.in/) is a board game
+  where players place pieces on a grid. When a square gets too
+  full, its pieces spread to neighboring squares, sometimes
+  triggering a whole chain of reactions. Very simple rules
+  can produce quite complicated changes to the board.
 
-- I would prefer staying away from CPU simulators: they are
-  typically too much (RISC-V) or too well-trodden (CHIP8) for
-  this course. But if your heart is set on it let me know.
+- [*Cellular Automata*](https://en.wikipedia.org/wiki/Cellular_automaton)
+  are a particularly nice source of emergent behavior.
+  [*Conway's Game of Life*](https://playgameoflife.com/) has
+  just a few rules for whether a cell lives or dies, but
+  produces moving objects, repeating patterns, and even
+  structures capable of computation. There are lots of other
+  cellular automata worth exploring, too.
+
+These are just examples: simulations, games, art, and other
+kinds of software are all fair game. I'm not looking for
+scientific realism, sophisticated graphics, or an ambitious
+project. A simple program with interesting behavior is
+plenty. The focus of the course is learning Rust, so pick
+something manageable and have fun with it.
 
 ## Theme Opt-Out
 
@@ -162,3 +170,8 @@ project discussion.
 
 The course project itself will be due during Finals Week. We will
 set up a separate assignment for that.
+
+## AI Acknowledgement
+
+ChatGPT did the writeup of the Emergent Behavior theme under
+the direction of Bart Massey.
