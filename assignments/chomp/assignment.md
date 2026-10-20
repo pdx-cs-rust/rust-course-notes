@@ -1,7 +1,7 @@
 # HW: Chomp
 
-Complete the [Chomp skeleton][skeleton] to build a library with
-an AI player and a command-line program for playing against it.
+Complete the [Chomp library skeleton][skeleton] to build an AI
+player, then write a command-line program for playing against it.
 
 ## Background
 
@@ -27,13 +27,12 @@ Work in its Cargo project, which contains:
 
 - `src/lib.rs`: the `chomp_ai` library, including `Chomp`,
   `ChompError`, and the required public methods.
-- `src/main.rs`: the `chomp` program and its interface helpers.
+- `sample-gameplay.txt`: an example of a complete game.
 - `Cargo.toml`, `Cargo.lock`, `README.md`, and `LICENSE.txt`.
 
-Read the Rustdoc comments in both source files before starting.
-The library comments specify the interface and behavior for
-automated testing. The program comments outline a simple CLI
-for you to build. You can also render the comments with:
+Read the Rustdoc comments in `src/lib.rs` before starting.
+They specify the library interface and behavior for automated
+testing. You can also render the comments with:
 
 ```sh
 cargo doc --document-private-items --open
@@ -42,8 +41,8 @@ cargo doc --document-private-items --open
 Complete the `todo!()` placeholders. Keep the supplied public
 library types, error variants, and method signatures so your
 library can be tested automatically. You may add fields to
-`Chomp` and add helper functions and methods. The private CLI
-helpers can be adapted to suit your interface.
+`Chomp` and add helper functions and methods. You will write
+the CLI in a new `src/main.rs`, as described below.
 
 The skeleton builds, but its game tests will not pass until you
 implement the missing functionality. Add tests as you work;
@@ -108,11 +107,15 @@ order is required.
 
 ## The program
 
-Complete `show_posn`, `user_move`, and `main` in `src/main.rs`.
-Build a simple terminal interface that lets a human play against
-your AI. Get the board size using prompts or command-line
-arguments. For example, an interface using arguments might start
-a three-row, four-column game with:
+Create `src/main.rs` with a `main` function for a simple terminal
+interface that lets a human play against your AI. Use your
+library through `chomp_ai`, for example with
+`use chomp_ai::Chomp;`. Cargo will detect the new file as the
+`chomp` binary; no binary entry in `Cargo.toml` is needed.
+
+Get the board size using prompts or command-line arguments.
+For example, an interface using arguments might start a
+three-row, four-column game with:
 
 ```sh
 cargo run -- 3 4
@@ -128,9 +131,12 @@ announce who won.
 
 Choose readable prompts, a clear board display, and an input
 format that is easy to use. You can use `#` and `.` for uneaten
-and eaten squares, or another display you prefer. You may assume
-the human follows your input instructions; keep error handling
-simple.
+and eaten squares, or another display you prefer. A simple move
+format is a zero-based row followed by a column, separated by
+whitespace, such as `2 3`. Helpers for displaying the board and
+reading a move may be useful; their interfaces are up to you.
+You may assume the human follows your input instructions;
+keep error handling simple.
 
 Your CLI should produce a trace roughly like
 `sample-gameplay.txt` in the skeleton: show the initial board,
