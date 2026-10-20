@@ -1,6 +1,6 @@
 # Emergent Behavior
 
-This course, the “project theme” is *Emergent Behavior.* I'd
+For this offering, the “project theme” is *Emergent Behavior.* I'd
 like you to build some software that involves interesting
 large-scale behavior arising from interactions among simple
 rules.
@@ -8,7 +8,7 @@ rules.
 Emergent behavior happens when simple things interacting
 with each other produce interesting or unexpected
 results. No single part of the system needs to know what the
-whole system is doing.  The interesting behavior comes from
+whole system is doing. The interesting behavior comes from
 the interactions among the parts.
 
 You shouldn't try to discover some new scientific phenomenon
@@ -53,3 +53,8 @@ scientific realism, sophisticated graphics, or an ambitious
 project. A simple program with interesting behavior is
 plenty. The focus of the course is learning Rust, so pick
 something manageable and have fun with it.
+
+## AI Acknowledgement
+
+ChatGPT did the writeup of the Emergent Behavior theme under
+the direction of Bart Massey.

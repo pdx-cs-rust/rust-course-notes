@@ -12,16 +12,20 @@ Include:
 
 - The project topic area.
 
-- The specific project vision. Be detailed.
+- The specific project vision. Be detailed. Explain how it fits
+  the theme, or request a theme opt-out as described below. For
+  an Emergent Behavior project, describe the simple rules, the
+  behavior you hope to observe, and how you will display or
+  report it.
 
 - Discussion of any issues of concern you might have.
 
-- A git repo URL. I strongly prefer Github: if you really want to
+- A git repo URL. I strongly prefer GitHub: if you really want to
   use something else let me know and we’ll figure it out.
 
   - The repo should contain a brief README describing the
     project.
-  - The repo must be cloneable by `BartMassey` on Github. I would
+  - The repo must be cloneable by `BartMassey` on GitHub. I would
     strongly prefer that you just make it public. If you do this,
     please add an appropriate open source license: I recommend
     MIT + Apache 2.0 for Rust projects. If you really want to
@@ -44,9 +48,10 @@ Project requirements are as follows:
   driver application is a really nice project style; something to
   consider.
 
-- The project should involve something vaguely like 500-1500
-  lines of code (size doesn’t matter so much as effort and
-  quality) performing a coherent function.
+- The project should perform a coherent function. Roughly
+  500-1500 lines of code, but smaller can be fine: if you're
+  gonna go larger ask me. Line count is a stupid measurement
+  anyhow.
 
 - The project should include a `README.md` writeup describing
   what was built, how it worked, what didn’t work, and what
@@ -62,11 +67,11 @@ Project requirements are as follows:
   approved. `unsafe` code should be kept to an absolute minimum
   and clearly documented for both safety and need.
 
-- *Not allowed:* Projects that are strongly derivative of code
-  already on the Internet; for example, a “snake” game or a
-  workout tracker. Projects must consist mostly of original code,
-  and must have minimal resemblance to code already out in the
-  world. The usual plagiarism rules apply.
+- Projects must consist mostly of code you wrote yourself.
+  Using established models, rules, and algorithms is fine;
+  copying an existing implementation or closely following a
+  tutorial is not. Describe your own contribution and
+  acknowledge any sources. The usual plagiarism rules apply.
 
 - “Double-dipping” — using the same project for this course and
   another current course — is allowed and encouraged, if *and
@@ -81,7 +86,7 @@ will be extra documentation requirements for team projects.
 
 ## Project Theme
 
-This course, the “project theme” is *Emergent Behavior.* I'd
+For this offering, the “project theme” is *Emergent Behavior.* I'd
 like you to build some software that involves interesting
 large-scale behavior arising from interactions among simple
 rules.
@@ -89,7 +94,7 @@ rules.
 Emergent behavior happens when simple things interacting
 with each other produce interesting or unexpected
 results. No single part of the system needs to know what the
-whole system is doing.  The interesting behavior comes from
+whole system is doing. The interesting behavior comes from
 the interactions among the parts.
 
 You shouldn't try to discover some new scientific phenomenon
@@ -97,7 +102,7 @@ or build anything complicated. The idea is to write a Rust
 program with some simple rules and see what interesting
 behavior they can produce.
 
-## Examples
+### Examples
 
 - Biologically-inspired simulations such as
   [*Boids*](https://ccl.northwestern.edu/netlogo/models/Flocking)
@@ -137,12 +142,13 @@ something manageable and have fun with it.
 
 ## Theme Opt-Out
 
-If you are *passionate* about doing something that does not fit
-the project scheme, please do propose what you want to do: say “I
-would like to opt out of the Project Theme” somewhere near the
-beginning of your proposal. Approval of opt-outs is not
-automatic: the instructor will review such proposals especially
-carefully, and may choose to ask for a different proposal.
+If you are *passionate* about doing something that does not
+fit the project theme, please do propose what you want to
+do: say “I would like to opt out of the Project Theme”
+somewhere near the beginning of your proposal. Approval of
+opt-outs is not automatic: I will review such proposals
+especially carefully, and may choose to ask for a different
+proposal.
 
 The Project Theme is pretty broad: hopefully you’ll be able to
 color within the lines somewhere.
