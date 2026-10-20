@@ -144,6 +144,9 @@ the program, the board displays, your input, the computer's
 moves, and the final result. Copying and pasting from your
 terminal is fine. You do not need to win.
 
+See `sample-gameplay.txt` in the skeleton for an example on a
+three-row, two-column board. Your CLI may look different.
+
 The transcript should make it easy to see that your CLI lets
 someone play a game. Note any known issues in your README.
 
