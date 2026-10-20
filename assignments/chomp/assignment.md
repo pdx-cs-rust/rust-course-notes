@@ -25,6 +25,7 @@ complete its library and command-line program. Keep the public
 type names and method signatures so your work can be tested
 automatically. Add fields to `Chomp` to represent the game state.
 You may add helper functions and methods.
+The skeleton's Rustdoc comments are part of the specification.
 
 [skeleton]: https://github.com/pdx-cs-rust/hw-chomp-skeleton
 
@@ -62,7 +63,11 @@ Your `Chomp` type should support the following operations via
   `ChompError::InvalidSize` for dimensions outside `1..=4` rows
   or `1..=5` columns.
 
-- Print a graphical representation of a board.
+- Report its logical dimensions as `(nrows, ncols)` through
+  `dimensions`, and whether a square is uneaten through
+  `is_present`. The latter returns `false` for eaten squares
+  and coordinates outside the board. Neither method changes
+  the board. Logical dimensions stay the same after moves.
 
 - Chomp a given square, removing all squares below it and to the
   right of it. Return `Result<(), ChompError>`: `Ok(())` for a
@@ -74,9 +79,12 @@ Your `Chomp` type should support the following operations via
 - Return a winning move for the board, if any (see the next
   section). Return `None` for losing positions, including a
   board containing only poison, or one where poison has already
-  been eaten.
+  been eaten. Do not change the board while searching. Any
+  winning move is acceptable when several exist.
 
-- Clone a board (the `Clone` trait).
+- Clone a board (the `Clone` trait). The clone has the same
+  dimensions and state, and subsequent moves on either board
+  must not affect the other.
 
 ### The AI
 
@@ -134,30 +142,64 @@ Your program will be a simple terminal interface for playing
 Chomp against your AI. It should perform the following sequence:
 
 1. Accept two command-line arguments for the board size: rows,
-   then columns, as specified in the skeleton.
+   then columns, as specified in the skeleton. Require exactly
+   two decimal integers in `1..=4` rows and `1..=5` columns.
+   Invalid arguments must produce a diagnostic on standard error
+   and a nonzero exit status. Do not start a game or panic.
 
 2. Repeatedly:
 
    1. Print the board.
 
-   2. Ask the user to input a move and perform it.
+   2. Ask the user to input a move and perform it. The human
+      moves first.
 
    3. If the user ate the poison square, announce that the user
       lost and end the game.
 
-   4. Try to find a winning move. If there is one, perform it.
-      Otherwise, stall by chomping as little as possible. (You
-      can implement this by chomping the furthest-right piece in
-      the lowermost nonempty row.)
+   4. Try to find a winning move. If there is one, perform it;
+      any winning move is acceptable. Otherwise, stall by eating
+      the rightmost square in the lowest nonempty row. If only
+      poison remains, this move eats the poison.
 
-   5. Show the computer's move. If the computer ate the poison
+   5. Show the computer's move, labelled as such, with its row
+      followed by its column. If the computer ate the poison
       square, announce that the user won and end the game.
 
-If the user ever gives invalid input, simply ask again until they
-give valid input.
+Draw the board with one line per logical row, using `#` for each
+uneaten square and `.` for each eaten square. Whitespace is
+flexible; put labels outside the grid. Show the current board
+before each human turn. Extra board displays are allowed.
+
+Read a move as one line containing exactly two nonnegative
+decimal integers: row, then column, both starting from zero.
+Accept leading and trailing whitespace, spaces, and tabs.
+Blank lines, missing or extra fields, invalid numbers,
+out-of-range coordinates, and eaten squares are invalid input.
+Explain the error and ask again, without changing the board or
+giving the computer a turn. Choosing the poison square is valid
+while it remains, but loses the game.
+
+On end-of-input, exit with status zero without announcing a
+winner or prompting again. On an actual input/output error,
+print a diagnostic on standard error and exit with a nonzero
+status without panicking. The skeleton's `user_move` helper
+distinguishes legal moves, end-of-input, and input/output errors.
 
 The game ends as soon as the upper-left poison square is eaten.
-The player who eats that square loses.
+The player who eats that square loses. Announce the outcome from
+the human's perspective and exit with status zero, whether the
+human won or lost. Do not attempt another move or request more
+input after the game ends.
+
+Prompt, diagnostic, move-label, and result wording is flexible,
+as are capitalization, punctuation, and spacing. Make it clear
+when you want a human move, which move the computer made, and
+who won. Keep computer replies on separate lines with row before
+column. Flush output before waiting for input, and use ordinary
+text without requiring screen clearing or cursor movement.
+Write boards, prompts, computer moves, and results to standard
+output.
 
 ## Hints
 
