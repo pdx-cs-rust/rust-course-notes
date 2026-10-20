@@ -130,13 +130,12 @@ fallback. End the game when either player eats poison, and
 announce who won.
 
 Choose readable prompts, a clear board display, and an input
-format that is easy to use. You can use `#` and `.` for uneaten
-and eaten squares, or another display you prefer. A simple move
-format is a zero-based row followed by a column, separated by
-whitespace, such as `2 3`. Helpers for displaying the board and
-reading a move may be useful; their interfaces are up to you.
-You may assume the human follows your input instructions;
-keep error handling simple.
+format that is easy to use. Use `#` and `.` for uneaten and
+eaten squares. A simple move format is a zero-based row followed
+by a column, separated by whitespace, such as `2 3`. Helpers
+for displaying the board and reading a move may be useful;
+their interfaces are up to you. You may assume the human follows
+your input instructions; keep error handling simple.
 
 Your CLI should produce a trace roughly like
 `sample-gameplay.txt` in the skeleton: show the initial board,
@@ -147,8 +146,9 @@ easy to follow how the game progresses.
 
 ### Gameplay transcript
 
-The library will be graded automatically. The CLI will be
-reviewed by a human using a transcript of you playing your game.
+The library will be graded with a set of tests, as well as
+reviewed. The CLI will be reviewed with the aid of your gameplay
+transcript.
 
 Play at least one complete game that shows both human and
 computer moves and the board changing. Save the terminal session
@@ -218,3 +218,9 @@ Please submit a ZIP archive containing:
 
 Name your ZIP archive `chomp.zip` (exactly that, in
 lowercase).
+
+## AI acknowledgement
+
+Codex assisted in the preparation of this assignment and its
+skeleton, starting from an original assignment by Bart
+Massey.
