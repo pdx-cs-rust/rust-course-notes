@@ -2,9 +2,6 @@
 
 Complete the [Chomp skeleton][skeleton] to build a library with
 an AI player and a command-line program for playing against it.
-You must use the skeleton for this assignment.
-
-[skeleton]: https://github.com/pdx-cs-rust/hw-chomp-skeleton
 
 ## Background
 
@@ -21,6 +18,10 @@ to find a winning move, if one exists.
 
 ## Getting started
 
+You must use the skeleton for this assignment.
+
+[skeleton]: https://github.com/pdx-cs-rust/hw-chomp-skeleton
+
 Clone the skeleton repository or download it as a ZIP archive.
 Work in its Cargo project, which contains:
 
@@ -30,18 +31,19 @@ Work in its Cargo project, which contains:
 - `Cargo.toml`, `Cargo.lock`, `README.md`, and `LICENSE.txt`.
 
 Read the Rustdoc comments in both source files before starting.
-They are part of the assignment specification and define the
-required library and program behavior. You can also render them
-with:
+The library comments specify the interface and behavior for
+automated testing. The program comments outline a simple CLI
+for you to build. You can also render the comments with:
 
 ```sh
 cargo doc --document-private-items --open
 ```
 
 Complete the `todo!()` placeholders. Keep the supplied public
-types, error variants, and method signatures so your work can be
-tested automatically. You may add fields to `Chomp` and add
-helper functions and methods.
+library types, error variants, and method signatures so your
+library can be tested automatically. You may add fields to
+`Chomp` and add helper functions and methods. The private CLI
+helpers can be adapted to suit your interface.
 
 The skeleton builds, but its game tests will not pass until you
 implement the missing functionality. Add tests as you work;
@@ -107,9 +109,10 @@ order is required.
 ## The program
 
 Complete `show_posn`, `user_move`, and `main` in `src/main.rs`.
-Its comments specify the game loop, argument validation, input
-handling, and output behavior. For example, run a three-row,
-four-column game with:
+Build a simple terminal interface that lets a human play against
+your AI. Get the board size using prompts or command-line
+arguments. For example, an interface using arguments might start
+a three-row, four-column game with:
 
 ```sh
 cargo run -- 3 4
@@ -117,28 +120,32 @@ cargo run -- 3 4
 
 The human moves first. Display the board, get a valid human move,
 and then let the computer respond. Use a winning computer move
-when one exists; otherwise, eat the rightmost square in the
-lowest nonempty row. End the game immediately after either
-player eats poison and announce the outcome from the human's
-perspective.
+when one exists. Otherwise, choose another uneaten nonpoison
+square if possible, or eat poison if it is the only square left.
+The rightmost square in the lowest nonempty row is a simple
+fallback. End the game when either player eats poison, and
+announce who won.
 
-Use `#` and `.` to display uneaten and eaten squares, and report
-computer moves as labelled row-then-column coordinates. Prompt
-wording, capitalization, punctuation, and spacing are flexible.
-Extra board displays are allowed. Flush output before waiting
-for input so the board and prompt are visible.
+Choose readable prompts, a clear board display, and an input
+format that is easy to use. You can use `#` and `.` for uneaten
+and eaten squares, or another display you prefer. You may assume
+the human follows your input instructions; keep error handling
+simple.
 
-Invalid human input must produce an explanation and another
-prompt without changing the board or giving the computer a
-turn. End-of-input cancels the game without announcing a winner.
-Completed games and cancellation exit with status zero; argument
-and input/output errors require a diagnostic and a nonzero exit
-status. Follow the source comments for the complete contract.
+### Gameplay transcript
 
-Both the library and the interactive program will be tested
-automatically. The public library methods and the documented
-program behavior must work regardless of your representation or
-choice among winning moves.
+The library will be graded automatically. The CLI will be
+reviewed by a human using a transcript of you playing your game.
+
+Play at least one complete game that shows both human and
+computer moves and the board changing. Save the terminal session
+as plain text in `gameplay.txt`. Include the command used to run
+the program, the board displays, your input, the computer's
+moves, and the final result. Copying and pasting from your
+terminal is fine. You do not need to win.
+
+The transcript should make it easy to see that your CLI lets
+someone play a game. Note any known issues in your README.
 
 ## Requirements
 
@@ -189,6 +196,7 @@ Please submit a ZIP archive containing:
   `Cargo.lock`, `src/lib.rs`, and `src/main.rs`.
 - Any other source or other text files that are necessary/useful.
 - The `README.md` file in Markdown format described above.
+- Your `gameplay.txt` transcript as described above.
 - Nothing else. Not your git repo. None of the funny Mac garbage
   files. Not your `target/` directory.
 
