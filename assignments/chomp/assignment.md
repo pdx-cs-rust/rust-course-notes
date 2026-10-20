@@ -28,7 +28,7 @@ Work in its Cargo project, which contains:
 - `src/lib.rs`: the `chomp_ai` library, including `Chomp`,
   `ChompError`, and the required public methods.
 - `sample-gameplay.txt`: an example of a complete game.
-- `Cargo.toml`, `Cargo.lock`, `README.md`, and `LICENSE.txt`.
+- `Cargo.toml`, `README.md`, and `LICENSE.txt`.
 
 Read the Rustdoc comments in `src/lib.rs` before starting.
 They specify the library interface and behavior for automated
@@ -209,12 +209,16 @@ not just this one.)*
 Please submit a ZIP archive containing:
 
 - Your Cargo project directory, including `Cargo.toml`,
-  `Cargo.lock`, `src/lib.rs`, and `src/main.rs`.
+  the generated `Cargo.lock`, `src/lib.rs`, and `src/main.rs`.
 - Any other source or other text files that are necessary/useful.
 - The `README.md` file in Markdown format described above.
 - Your `gameplay.txt` transcript as described above.
 - Nothing else. Not your git repo. None of the funny Mac garbage
   files. Not your `target/` directory.
+
+The skeleton does not include a lockfile. Cargo creates
+`Cargo.lock` when you build your project; you must include it
+in your ZIP even if you have not added any dependencies.
 
 Name your ZIP archive `chomp.zip` (exactly that, in
 lowercase).
