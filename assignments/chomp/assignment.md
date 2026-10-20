@@ -20,23 +20,33 @@ In this assignment, you will write a library crate that
 implements a Chomp AI (`src/lib.rs`), and a binary crate that
 allows the game to be played on the command line (`src/main.rs`).
 
+You must start from the [provided skeleton][skeleton] and
+complete its library and command-line program. Keep the public
+type name and method signatures so your work can be tested
+automatically. Add fields to `Chomp` to represent the game state.
+You may add helper functions and methods.
+
+[skeleton]: https://github.com/pdx-cs-rust/hw-chomp-skeleton
+
 ## The library
 
-The game state should be represented by a `struct Board` you
-define. The most important component of the state is the
-representation of the board itself:
+The game state should be represented by a `struct Chomp` you
+define. The skeleton supplies a unit struct as a placeholder:
+replace it with a struct containing the fields you need. The
+most important component of the state is the representation of
+the board itself:
 
 - One way: use an array
 
   - Use a fixed-size five-by-four (five columns, four rows) array
     of `bool`s to represent the game state. The element at index
-    `row, column` should be `false` if that square has been
+    `[row][column]` should be `false` if that square has been
     eaten, and `true` otherwise.
 
   - Your program should support multiple board sizes. Since the
     size of a Rust array is fixed at compile time, your board
     type needs to have fields representing its logical width and
-    height.
+    height. Ignore squares outside these logical dimensions.
 
 - Another way: use a set
 
@@ -44,7 +54,7 @@ representation of the board itself:
     being in the set means that position is not yet eaten. You
     can remove elements from the set as they are eaten.
 
-Your `Board` type should support the following operations via
+Your `Chomp` type should support the following operations via
 `impl`:
 
 - Create a board with a given number of rows and columns.
@@ -114,8 +124,8 @@ For Chomp:
 Your program will be a simple terminal interface for playing
 Chomp against your AI. It should perform the following sequence:
 
-1. Get a board size from the user. You may prompt interactively
-   or accept two command-line arguments: rows, then columns.
+1. Accept two command-line arguments for the board size: rows,
+   then columns, as specified in the skeleton.
 
 2. Repeatedly:
 
@@ -123,10 +133,16 @@ Chomp against your AI. It should perform the following sequence:
 
    2. Ask the user to input a move and perform it.
 
-   3. Try to find a winning move. If there is one, perform it.
+   3. If the user ate the poison square, announce that the user
+      lost and end the game.
+
+   4. Try to find a winning move. If there is one, perform it.
       Otherwise, stall by chomping as little as possible. (You
       can implement this by chomping the furthest-right piece in
       the lowermost nonempty row.)
+
+   5. Show the computer's move. If the computer ate the poison
+      square, announce that the user won and end the game.
 
 If the user ever gives invalid input, simply ask again until they
 give valid input.
@@ -150,17 +166,21 @@ The player who eats that square loses.
 
 ## Requirements
 
-- You must edit `Cargo.toml` to provide your authorship
-  information.
+*(These requirements are for every exercise in this course,
+not just this one.)*
 
-- You must edit `README.md` to reflect your work. Explain what
-  the program and library does, and how to build and run the
-  program. Comment on any issues you encountered, or anything
-  else a reader might find useful.
+- You must create or update a `README.md` for the homework.
+  This file will have
 
-- Both your crates must be adequately documented with Rustdoc
-  comments for each datatype, function and method. The provided
-  skeleton provides comments for its supplied functions.
+  - Your authorship information.
+  - A description of the work: what it is/does.
+  - How to build and run the work.
+  - How you tested your work.
+  - Comments on any issues you encountered.
+  - Anything else a reader might find useful.
+
+- Your crates must be adequately documented with Rustdoc comments
+  for each top-level datatype, function and method.
 
 - Your crates must build with current `stable` Rust.
 
@@ -169,24 +189,32 @@ The player who eats that square loses.
   `assert!()` and related macros) for you to be comfortable that
   everything is working correctly.
 
+  There is no minimum amount of testing required, but good tests
+  can help you turn in a working solution.
+
 - Your code must be formatted according to the official Rust
-  formatting style — use `cargo fmt` to reformat your code
+  formatting style --- use `cargo fmt` to reformat your code
   in-place.
 
-- Your code must produce no compiler warnings, and `cargo clippy`
-  must also produce no warnings. Please do not disable warnings
-  except in the most unusual circumstances: fix them instead.
+- Your code must produce no warnings.
+
+  - The compiler must produce no warnings.
+
+  - `cargo clippy` must produce no warnings.
+
+  - Do not disable warnings except in the most unusual
+    circumstances: fix them instead.
+
+## Submission
 
 Please submit a ZIP archive containing:
 
-- Your `Cargo.toml` and `Cargo.lock`.
-
-- Your `src/lib.rs` and `src/main.rs`.
-
+- Your Cargo project directory, including `Cargo.toml`,
+  `Cargo.lock`, `src/lib.rs`, and `src/main.rs`.
 - Any other source or other text files that are necessary/useful.
-
-- A `README.md` file in Markdown format giving a writeup of what
-  you did, how it went, and how you tested your work.
-
+- The `README.md` file in Markdown format described above.
 - Nothing else. Not your git repo. None of the funny Mac garbage
   files. Not your `target/` directory.
+
+Name your ZIP archive `chomp.zip` (exactly that, in
+lowercase).

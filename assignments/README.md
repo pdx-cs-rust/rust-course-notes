@@ -57,6 +57,18 @@ directory is omitted when that kind of material was unavailable.
 Variant names identify the language or distinguish historical
 Rust implementations.
 
+The Chomp `starter/` directory is a Git submodule of
+[`hw-chomp-skeleton`](https://github.com/pdx-cs-rust/hw-chomp-skeleton).
+Initialize it after cloning the notes:
+
+```sh
+git submodule update --init --recursive
+```
+
+Make starter changes in that repository, then update the
+submodule commit recorded here. Do not maintain a separate copy
+of its files in the notes repository.
+
 The Chomp materials retain a reference Rust solution, the historical
 `rust-coltharp` Rust solution, and historical Java and Haskell
 solutions. Modular Exponentiation retains separate `rust-2022` and

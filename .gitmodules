@@ -1,0 +1,3 @@
+[submodule "chomp-starter"]
+	path = assignments/chomp/starter
+	url = https://github.com/pdx-cs-rust/hw-chomp-skeleton.git
