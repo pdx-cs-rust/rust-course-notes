@@ -1,98 +1,105 @@
 # Course Project Submission
 
-## Project Requirements
+Please submit your final project repo URL. I strongly prefer
+GitHub. Ideally this is the same URL you submitted for the
+proposal; drop me a note on Zulip if it's different so that I'm
+sure to get the right one.
 
-- I strongly suggest your project repo be publicly readable:
-  check this using an "incognito window" or something. If you are
-  unwilling to make your project publicly readable, please
-  contact me on chat to make sure that the TA and I can access
-  the repo.
+## Course Project Requirements
 
-- A publicly readable project must have a `LICENSE` text file in
-  the root directory of your project containing license
-  information. A link/URL is not OK: you need a copy of the
-  license that is under your control. When in doubt, I suggest
-  the [MIT License](https://opensource.org/licenses/MIT).
+The project parameters and policies stated in the Course Project
+Proposal continue to apply, including the theme or your approved
+theme opt-out, individual or approved team work, and the rules on
+reusing projects. In particular:
 
-- Your project must have a `README.md` file (in Markdown format)
-  containing at least:
+- One or more Rust crates. The project can be a binary crate, a
+  library crate or some combination.
 
-  - Your name
+- The project should perform a coherent function. Roughly
+  500-1500 lines of code, but smaller can be fine: if you're
+  gonna go larger ask me. Line count is a stupid measurement
+  anyhow.
 
-  - Your project name
+- Code should be written in a reasonable modular style. Code must
+  compile without warnings and must not have `rustfmt` or
+  `clippy` errors. The codebase should be largely free of
+  commented-out code.
 
-  - A description of your project (1-2 paragraphs, enough so that
-    people know what it is, what it does, how it works
+- Include internal unit tests where needed to check correctness.
+  Adequacy of testing is left to your judgement.
 
-    - What is the project? What does it do — what is its intended
-      function?
+- Items in crate public interfaces must have good `rustdoc`.
+  Include additional developer documentation if needed to help
+  me understand your software.
 
-    - How do folks build and run the project, in plenty of
-      detail?
+- The project must build using stable Rust, unless otherwise
+  approved. `unsafe` code should be kept to an absolute minimum
+  and clearly documented for both safety and need.
 
-    - How was testing done to make sure the project works?
+- Projects must consist mostly of code you wrote yourself.
+  Using established models, rules, and algorithms is fine;
+  copying an existing implementation or closely following a
+  tutorial is not. Describe your own contribution and
+  acknowledge any sources. The usual plagiarism rules apply.
 
-  - An example illustrating the operation of your code
+- Follow the proposal's guidance on tutorials and AI. I prefer
+  that you not write Rust with AI; using AI for ideas and
+  algorithms is fine. Thoroughly document any tutorials or AI
+  used in your README.
 
-  - What worked? What didn't? How satisfied are you with the
-    result? What would you like to improve in the future?
+- The project commit history must accurately reflect project
+  development.
 
-  - License information if any, including a pointer to the
-    `LICENSE` file.
+## README
 
-- Developer docs sufficient to help me understand your software,
-  if needed.
+Your project must include a `README.md` file in Markdown format
+containing:
 
-- Code
+- Your name and the project name.
+- A description of what the project does and how it works
+  (a paragraph or two).
+- Detailed instructions for building and running the project.
+- How you tested the project.
+- An example illustrating the operation of your code.
+- What worked, what didn't, and what lessons you learned.
+- How satisfied you are with the result and what you would like
+  to improve in the future.
+- Your own contribution and acknowledgements of sources,
+  tutorials, and AI assistance, as applicable.
+- License information, if any, including pointers to the license
+  files.
 
-  - The source code should be reasonably organized according to
-    your chosen programming language's standards.
+## Repository
 
-  - Compiled code may have no compiler warnings. Code should be
-    reasonably formatted according to your chosen programming
-    language's community standards. Code must be properly
-    indented. The codebase should be largely free of
-    commented-out code.
+The repo must be cloneable by `BartMassey`. I strongly prefer
+that you make it public: check this using an incognito window or
+something. If you want to keep it private, contact me on Zulip
+so that we can make sure the TA and I can access it.
 
-- Your project should include tests as needed to verify proper
-  operation. Adequacy of testing is left to your judgement.
+If the repo is public, include the text of an appropriate open
+source license in the root directory, not just a link. I
+recommend MIT + Apache 2.0 for Rust projects.
 
-- "Junk" files must not be checked into the repository. Junk
-  files include:
-
-  - Build artifacts (for example, `.o` files and executables)
-
-  - Editor and IDE junk: "`~`-files", Mac "hidden" files, IDE
-    artifacts, etc. (If your project can/should/must be built
-    with an IDE, it is reasonable to check in the project file
-    itself, but the other stuff not so much.)
-
-  - Backup files, junk directories, old versions of the project,
-    etc.
-
-  In short, somebody cloning your repo should get exactly what
-  they need to build and work on your code, and absolutely
-  nothing else.
+Do not check junk files into the repo: build artifacts (including
+`target/`), editor and IDE junk, backup files, or old copies of
+the project. IDE project files needed to build the project are
+fine. Someone cloning the repo should get what they need to build
+and work on your code.
 
 ## Video Presentation (optional)
 
-Your project repository **MAY** contain a video presentation, *no
-more than three minutes long.* The presentation should be named
-`PRESENTATION.zzz` where `zzz` is your video format (for example,
-`PRESENTATION.mp4` for an MP4 video).
+Your project repository may contain a video presentation, no more
+than three minutes long. Name it `PRESENTATION.zzz`, where `zzz`
+is your video format (for example, `PRESENTATION.mp4`).
 
-The video presentation should give your name, the name of the
-project, and a brief description of what the project is and does.
-A super-quick demo of some piece of project functionality would
-also be great. The limitations of the project as it stands should
-be discussed, and future plans for the project should be
-described.
+Give your name, the project name, and a brief description of what
+the project is and does. A super-quick demo of some functionality
+would also be great. Discuss the project's limitations and any
+future plans.
 
 ## Submission
 
-Submit the master repo URL of your project (usually Github or
-Gitlab) as the "solution" to this assignment. (Re-submitting the
-URL will allow us to check that we have up-to-date information.)
-As mentioned above, make sure that your repo is publicly readable
-(or make arrangements with me if you must) so that we can grade
-it.
+Submit your project's repo URL to this assignment on Canvas,
+even if it is the same URL you submitted for the proposal. Make
+sure that the repo is publicly readable or that you have arranged
+access with me as described above.
