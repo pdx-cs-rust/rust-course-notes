@@ -7,7 +7,7 @@
 * `Box<T>` is the simplest way to put a value on the heap
 
   ```rust
-  let answer = Box::new(42);
+  let answer = Box::new(42u64);
   println!("{}", answer);
   ```
 
