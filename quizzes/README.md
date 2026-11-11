@@ -9,8 +9,10 @@ The filename identifies the local quiz. `rust-quiz.md` and
 answer order, scoring, and feedback. `starting-rust.md` is an
 AI-attributed quiz authored directly in this format.
 `ownership-and-lifetimes.md` and `strings-and-memory.md` are
-AI-attributed quizzes for Weeks 2 and 3. Formatting changes turn
-HTML paragraphs, lists, and code into Markdown.
+AI-attributed quizzes for Weeks 2 and 3.
+`special-memory-types.md` and `traits.md` are AI-attributed
+quizzes on the heap and traits notes, respectively. Formatting
+changes turn HTML paragraphs, lists, and code into Markdown.
 
 ## Markdown convention
 
@@ -38,7 +40,8 @@ questions and 54 answers; `advanced-rust-quiz.md` has seven
 questions and 32 answers; `starting-rust.md` has 16 questions
 and 69 answers. `ownership-and-lifetimes.md` and
 `strings-and-memory.md` each have 20 questions and 80 answers.
-Each quiz has 100 points.
+`special-memory-types.md` and `traits.md` each have 10 questions
+and 40 answers. Each quiz has 100 points.
 
 Headings used by this convention are structural. Use other
 heading levels or a fenced code block when a prompt needs to
